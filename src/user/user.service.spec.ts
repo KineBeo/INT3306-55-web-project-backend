@@ -14,7 +14,7 @@ describe('UserService', () => {
         {
           provide: UserRepository,
           useValue: {
-            findUnique: jest.fn(),
+            findOne: jest.fn(),
           },
         },
       ],
@@ -41,7 +41,7 @@ describe('UserService', () => {
       birthDate: new Date('1990-01-01'),
     };
 
-    jest.spyOn(userRepository, 'findUnique').mockResolvedValue(expectedUser);
+    jest.spyOn(userRepository, 'findOne').mockResolvedValue(expectedUser);
 
     const user = await service.findOne(userWhereUniqueInput);
     expect(user).toEqual(expectedUser);

@@ -6,7 +6,7 @@ import { User, Prisma } from '@prisma/client';
 export class UserRepository {
   constructor(private prisma: PrismaService) {}
 
-  async findUnique(
+  async findOne(
     userWhereUniqueInput: Prisma.UserWhereUniqueInput,
   ): Promise<User | null> {
     return this.prisma.user.findUnique({
@@ -14,7 +14,7 @@ export class UserRepository {
     });
   }
 
-  async findMany(params: {
+  async findAll(params: {
     skip?: number;
     take?: number;
     cursor?: Prisma.UserWhereUniqueInput;
