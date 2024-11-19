@@ -4,9 +4,9 @@ import { Param, Get } from '@nestjs/common';
 
 @Controller('user')
 export class UserController {
-    constructor(private readonly userService: UserService) {}
-    @Get(':id')
-    async findOne(@Param('id') id: string) {
-        return this.userService.findOne({ id: parseInt(id) });
-    }
+  constructor(private readonly userService: UserService) {}
+  @Get('id/:id')
+  async findOne(@Param('id') id: string) {
+    return this.userService.findOne({ id: parseInt(id) });
+  }
 }

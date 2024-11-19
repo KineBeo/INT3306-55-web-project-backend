@@ -15,13 +15,17 @@ describe('UserController', () => {
     phoneNumber: '+1234567890',
     countryCode: 'US',
     password: 'hashedPassword123',
-    birthDate: new Date('1990-01-01')
+    birthDate: new Date('1990-01-01'),
   };
 
   const mockUserService = {
-    findOne: jest.fn().mockImplementation((where: Prisma.UserWhereUniqueInput): Promise<User | null> => {
-      return Promise.resolve(mockUser);
-    })
+    findOne: jest
+      .fn()
+      .mockImplementation(
+        (where: Prisma.UserWhereUniqueInput): Promise<User | null> => {
+          return Promise.resolve(mockUser);
+        },
+      ),
   };
 
   beforeEach(async () => {
@@ -46,7 +50,7 @@ describe('UserController', () => {
   it('should find one user', async () => {
     const userWhereUniqueInput: Prisma.UserWhereUniqueInput = { id: 1 };
     const result = await controller.findOne('1');
-    
+
     expect(userService.findOne).toHaveBeenCalledWith(userWhereUniqueInput);
     expect(result).toEqual(mockUser);
   });

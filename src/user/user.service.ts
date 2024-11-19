@@ -6,7 +6,9 @@ import { UserRepository } from './user.repository';
 export class UserService {
   constructor(private userRepository: UserRepository) {}
 
-  async findOne(userWhereUniqueInput: Prisma.UserWhereUniqueInput): Promise<User | null> {
+  async findOne(
+    userWhereUniqueInput: Prisma.UserWhereUniqueInput,
+  ): Promise<User | null> {
     return this.userRepository.findUnique(userWhereUniqueInput);
   }
 
