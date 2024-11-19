@@ -1,29 +1,27 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserService } from './user.service';
-import { PrismaService } from 'src/prisma.service';
+import { UserRepository } from './user.repository';
 import { Prisma, User } from '@prisma/client';
 
 describe('UserService', () => {
   let service: UserService;
-  let prismaService: PrismaService;
+  let userRepository: UserRepository;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         UserService,
         {
-          provide: PrismaService,
+          provide: UserRepository,
           useValue: {
-            user: {
-              findUnique: jest.fn(),
-            },
+            findUnique: jest.fn(),
           },
         },
       ],
     }).compile();
 
     service = module.get<UserService>(UserService);
-    prismaService = module.get<PrismaService>(PrismaService);
+    userRepository = module.get<UserRepository>(UserRepository);
   });
 
   it('should be defined', () => {
@@ -43,7 +41,7 @@ describe('UserService', () => {
       birthDate: new Date('1990-01-01'),
     };
 
-    jest.spyOn(prismaService.user, 'findUnique').mockResolvedValue(expectedUser);
+    jest.spyOn(userRepository, 'findUnique').mockResolvedValue(expectedUser);
 
     const user = await service.findOne(userWhereUniqueInput);
     expect(user).toEqual(expectedUser);
