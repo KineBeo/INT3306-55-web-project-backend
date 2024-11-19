@@ -55,9 +55,9 @@ export class UserService {
         if (uniqueConstraintViolation) {
           const target = (error.meta?.target as string[]) || [];
 
-          if (target.includes('email')) {
+          if (target.includes('phoneNumber')) {
             throw new HttpException(
-              'Email already exists',
+              'Phone number already exists',
               HttpStatus.CONFLICT,
             );
           }

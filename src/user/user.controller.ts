@@ -22,7 +22,7 @@ export class UserController {
   @Post()
   @ApiOperation({ summary: 'Create new user' })
   @ApiResponse({ status: 201, description: 'User created successfully' })
-  @ApiResponse({ status: 409, description: 'Email already exists' })
+  @ApiResponse({ status: 409, description: 'Phone number already exists' })
   @ApiResponse({ status: 400, description: 'Bad request' })
   @ApiResponse({ status: 500, description: 'Internal server error' })
   async create(@Body() createUserDto: CreateUserDto) {

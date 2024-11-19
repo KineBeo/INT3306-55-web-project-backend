@@ -35,7 +35,7 @@ describe('UserService', () => {
       email: 'john.doe@example.com',
       firstName: 'John',
       lastName: 'Doe',
-      phoneNumber: '1234567890',
+      phoneNumber: '1234567890', // This is now the unique identifier
       countryCode: '+1',
       password: 'hashedPassword123',
       birthDate: new Date('1990-01-01'),
