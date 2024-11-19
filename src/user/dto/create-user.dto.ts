@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsEmail, IsNotEmpty, IsDateString, Matches } from 'class-validator';
+import {
+  IsString,
+  IsEmail,
+  IsNotEmpty,
+  IsDateString,
+  Matches,
+} from 'class-validator';
 
 export class CreateUserDto {
   @ApiProperty({ example: 'user@example.com' })
@@ -32,7 +38,8 @@ export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
   @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/, {
-    message: 'Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number'
+    message:
+      'Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number',
   })
   password: string;
 

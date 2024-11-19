@@ -28,45 +28,44 @@ export class UserService {
     try {
       return await this.userRepository.findAll(params);
     } catch (error) {
-      throw new HttpException('Failed to fetch users', HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new HttpException(
+        'Failed to fetch users',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
-  
   async create(createUserDto: CreateUserDto): Promise<User> {
-      try {
-        const userData: Prisma.UserCreateInput = {
-          email: createUserDto.email,
-          firstName: createUserDto.firstName,
-          lastName: createUserDto.lastName,
-          phoneNumber: createUserDto.phoneNumber,
-          countryCode: createUserDto.countryCode,
-          password: createUserDto.password,
-          birthDate: new Date(createUserDto.birthDate),
-        };
-        return await this.userRepository.create(userData);
-      } catch (error) {
-        if (error instanceof Prisma.PrismaClientKnownRequestError) {
-          // P2002 is Prisma's error code for unique constraint violation
-          const uniqueConstraintViolation = error.code === 'P2002';
-          if (uniqueConstraintViolation) {
-            const target = (error.meta?.target as string[]) || [];
-            
-            if (target.includes('email')) {
-              throw new HttpException(
-                'Email already exists',
-                HttpStatus.CONFLICT
-              );
-            }
+    try {
+      const userData: Prisma.UserCreateInput = {
+        email: createUserDto.email,
+        firstName: createUserDto.firstName,
+        lastName: createUserDto.lastName,
+        phoneNumber: createUserDto.phoneNumber,
+        countryCode: createUserDto.countryCode,
+        password: createUserDto.password,
+        birthDate: new Date(createUserDto.birthDate),
+      };
+      return await this.userRepository.create(userData);
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        // P2002 is Prisma's error code for unique constraint violation
+        const uniqueConstraintViolation = error.code === 'P2002';
+        if (uniqueConstraintViolation) {
+          const target = (error.meta?.target as string[]) || [];
+
+          if (target.includes('email')) {
+            throw new HttpException(
+              'Email already exists',
+              HttpStatus.CONFLICT,
+            );
           }
         }
-        
-        // Generic error if not caught above
-        throw new HttpException(
-          'Failed to create user',
-          HttpStatus.BAD_REQUEST
-        );
       }
+
+      // Generic error if not caught above
+      throw new HttpException('Failed to create user', HttpStatus.BAD_REQUEST);
+    }
   }
 
   async update(params: {
@@ -81,7 +80,10 @@ export class UserService {
       return user;
     } catch (error) {
       if (error instanceof HttpException) throw error;
-      throw new HttpException('Failed to update user', HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new HttpException(
+        'Failed to update user',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -94,7 +96,10 @@ export class UserService {
       return user;
     } catch (error) {
       if (error instanceof HttpException) throw error;
-      throw new HttpException('Failed to delete user', HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new HttpException(
+        'Failed to delete user',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }
