@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { User, Prisma } from '@prisma/client';
 import { UserRepository } from './user.repository';
 import { HttpException, HttpStatus } from '@nestjs/common';
+import { CreateUserDto } from './dto/create-user.dto';
 
 @Injectable()
 export class UserService {
@@ -31,9 +32,18 @@ export class UserService {
     }
   }
 
-  async create(data: Prisma.UserCreateInput): Promise<User> {
+  async create(createUserDto: CreateUserDto): Promise<User> {
     try {
-      return await this.userRepository.create(data);
+      const userData: Prisma.UserCreateInput = {
+        email: createUserDto.email,
+        firstName: createUserDto.firstName,
+        lastName: createUserDto.lastName,
+        phoneNumber: createUserDto.phoneNumber,
+        countryCode: createUserDto.countryCode,
+        password: createUserDto.password, // Note: You should hash this password before saving
+        birthDate: new Date(createUserDto.birthDate),
+      };
+      return await this.userRepository.create(userData);
     } catch (error) {
       throw new HttpException('Failed to create user', HttpStatus.BAD_REQUEST);
     }
