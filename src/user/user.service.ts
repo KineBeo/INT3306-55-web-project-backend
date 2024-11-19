@@ -3,6 +3,7 @@ import { User, Prisma } from '@prisma/client';
 import { UserRepository } from './user.repository';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UserService {
@@ -70,10 +71,28 @@ export class UserService {
 
   async update(params: {
     where: Prisma.UserWhereUniqueInput;
-    data: Prisma.UserUpdateInput;
+    data: UpdateUserDto;
   }): Promise<User> {
     try {
-      const user = await this.userRepository.update(params);
+      const updateData: Prisma.UserUpdateInput = {
+        ...(params.data.email && { email: params.data.email }),
+        ...(params.data.firstName && { firstName: params.data.firstName }),
+        ...(params.data.lastName && { lastName: params.data.lastName }),
+        ...(params.data.phoneNumber && {
+          phoneNumber: params.data.phoneNumber,
+        }),
+        ...(params.data.countryCode && {
+          countryCode: params.data.countryCode,
+        }),
+        ...(params.data.birthDate && {
+          birthDate: new Date(params.data.birthDate),
+        }),
+      };
+
+      const user = await this.userRepository.update({
+        where: params.where,
+        data: updateData,
+      });
       if (!user) {
         throw new HttpException('User not found', HttpStatus.NOT_FOUND);
       }
