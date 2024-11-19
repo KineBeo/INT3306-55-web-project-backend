@@ -32,21 +32,41 @@ export class UserService {
     }
   }
 
+  
   async create(createUserDto: CreateUserDto): Promise<User> {
-    try {
-      const userData: Prisma.UserCreateInput = {
-        email: createUserDto.email,
-        firstName: createUserDto.firstName,
-        lastName: createUserDto.lastName,
-        phoneNumber: createUserDto.phoneNumber,
-        countryCode: createUserDto.countryCode,
-        password: createUserDto.password, // Note: You should hash this password before saving
-        birthDate: new Date(createUserDto.birthDate),
-      };
-      return await this.userRepository.create(userData);
-    } catch (error) {
-      throw new HttpException('Failed to create user', HttpStatus.BAD_REQUEST);
-    }
+      try {
+        const userData: Prisma.UserCreateInput = {
+          email: createUserDto.email,
+          firstName: createUserDto.firstName,
+          lastName: createUserDto.lastName,
+          phoneNumber: createUserDto.phoneNumber,
+          countryCode: createUserDto.countryCode,
+          password: createUserDto.password,
+          birthDate: new Date(createUserDto.birthDate),
+        };
+        return await this.userRepository.create(userData);
+      } catch (error) {
+        if (error instanceof Prisma.PrismaClientKnownRequestError) {
+          // P2002 is Prisma's error code for unique constraint violation
+          const uniqueConstraintViolation = error.code === 'P2002';
+          if (uniqueConstraintViolation) {
+            const target = (error.meta?.target as string[]) || [];
+            
+            if (target.includes('email')) {
+              throw new HttpException(
+                'Email already exists',
+                HttpStatus.CONFLICT
+              );
+            }
+          }
+        }
+        
+        // Generic error if not caught above
+        throw new HttpException(
+          'Failed to create user',
+          HttpStatus.BAD_REQUEST
+        );
+      }
   }
 
   async update(params: {
