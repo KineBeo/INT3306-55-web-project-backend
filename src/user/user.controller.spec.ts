@@ -8,7 +8,7 @@ describe('UserController', () => {
   let userService: UserService;
 
   const mockUser: User = {
-    id: 'clh12345678901234567890',  // Using cuid format
+    id: 1,
     email: 'test@example.com',
     firstName: 'John',
     lastName: 'Doe',
@@ -44,8 +44,8 @@ describe('UserController', () => {
   });
 
   it('should find one user', async () => {
-    const userWhereUniqueInput: Prisma.UserWhereUniqueInput = { id: 'clh12345678901234567890' };
-    const result = await controller.findOne(userWhereUniqueInput.id);
+    const userWhereUniqueInput: Prisma.UserWhereUniqueInput = { id: 1 };
+    const result = await controller.findOne('1');
     
     expect(userService.findOne).toHaveBeenCalledWith(userWhereUniqueInput);
     expect(result).toEqual(mockUser);

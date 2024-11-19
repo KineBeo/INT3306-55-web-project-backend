@@ -29,9 +29,9 @@ describe('UserService', () => {
   });
 
   it('should find one user', async () => {
-    const userWhereUniqueInput: Prisma.UserWhereUniqueInput = { id: '1' };
+    const userWhereUniqueInput: Prisma.UserWhereUniqueInput = { id: 1 };
     const expectedUser: User = {
-      id: '1',
+      id: 1,
       email: 'john.doe@example.com',
       firstName: 'John',
       lastName: 'Doe',
