@@ -7,6 +7,12 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { TicketModule } from './ticket/ticket.module';
+import { TicketPassengerModule } from './ticket-passenger/ticket-passenger.module';
+import { FlightModule } from './flight/flight.module';
+import { AirplaneModule } from './airplane/airplane.module';
+import { AirportModule } from './airport/airport.module';
+import { ArticleModule } from './article/article.module';
 
 @Module({
   imports: [
@@ -17,7 +23,7 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
     ConfigModule.forRoot(), 
     DatabaseModule, 
     UserModule, 
-    AuthModule],
+    AuthModule, TicketModule, TicketPassengerModule, FlightModule, AirplaneModule, AirportModule, ArticleModule],
   controllers: [AppController],
   providers: [AppService, 
     {

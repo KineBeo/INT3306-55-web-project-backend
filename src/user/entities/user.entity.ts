@@ -1,11 +1,16 @@
+import { on } from 'events';
+import { Article } from 'src/article/entities/article.entity';
 import { Gender } from 'src/enum/gender';
 import { Role } from 'src/enum/role';
+import { TicketPassenger } from 'src/ticket-passenger/entities/ticket-passenger.entity';
+import { Ticket } from 'src/ticket/entities/ticket.entity';
 import {
   BeforeInsert,
   BeforeUpdate,
   Column,
   Entity,
   Index,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -56,4 +61,10 @@ export class User {
   updateUpdatedAt() {
     this.updatedAt = new Date();
   }
+
+  @OneToMany(() => Ticket, (ticket) => ticket.user)
+  tickets: Ticket[];
+
+  @OneToMany(() => Article, (article) => article.user)
+  articles: Article[];
 }
