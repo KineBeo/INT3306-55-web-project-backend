@@ -10,7 +10,7 @@ import { Role } from 'src/enum/role';
 import { User } from './entities/user.entity';
 
 @Controller('user')
-@ApiTags('User')
+@ApiTags('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 

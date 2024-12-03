@@ -4,7 +4,14 @@ import { TicketType } from 'src/enum/ticket/ticket_type';
 import { Flight } from 'src/flight/entities/flight.entity';
 import { TicketPassenger } from 'src/ticket-passenger/entities/ticket-passenger.entity';
 import { User } from 'src/user/entities/user.entity';
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Ticket {
@@ -17,18 +24,15 @@ export class Ticket {
    * TODO: returnFlightId: Int @foreignKey(Flight.id) @nullable
    */
 
-  @OneToMany(() => TicketPassenger , (ticketPassenger) => ticketPassenger.ticket)
-  ticketPassenger: TicketPassenger[];
-
-  @OneToMany(() => Flight, (flight) => flight.id)
+  @ManyToOne(() => Flight)
   @JoinColumn({ name: 'outbound_flight_id' })
   outboundFlight: Flight;
 
-  @OneToMany(() => Flight, (flight) => flight.id)
+  @ManyToOne(() => Flight)
   @JoinColumn({ name: 'return_flight_id' })
   returnFlight: Flight;
 
-  /** 
+  /**
    * ! checked
    */
   @ManyToOne(() => User, (user) => user.tickets)
@@ -70,8 +74,8 @@ export class Ticket {
   @Column()
   return_ticket_price: string;
 
-  /** 
-   * ! Giá gốc 
+  /**
+   * ! Giá gốc
    */
   @Column()
   total_original_price: string;

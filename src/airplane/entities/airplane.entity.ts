@@ -19,7 +19,9 @@ export class Airplane {
     @Column()
     serial_number: string;
 
-    @Column()
+    @Column({
+        unique: true,
+    })
     registration_number: string;
 
     @Column()

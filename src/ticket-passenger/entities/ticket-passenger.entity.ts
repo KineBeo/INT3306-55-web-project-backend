@@ -25,7 +25,7 @@ export class TicketPassenger {
   associated_adult_id: TicketPassenger;
 
   
-  @ManyToOne(() => Ticket, (ticket) => ticket.ticketPassenger)
+  @ManyToOne(() => Ticket, (ticket) => ticket.ticketPassengers)
   @JoinColumn({ name: 'ticket_id' })
   ticket: Ticket;
 
