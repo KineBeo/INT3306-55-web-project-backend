@@ -39,7 +39,10 @@ export class Ticket {
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @Column()
+  /**
+   * Assigned value when a user books the ticket
+   */
+  @Column({ nullable: true })
   booking_date: Date;
 
   @Column({
@@ -60,31 +63,31 @@ export class Ticket {
   booking_seat_code: string;
 
   @Column()
-  tax_rate: string;
-
-  @Column()
   description: string;
 
-  @Column()
+  /**
+   * Assigned value when a user books the ticket
+   */
+  @Column({ nullable: true })
   total_passengers: number;
 
   @Column()
+  base_price: string;
+
+  /**
+   * outbound_ticket_price = base_price * total_passengers
+   */
+  @Column()
   outbound_ticket_price: string;
 
+  /**
+   * return_ticket_price = base_price * total_passengers
+   */
   @Column()
   return_ticket_price: string;
 
   /**
-   * ! Giá gốc
-   */
-  @Column()
-  total_original_price: string;
-
-  @Column()
-  total_tax_amount: string;
-
-  /**
-   * ! Giá sau khi đã áp dụng thuế
+   * total_price = outbound_ticket_price + return_ticket_price
    */
   @Column()
   total_price: string;

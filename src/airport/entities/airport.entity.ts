@@ -12,10 +12,10 @@ export class Airport {
   @OneToMany(() => Flight, (flight) => flight.arrival_airport)
   arrival_flights: Flight[];
 
-  @Column()
+  @Column({ unique: true })
   code: string;
 
-  @Column()
+  @Column({ unique: true })
   name: string;
 
   @Column()

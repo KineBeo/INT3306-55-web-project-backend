@@ -48,15 +48,6 @@ export class CreateFlightDto {
   flight_number: string;
 
   @ApiProperty({
-    description: 'Number of available seats',
-    example: 100,
-  })
-  @IsNumber()
-  @IsPositive()
-  @Max(1000)
-  available_seats: number;
-
-  @ApiProperty({
     description: 'Base price',
     example: '1000000',
   })

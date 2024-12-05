@@ -48,9 +48,6 @@ export class Flight {
   flight_number: string;
 
   @Column()
-  available_seats: number;
-
-  @Column()
   base_price: string;
 
   @Column()

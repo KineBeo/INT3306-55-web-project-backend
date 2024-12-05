@@ -60,15 +60,6 @@ export class TicketService {
     }
   }
 
-  /**
-   * Searches for tickets based on the provided ticket type, departure airport code, and arrival airport code.
-   *
-   * @param ticketType - The type of the ticket to search for.
-   * @param departureAirportCode - The code of the departure airport.
-   * @param arrivalAirportCode - The code of the arrival airport.
-   * @returns A promise that resolves to an array of tickets that match the search criteria.
-   * @throws {BadRequestException} If an error occurs during the search process.
-   */
   async search(
     ticketType: TicketType,
     departureAirportCode: string,
