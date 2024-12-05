@@ -95,11 +95,11 @@ export class TicketService {
           arrivalAirportCode,
         })
         .andWhere(
-          'outboundFlight.departure_time BETWEEN :startOfDay AND :endOfDay',
+          'outboundFlight.departure_time BETWEEN :startOfDepartureDay AND :endOfDepartureDay',
           { startOfDepartureDay, endOfDepartureDay },
         )
         .andWhere(
-          'returnFlight.arrival_time BETWEEN :startOfDay AND :endOfDay',
+          'returnFlight.arrival_time BETWEEN :startOfArrivalDay AND :endOfArrivalDay',
           { startOfArrivalDay, endOfArrivalDay },
         )
         .getMany();

@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { TicketService } from './ticket.service';
 import { CreateTicketDto } from './dto/create-ticket.dto';
@@ -40,7 +41,7 @@ export class TicketController {
   })
   @ApiQuery({
     name: 'ticket_type',
-    example: 'economy',
+    example: 'ROUND_TRIP',
     description: 'Type of the ticket',
   })
   @ApiQuery({
@@ -60,15 +61,15 @@ export class TicketController {
   })
   @ApiQuery({
     name: 'arrival_day',
-    example: '2023-10-01',
+    example: '2023-10-03',
     description: 'Arrival date of the flight (day, month, and year)',
   })
   search(
-    @Param('ticket_type') ticketType: TicketType,
-    @Param('departure_airport_code') departureAirportCode: string,
-    @Param('arrival_airport_code') arrivalAirportCode: string,
-    @Param('departure_time') departureDay: string,
-    @Param('arrival_time') arrivalDay: string,
+    @Query('ticket_type') ticketType: TicketType,
+    @Query('departure_airport_code') departureAirportCode: string,
+    @Query('arrival_airport_code') arrivalAirportCode: string,
+    @Query('departure_day') departureDay: string,
+    @Query('arrival_day') arrivalDay: string,
   ) {
     return this.ticketService.search(
       ticketType,
