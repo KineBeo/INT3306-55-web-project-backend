@@ -20,16 +20,24 @@ import { ArticleModule } from './article/article.module';
       isGlobal: true,
       envFilePath: '.env',
     }),
-    ConfigModule.forRoot(), 
-    DatabaseModule, 
-    UserModule, 
-    AuthModule, TicketModule, TicketPassengerModule, FlightModule, AirplaneModule, AirportModule, ArticleModule],
+    ConfigModule.forRoot(),
+    DatabaseModule,
+    UserModule,
+    AuthModule,
+    TicketModule,
+    TicketPassengerModule,
+    FlightModule,
+    AirplaneModule,
+    AirportModule,
+    ArticleModule,
+  ],
   controllers: [AppController],
-  providers: [AppService, 
+  providers: [
+    AppService,
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
-    }
+    },
   ],
 })
 export class AppModule {}

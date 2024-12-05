@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { AirplaneService } from './airplane.service';
 import { CreateAirplaneDto } from './dto/create-airplane.dto';
 import { UpdateAirplaneDto } from './dto/update-airplane.dto';
@@ -6,7 +14,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { AdminEndpoint } from 'src/auth/decorator/admin.decorator';
 
 @Controller('airplane')
-@ApiTags('airplane')  
+@ApiTags('airplane')
 export class AirplaneController {
   constructor(private readonly airplaneService: AirplaneService) {}
 
@@ -30,7 +38,10 @@ export class AirplaneController {
 
   @Patch(':id')
   @AdminEndpoint('Update an airplane')
-  update(@Param('id') id: string, @Body() updateAirplaneDto: UpdateAirplaneDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateAirplaneDto: UpdateAirplaneDto,
+  ) {
     return this.airplaneService.update(+id, updateAirplaneDto);
   }
 

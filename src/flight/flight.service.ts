@@ -38,16 +38,23 @@ export class FlightService {
         throw new BadRequestException('Flight number already exists');
       }
 
-      const { departure_airport_id, arrival_airport_id, airplane_id } = createFlightDto;
-      const departure_airport = await this.airportRepository.findOne({ where: { id: departure_airport_id } });
+      const { departure_airport_id, arrival_airport_id, airplane_id } =
+        createFlightDto;
+      const departure_airport = await this.airportRepository.findOne({
+        where: { id: departure_airport_id },
+      });
       if (!departure_airport) {
         throw new BadRequestException('Departure airport not found');
       }
-      const arrival_airport = await this.airportRepository.findOne({ where: { id: arrival_airport_id } });
+      const arrival_airport = await this.airportRepository.findOne({
+        where: { id: arrival_airport_id },
+      });
       if (!arrival_airport) {
         throw new BadRequestException('Arrival airport not found');
       }
-      const airplane = await this.airplaneRepository.findOne({ where: { id: airplane_id } });
+      const airplane = await this.airplaneRepository.findOne({
+        where: { id: airplane_id },
+      });
       if (!airplane) {
         throw new BadRequestException('Airplane not found');
       }
@@ -86,8 +93,8 @@ export class FlightService {
   }
 
   /**
-   * 
-   * @param id 
+   *
+   * @param id
    * @returns Flight
    */
   async findOne(id: number): Promise<Flight> {
@@ -103,9 +110,9 @@ export class FlightService {
   }
 
   /**
-   * 
-   * @param id 
-   * @param updateFlightDto 
+   *
+   * @param id
+   * @param updateFlightDto
    * @returns Flight
    */
   async update(id: number, updateFlightDto: UpdateFlightDto): Promise<Flight> {
@@ -126,8 +133,8 @@ export class FlightService {
   }
 
   /**
-   * 
-   * @param id 
+   *
+   * @param id
    * @returns message
    */
   async remove(id: number): Promise<{ message: string }> {

@@ -59,7 +59,6 @@ export class CreateTicketPassengerDto {
   @IsNotEmpty()
   birthday: Date;
 
-
   @ApiProperty({
     description: 'CCCD',
     example: '123456789',

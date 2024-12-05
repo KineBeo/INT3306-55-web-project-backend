@@ -37,7 +37,7 @@ export class User {
 
   @Column()
   gender: Gender;
-  
+
   @Column({
     type: 'enum',
     enum: Role,

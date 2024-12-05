@@ -6,6 +6,7 @@ import { Ticket } from './entities/ticket.entity';
 import { Repository } from 'typeorm';
 import { User } from 'src/user/entities/user.entity';
 import { Flight } from 'src/flight/entities/flight.entity';
+import { TicketType } from 'src/enum/ticket/ticket_type';
 
 @Injectable()
 export class TicketService {
@@ -17,6 +18,7 @@ export class TicketService {
     @InjectRepository(Flight)
     private flightRepository: Repository<Flight>,
   ) {}
+
   async create(createTicketDto: CreateTicketDto): Promise<Ticket> {
     try {
       const { user_id, outbound_flight_id, return_flight_id } = createTicketDto;
@@ -53,6 +55,65 @@ export class TicketService {
       });
 
       return await this.ticketRepository.save(ticket);
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
+  }
+
+  /**
+   * Searches for tickets based on the provided ticket type, departure airport code, and arrival airport code.
+   *
+   * @param ticketType - The type of the ticket to search for.
+   * @param departureAirportCode - The code of the departure airport.
+   * @param arrivalAirportCode - The code of the arrival airport.
+   * @returns A promise that resolves to an array of tickets that match the search criteria.
+   * @throws {BadRequestException} If an error occurs during the search process.
+   */
+  async search(
+    ticketType: TicketType,
+    departureAirportCode: string,
+    arrivalAirportCode: string,
+    departureDay: string,
+    arrivalDay: string,
+  ): Promise<Ticket[]> {
+    try {
+      const startOfDepartureDay = new Date(departureDay);
+      startOfDepartureDay.setHours(0, 0, 0, 0);
+      const endOfDepartureDay = new Date(departureDay);
+      endOfDepartureDay.setHours(23, 59, 59, 999);
+
+      const startOfArrivalDay = new Date(arrivalDay);
+      startOfArrivalDay.setHours(0, 0, 0, 0);
+      const endOfArrivalDay = new Date(arrivalDay);
+      endOfArrivalDay.setHours(23, 59, 59, 999);
+
+      const tickets = await this.ticketRepository
+        .createQueryBuilder('ticket')
+        .leftJoinAndSelect('ticket.outboundFlight', 'outboundFlight')
+        .leftJoinAndSelect(
+          'outboundFlight.departure_airport',
+          'departureAirport',
+        )
+        .leftJoinAndSelect('ticket.returnFlight', 'returnFlight')
+        .leftJoinAndSelect('returnFlight.arrival_airport', 'arrivalAirport')
+        .where('ticket.ticket_type = :ticketType', { ticketType })
+        .andWhere('departureAirport.code = :departureAirportCode', {
+          departureAirportCode,
+        })
+        .andWhere('arrivalAirport.code = :arrivalAirportCode', {
+          arrivalAirportCode,
+        })
+        .andWhere(
+          'outboundFlight.departure_time BETWEEN :startOfDay AND :endOfDay',
+          { startOfDepartureDay, endOfDepartureDay },
+        )
+        .andWhere(
+          'returnFlight.arrival_time BETWEEN :startOfDay AND :endOfDay',
+          { startOfArrivalDay, endOfArrivalDay },
+        )
+        .getMany();
+
+      return tickets;
     } catch (error) {
       throw new BadRequestException(error.message);
     }

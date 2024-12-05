@@ -50,7 +50,7 @@ export class ArticleService {
         throw new NotFoundException('No articles found');
       }
 
-      return articles.map(article => {
+      return articles.map((article) => {
         const { user, ...rest } = article;
         if (user) {
           const { id, fullname } = user;
@@ -66,7 +66,7 @@ export class ArticleService {
   async findOne(id: number): Promise<Article> {
     try {
       const article = await this.articleRepository.findOne({
-        where: { id }, 
+        where: { id },
       });
       if (!article) {
         throw new NotFoundException('Article not found');
@@ -78,18 +78,19 @@ export class ArticleService {
     }
   }
 
-  async update(id: number, updateArticleDto: UpdateArticleDto): Promise<Article> {
+  async update(
+    id: number,
+    updateArticleDto: UpdateArticleDto,
+  ): Promise<Article> {
     try {
       const article = await this.articleRepository.findOne({ where: { id } });
       if (!article) {
         throw new NotFoundException('Article not found');
       }
 
-      const updatedArticle = Object.assign(
-        article,
-        updateArticleDto,
-        { updated_at: new Date() }
-      );
+      const updatedArticle = Object.assign(article, updateArticleDto, {
+        updated_at: new Date(),
+      });
 
       await this.articleRepository.save(updatedArticle);
       return updatedArticle;
@@ -98,7 +99,7 @@ export class ArticleService {
     }
   }
 
-  async remove(id: number): Promise<{message: string}> {
+  async remove(id: number): Promise<{ message: string }> {
     try {
       const article = await this.articleRepository.findOne({ where: { id } });
       if (!article) {

@@ -27,9 +27,7 @@ export class TicketPassengerService {
         where: { id: ticket_id },
       });
       if (!ticket) {
-        throw new BadRequestException(
-          `Ticket with ID ${ticket_id} not found`,
-        );
+        throw new BadRequestException(`Ticket with ID ${ticket_id} not found`);
       }
 
       const associated_adult = await this.ticketPassengerRepository.findOne({
@@ -98,12 +96,12 @@ export class TicketPassengerService {
       });
 
       return await this.ticketPassengerRepository.save(updatedTicketPassenger);
-    } catch (error) {
+    } catch (error) {
       throw new BadRequestException(error.message);
     }
   }
 
-  async remove(id: number): Promise<{message: string}> {
+  async remove(id: number): Promise<{ message: string }> {
     try {
       const ticketPassenger = await this.ticketPassengerRepository.findOne({
         where: { id },
