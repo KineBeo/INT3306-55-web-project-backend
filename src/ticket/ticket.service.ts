@@ -51,6 +51,13 @@ export class TicketService {
         throw new BadRequestException('Return flight does not exist');
       }
 
+      // Check if outbound flight's arrival date is before return flight's departure date
+      if (outbound_flight.arrival_time >= return_flight.departure_time) {
+        throw new BadRequestException(
+          'Outbound flight arrival time must be before return flight departure time',
+        );
+      }
+
       // Calculate ticket prices
       const basePrice = parseFloat(base_price);
       const passengers = total_passengers || 1;
@@ -99,11 +106,12 @@ export class TicketService {
         .leftJoinAndSelect('ticket.outboundFlight', 'outboundFlight')
         .leftJoinAndSelect(
           'outboundFlight.departure_airport',
-          'departureAirport',
+          'outboundDepartureAirport',
         )
         .leftJoinAndSelect(
-          'outboundFlight.arrival_airport', 
-          'arrivalAirport')
+          'outboundFlight.arrival_airport',
+          'outboundArrivalAirport',
+        )
         .leftJoinAndSelect('ticket.returnFlight', 'returnFlight')
         .leftJoinAndSelect(
           'returnFlight.departure_airport',
@@ -114,10 +122,10 @@ export class TicketService {
           'returnArrivalAirport',
         )
         .where('ticket.ticket_type = :ticketType', { ticketType })
-        .andWhere('departureAirport.code = :departureAirportCode', {
+        .andWhere('outboundDepartureAirport.code = :departureAirportCode', {
           departureAirportCode,
         })
-        .andWhere('arrivalAirport.code = :arrivalAirportCode', {
+        .andWhere('outboundArrivalAirport.code = :arrivalAirportCode', {
           arrivalAirportCode,
         })
         .andWhere(
