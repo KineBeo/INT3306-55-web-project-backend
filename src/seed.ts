@@ -23,16 +23,16 @@ const ADMIN = {
 const DATA = {
   airports: [
     {
-      code: "JFK",
-      name: "John F. Kennedy International Airport",
-      city: "New York",
-      country: "United States",
+      code: 'JFK',
+      name: 'John F. Kennedy International Airport',
+      city: 'New York',
+      country: 'United States',
     },
     {
-      code: "LAX",
-      name: "Los Angeles International Airport",
-      city: "Los Angeles",
-      country: "United States",
+      code: 'LAX',
+      name: 'Los Angeles International Airport',
+      city: 'Los Angeles',
+      country: 'United States',
     },
   ],
 
@@ -49,7 +49,7 @@ const DATA = {
       status: 'ACTIVE',
       created_at: new Date(),
       updated_at: new Date(),
-    }
+    },
   ],
 
   flights: [
@@ -58,12 +58,12 @@ const DATA = {
       departure_airport_id: -1,
       arrival_airport_id: -1,
       airplane_id: -1,
-      flight_number: "AA100",
+      flight_number: 'AA100',
       base_price: '300',
-      departure_time: new Date("2023-12-01T08:00:00Z"),
-      arrival_time: new Date("2023-12-01T11:00:00Z"),
+      departure_time: new Date('2023-12-01T08:00:00Z'),
+      arrival_time: new Date('2023-12-01T11:00:00Z'),
       duration: '12600', // in seconds (3.5 hours)
-      delay_duration: '0'
+      delay_duration: '0',
     },
 
     // Flight from LAX to JFK
@@ -71,12 +71,12 @@ const DATA = {
       departure_airport_id: -1,
       arrival_airport_id: -1,
       airplane_id: -1,
-      flight_number: "DL200",
+      flight_number: 'DL200',
       base_price: '350',
-      departure_time: new Date("2023-12-02T09:00:00Z"),
-      arrival_time: new Date("2023-12-02T12:30:00Z"),
+      departure_time: new Date('2023-12-02T09:00:00Z'),
+      arrival_time: new Date('2023-12-02T12:30:00Z'),
       duration: '12600', // in seconds (3.5 hours)
-      delay_duration: '600' // in seconds (10 minutes)
+      delay_duration: '600', // in seconds (10 minutes)
     },
   ],
 
@@ -85,17 +85,17 @@ const DATA = {
       outbound_flight_id: -1,
       return_flight_id: -1,
       user_id: -1,
-      booking_date: new Date("2023-11-30T23:59:59Z"),
-      ticket_type: "ROUND_TRIP",
-      booking_class: "BUSINESS",
-      booking_seat_code: "B2-123-45",  // Updated to meet min length 5
-      description: "Round trip business class ticket from LAX to JFK",  // Updated to meet min length 10
+      booking_date: new Date('2023-11-30T23:59:59Z'),
+      ticket_type: 'ROUND_TRIP',
+      booking_class: 'BUSINESS',
+      booking_seat_code: 'B2-123-45', // Updated to meet min length 5
+      description: 'Round trip business class ticket from LAX to JFK', // Updated to meet min length 10
       total_passengers: 1,
-      base_price: "700",  // Changed to string to match DTO
-      booking_status: "CONFIRMED"
-    }
-  ]
-}
+      base_price: '700', // Changed to string to match DTO
+      booking_status: 'CONFIRMED',
+    },
+  ],
+};
 
 // SEED LOGIC
 let accessToken = '';
@@ -105,8 +105,8 @@ const registerAdmin = async () => {
     const response = await axios.post(`${BASE_AUTH_URL}/register`, ADMIN, {
       headers: {
         'Content-Type': 'application/json',
-        'Accept': '*/*'
-      }
+        Accept: '*/*',
+      },
     });
     console.log('Admin registered successfully:', response.data);
   } catch (error) {
@@ -114,22 +114,26 @@ const registerAdmin = async () => {
       console.log('Admin already registered.');
       return;
     }
-    
+
     console.error('Error registering admin:', error.response.data);
   }
-}
+};
 
 const loginAdmin = async () => {
   try {
-    const response = await axios.post(`${BASE_AUTH_URL}/login`, {
-      phone_number: ADMIN.phone_number,
-      password: ADMIN.password_hash
-    }, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': '*/*'
-      }
-    });
+    const response = await axios.post(
+      `${BASE_AUTH_URL}/login`,
+      {
+        phone_number: ADMIN.phone_number,
+        password: ADMIN.password_hash,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: '*/*',
+        },
+      },
+    );
 
     console.log('Admin logged in successfully:', response.data);
     accessToken = response.data.access_token;
@@ -137,7 +141,7 @@ const loginAdmin = async () => {
   } catch (error) {
     console.error('Error logging in admin:', error.response.data);
   }
-}
+};
 
 const deleteFlightData = async () => {
   try {
@@ -145,9 +149,9 @@ const deleteFlightData = async () => {
     const response = await axios.get(BASE_FLIGHT_URL, {
       headers: {
         'Content-Type': 'application/json',
-        'Accept': '*/*',
-        'Authorization': `Bearer ${accessToken}`
-      }
+        Accept: '*/*',
+        Authorization: `Bearer ${accessToken}`,
+      },
     });
 
     const flights = response.data;
@@ -157,9 +161,9 @@ const deleteFlightData = async () => {
         await axios.delete(`${BASE_FLIGHT_URL}/${flight.id}`, {
           headers: {
             'Content-Type': 'application/json',
-            'Accept': '*/*',
-            'Authorization': `Bearer ${accessToken}`
-          }
+            Accept: '*/*',
+            Authorization: `Bearer ${accessToken}`,
+          },
         });
       } catch (error) {
         console.error('Error deleting flight:', error.response.data);
@@ -171,7 +175,7 @@ const deleteFlightData = async () => {
   } catch (error) {
     console.error('Error fetching flights:', error.response.data);
   }
-}
+};
 
 const deleteAirportData = async () => {
   try {
@@ -179,9 +183,9 @@ const deleteAirportData = async () => {
     const response = await axios.get(BASE_AIRPORT_URL, {
       headers: {
         'Content-Type': 'application/json',
-        'Accept': '*/*',
-        'Authorization': `Bearer ${accessToken}`
-      }
+        Accept: '*/*',
+        Authorization: `Bearer ${accessToken}`,
+      },
     });
 
     const airports = response.data;
@@ -191,9 +195,9 @@ const deleteAirportData = async () => {
         await axios.delete(`${BASE_AIRPORT_URL}/${airport.id}`, {
           headers: {
             'Content-Type': 'application/json',
-            'Accept': '*/*',
-            'Authorization': `Bearer ${accessToken}`
-          }
+            Accept: '*/*',
+            Authorization: `Bearer ${accessToken}`,
+          },
         });
       } catch (error) {
         console.error('Error deleting airport:', error.response.data);
@@ -205,7 +209,7 @@ const deleteAirportData = async () => {
   } catch (error) {
     console.error('Error fetching airports:', error.response.data);
   }
-}
+};
 
 const deleteAirplaneData = async () => {
   try {
@@ -213,9 +217,9 @@ const deleteAirplaneData = async () => {
     const response = await axios.get(BASE_AIRPLANE_URL, {
       headers: {
         'Content-Type': 'application/json',
-        'Accept': '*/*',
-        'Authorization': `Bearer ${accessToken}`
-      }
+        Accept: '*/*',
+        Authorization: `Bearer ${accessToken}`,
+      },
     });
 
     const airplanes = response.data;
@@ -225,9 +229,9 @@ const deleteAirplaneData = async () => {
         await axios.delete(`${BASE_AIRPLANE_URL}/${airplane.id}`, {
           headers: {
             'Content-Type': 'application/json',
-            'Accept': '*/*',
-            'Authorization': `Bearer ${accessToken}`
-          }
+            Accept: '*/*',
+            Authorization: `Bearer ${accessToken}`,
+          },
         });
       } catch (error) {
         console.error('Error deleting airplane:', error.response.data);
@@ -239,7 +243,7 @@ const deleteAirplaneData = async () => {
   } catch (error) {
     console.error('Error fetching airplanes:', error.response.data);
   }
-}
+};
 
 const deleteTicketData = async () => {
   try {
@@ -247,9 +251,9 @@ const deleteTicketData = async () => {
     const response = await axios.get(BASE_TICKET_URL, {
       headers: {
         'Content-Type': 'application/json',
-        'Accept': '*/*',
-        'Authorization': `Bearer ${accessToken}`
-      }
+        Accept: '*/*',
+        Authorization: `Bearer ${accessToken}`,
+      },
     });
 
     const tickets = response.data;
@@ -259,9 +263,9 @@ const deleteTicketData = async () => {
         await axios.delete(`${BASE_TICKET_URL}/${ticket.id}`, {
           headers: {
             'Content-Type': 'application/json',
-            'Accept': '*/*',
-            'Authorization': `Bearer ${accessToken}`
-          }
+            Accept: '*/*',
+            Authorization: `Bearer ${accessToken}`,
+          },
         });
       } catch (error) {
         console.error('Error deleting ticket:', error.response.data);
@@ -278,7 +282,7 @@ const deleteTicketData = async () => {
       console.error('Error fetching tickets:', error.response.data);
     }
   }
-}
+};
 
 const createAirportData = async () => {
   try {
@@ -287,9 +291,9 @@ const createAirportData = async () => {
         await axios.post(BASE_AIRPORT_URL, airport, {
           headers: {
             'Content-Type': 'application/json',
-            'Accept': '*/*',
-            'Authorization': `Bearer ${accessToken}`
-          }
+            Accept: '*/*',
+            Authorization: `Bearer ${accessToken}`,
+          },
         });
       } catch (error) {
         console.error('Error creating airport:', error.response.data);
@@ -301,7 +305,7 @@ const createAirportData = async () => {
   } catch (error) {
     console.error('Error creating airports:', error.response.data);
   }
-}
+};
 
 const createAirplaneData = async () => {
   try {
@@ -310,9 +314,9 @@ const createAirplaneData = async () => {
         await axios.post(BASE_AIRPLANE_URL, airplane, {
           headers: {
             'Content-Type': 'application/json',
-            'Accept': '*/*',
-            'Authorization': `Bearer ${accessToken}`
-          }
+            Accept: '*/*',
+            Authorization: `Bearer ${accessToken}`,
+          },
         });
       } catch (error) {
         console.error('Error creating airplane:', error.response.data);
@@ -324,30 +328,31 @@ const createAirplaneData = async () => {
   } catch (error) {
     console.error('Error creating airplanes:', error.response.data);
   }
-}
+};
 
 const createFlightData = async () => {
   // Update flight data with airport and airplane IDs
   const airportsResponse = await axios.get(BASE_AIRPORT_URL, {
     headers: {
       'Content-Type': 'application/json',
-      'Accept': '*/*',
-      'Authorization': `Bearer ${accessToken}`
-    }
+      Accept: '*/*',
+      Authorization: `Bearer ${accessToken}`,
+    },
   });
   const airplanesResponse = await axios.get(BASE_AIRPLANE_URL, {
     headers: {
       'Content-Type': 'application/json',
-      'Accept': '*/*',
-      'Authorization': `Bearer ${accessToken}`
-    }
+      Accept: '*/*',
+      Authorization: `Bearer ${accessToken}`,
+    },
   });
   const airportsData = airportsResponse.data;
   const airplanesData = airplanesResponse.data;
 
   DATA.flights.forEach((flight, index) => {
     flight.departure_airport_id = airportsData[index % airportsData.length].id;
-    flight.arrival_airport_id = airportsData[(index + 1) % airportsData.length].id;
+    flight.arrival_airport_id =
+      airportsData[(index + 1) % airportsData.length].id;
     flight.airplane_id = airplanesData[0].id;
   });
 
@@ -357,9 +362,9 @@ const createFlightData = async () => {
         await axios.post(BASE_FLIGHT_URL, flight, {
           headers: {
             'Content-Type': 'application/json',
-            'Accept': '*/*',
-            'Authorization': `Bearer ${accessToken}`
-          }
+            Accept: '*/*',
+            Authorization: `Bearer ${accessToken}`,
+          },
         });
       } catch (error) {
         console.error('Error creating flight:', error.response.data);
@@ -371,27 +376,29 @@ const createFlightData = async () => {
   } catch (error) {
     console.error('Error creating flights:', error.response.data);
   }
-}
+};
 
 const createTicketData = async () => {
   // Update ticket data with flight IDs
   const flightsResponse = await axios.get(BASE_FLIGHT_URL, {
     headers: {
       'Content-Type': 'application/json',
-      'Accept': '*/*',
-      'Authorization': `Bearer ${accessToken}`
-    }
+      Accept: '*/*',
+      Authorization: `Bearer ${accessToken}`,
+    },
   });
   const flightsData = flightsResponse.data;
 
   const adminResponse = await axios.get(`${BASE_USER_URL}`, {
     headers: {
       'Content-Type': 'application/json',
-      'Accept': '*/*',
-      'Authorization': `Bearer ${accessToken}`
-    }
+      Accept: '*/*',
+      Authorization: `Bearer ${accessToken}`,
+    },
   });
-  const adminData = adminResponse.data.find(user => user.phone_number === ADMIN.phone_number);
+  const adminData = adminResponse.data.find(
+    (user) => user.phone_number === ADMIN.phone_number,
+  );
 
   DATA.tickets.forEach((ticket, index) => {
     ticket.outbound_flight_id = flightsData[index % flightsData.length].id;
@@ -405,9 +412,9 @@ const createTicketData = async () => {
         await axios.post(BASE_TICKET_URL, ticket, {
           headers: {
             'Content-Type': 'application/json',
-            'Accept': '*/*',
-            'Authorization': `Bearer ${accessToken}`
-          }
+            Accept: '*/*',
+            Authorization: `Bearer ${accessToken}`,
+          },
         });
       } catch (error) {
         console.error('Error creating ticket:', error.response.data);
@@ -419,12 +426,11 @@ const createTicketData = async () => {
   } catch (error) {
     console.error('Error creating tickets:', error.response.data);
   }
-}
-
+};
 
 // ENTRY POINT
 const seed = async () => {
-  await registerAdmin(); 
+  await registerAdmin();
   await loginAdmin();
   await deleteFlightData();
   await deleteAirportData();
@@ -434,6 +440,6 @@ const seed = async () => {
   await createAirplaneData();
   await createFlightData();
   await createTicketData();
-}
+};
 
 seed();

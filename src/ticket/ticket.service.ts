@@ -21,7 +21,13 @@ export class TicketService {
 
   async create(createTicketDto: CreateTicketDto): Promise<Ticket> {
     try {
-      const { user_id, outbound_flight_id, return_flight_id, base_price, total_passengers } = createTicketDto;
+      const {
+        user_id,
+        outbound_flight_id,
+        return_flight_id,
+        base_price,
+        total_passengers,
+      } = createTicketDto;
       console.log('user_id', user_id);
       const user = await this.userRepository.findOne({
         where: { id: user_id },
@@ -48,10 +54,14 @@ export class TicketService {
       // Calculate ticket prices
       const basePrice = parseFloat(base_price);
       const passengers = total_passengers || 1;
-      
+
       const outbound_ticket_price = (basePrice * passengers).toString();
-      const return_ticket_price = return_flight_id ? (basePrice * passengers).toString() : '0';
-      const total_price = (parseFloat(outbound_ticket_price) + parseFloat(return_ticket_price)).toString();
+      const return_ticket_price = return_flight_id
+        ? (basePrice * passengers).toString()
+        : '0';
+      const total_price = (
+        parseFloat(outbound_ticket_price) + parseFloat(return_ticket_price)
+      ).toString();
 
       const ticket = this.ticketRepository.create({
         ...createTicketDto,
@@ -91,8 +101,18 @@ export class TicketService {
           'outboundFlight.departure_airport',
           'departureAirport',
         )
+        .leftJoinAndSelect(
+          'outboundFlight.arrival_airport', 
+          'arrivalAirport')
         .leftJoinAndSelect('ticket.returnFlight', 'returnFlight')
-        .leftJoinAndSelect('returnFlight.arrival_airport', 'arrivalAirport')
+        .leftJoinAndSelect(
+          'returnFlight.departure_airport',
+          'returnDepartureAirport',
+        )
+        .leftJoinAndSelect(
+          'returnFlight.arrival_airport',
+          'returnArrivalAirport',
+        )
         .where('ticket.ticket_type = :ticketType', { ticketType })
         .andWhere('departureAirport.code = :departureAirportCode', {
           departureAirportCode,
@@ -112,7 +132,7 @@ export class TicketService {
         endOfReturnDay.setHours(23, 59, 59, 999);
 
         ticketsQuery = ticketsQuery.andWhere(
-          'returnFlight.arrival_time BETWEEN :startOfReturnDay AND :endOfReturnDay',
+          'returnFlight.departure_time BETWEEN :startOfReturnDay AND :endOfReturnDay',
           { startOfReturnDay, endOfReturnDay },
         );
       }
