@@ -52,7 +52,7 @@ export class TicketService {
       }
 
       // Check if outbound flight's arrival date is before return flight's departure date
-      if (outbound_flight.arrival_time >= return_flight.departure_time) {
+      if (outbound_flight.arrival_time <= return_flight.departure_time) {
         throw new BadRequestException(
           'Outbound flight arrival time must be before return flight departure time',
         );
