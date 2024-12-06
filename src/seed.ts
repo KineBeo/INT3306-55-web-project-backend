@@ -427,11 +427,11 @@ const seed = async () => {
   await registerAdmin(); 
   await loginAdmin();
   await deleteFlightData();
-  // await deleteAirportData();
-  // await deleteAirplaneData();
+  await deleteAirportData();
+  await deleteAirplaneData();
   await deleteTicketData();
-  // await createAirportData();
-  // await createAirplaneData();
+  await createAirportData();
+  await createAirplaneData();
   await createFlightData();
   await createTicketData();
 }

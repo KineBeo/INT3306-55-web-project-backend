@@ -75,21 +75,16 @@ export class TicketService {
     ticketType: TicketType,
     departureAirportCode: string,
     arrivalAirportCode: string,
-    departureDay: string,
-    arrivalDay: string,
+    outboundDay: string,
+    returnDay?: string,
   ): Promise<Ticket[]> {
     try {
-      const startOfDepartureDay = new Date(departureDay);
-      startOfDepartureDay.setHours(0, 0, 0, 0);
-      const endOfDepartureDay = new Date(departureDay);
-      endOfDepartureDay.setHours(23, 59, 59, 999);
+      const startOfOutboundDay = new Date(outboundDay);
+      startOfOutboundDay.setHours(0, 0, 0, 0);
+      const endOfOutboundDay = new Date(outboundDay);
+      endOfOutboundDay.setHours(23, 59, 59, 999);
 
-      const startOfArrivalDay = new Date(arrivalDay);
-      startOfArrivalDay.setHours(0, 0, 0, 0);
-      const endOfArrivalDay = new Date(arrivalDay);
-      endOfArrivalDay.setHours(23, 59, 59, 999);
-
-      const tickets = await this.ticketRepository
+      let ticketsQuery = this.ticketRepository
         .createQueryBuilder('ticket')
         .leftJoinAndSelect('ticket.outboundFlight', 'outboundFlight')
         .leftJoinAndSelect(
@@ -106,15 +101,23 @@ export class TicketService {
           arrivalAirportCode,
         })
         .andWhere(
-          'outboundFlight.departure_time BETWEEN :startOfDepartureDay AND :endOfDepartureDay',
-          { startOfDepartureDay, endOfDepartureDay },
-        )
-        .andWhere(
-          'returnFlight.arrival_time BETWEEN :startOfArrivalDay AND :endOfArrivalDay',
-          { startOfArrivalDay, endOfArrivalDay },
-        )
-        .getMany();
+          'outboundFlight.departure_time BETWEEN :startOfOutboundDay AND :endOfOutboundDay',
+          { startOfOutboundDay, endOfOutboundDay },
+        );
 
+      if (ticketType === TicketType.ROUND_TRIP && returnDay) {
+        const startOfReturnDay = new Date(returnDay);
+        startOfReturnDay.setHours(0, 0, 0, 0);
+        const endOfReturnDay = new Date(returnDay);
+        endOfReturnDay.setHours(23, 59, 59, 999);
+
+        ticketsQuery = ticketsQuery.andWhere(
+          'returnFlight.arrival_time BETWEEN :startOfReturnDay AND :endOfReturnDay',
+          { startOfReturnDay, endOfReturnDay },
+        );
+      }
+
+      const tickets = await ticketsQuery.getMany();
       return tickets;
     } catch (error) {
       throw new BadRequestException(error.message);

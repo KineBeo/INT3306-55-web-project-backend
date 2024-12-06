@@ -55,28 +55,29 @@ export class TicketController {
     description: 'Code of the arrival airport',
   })
   @ApiQuery({
-    name: 'departure_day',
-    example: '2023-10-01',
+    name: 'outbound_day',
+    example: '2023-10-02',
     description: 'Departure date of the flight (day, month, and year)',
   })
   @ApiQuery({
-    name: 'arrival_day',
-    example: '2023-10-03',
-    description: 'Arrival date of the flight (day, month, and year)',
+    name: 'return_day',
+    example: '2023-10-10',
+    description: 'Return date of the flight (day, month, and year)',
+    required: false,
   })
   search(
     @Query('ticket_type') ticketType: TicketType,
     @Query('departure_airport_code') departureAirportCode: string,
     @Query('arrival_airport_code') arrivalAirportCode: string,
-    @Query('departure_day') departureDay: string,
-    @Query('arrival_day') arrivalDay: string,
+    @Query('outbound_day') outboundDay: string,
+    @Query('return_day') returnDay?: string,
   ) {
     return this.ticketService.search(
       ticketType,
       departureAirportCode,
       arrivalAirportCode,
-      departureDay,
-      arrivalDay,
+      outboundDay,
+      returnDay,
     );
   }
 
