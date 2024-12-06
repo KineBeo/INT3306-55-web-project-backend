@@ -53,7 +53,7 @@ export class CreateFlightDto {
   })
   @IsNumberString()
   @IsNotEmpty()
-  @MinLength(6)
+  @MinLength(1)
   @MaxLength(20)
   base_price: string;
 
@@ -77,7 +77,7 @@ export class CreateFlightDto {
   })
   @IsNumberString()
   @IsNotEmpty()
-  @MinLength(6)
+  @MinLength(1)
   @MaxLength(20)
   duration: string;
 
@@ -87,7 +87,7 @@ export class CreateFlightDto {
   })
   @IsNumberString()
   @IsNotEmpty()
-  @MinLength(6)
+  @MinLength(1)
   @MaxLength(20)
   delay_duration: string;
 }

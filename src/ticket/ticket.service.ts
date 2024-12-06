@@ -21,7 +21,7 @@ export class TicketService {
 
   async create(createTicketDto: CreateTicketDto): Promise<Ticket> {
     try {
-      const { user_id, outbound_flight_id, return_flight_id } = createTicketDto;
+      const { user_id, outbound_flight_id, return_flight_id, base_price, total_passengers } = createTicketDto;
       console.log('user_id', user_id);
       const user = await this.userRepository.findOne({
         where: { id: user_id },
@@ -45,11 +45,22 @@ export class TicketService {
         throw new BadRequestException('Return flight does not exist');
       }
 
+      // Calculate ticket prices
+      const basePrice = parseFloat(base_price);
+      const passengers = total_passengers || 1;
+      
+      const outbound_ticket_price = (basePrice * passengers).toString();
+      const return_ticket_price = return_flight_id ? (basePrice * passengers).toString() : '0';
+      const total_price = (parseFloat(outbound_ticket_price) + parseFloat(return_ticket_price)).toString();
+
       const ticket = this.ticketRepository.create({
         ...createTicketDto,
         user: user,
         outboundFlight: outbound_flight,
         returnFlight: return_flight,
+        outbound_ticket_price,
+        return_ticket_price,
+        total_price,
         created_at: new Date(),
         updated_at: new Date(),
       });

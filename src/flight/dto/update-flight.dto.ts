@@ -58,7 +58,7 @@ export class UpdateFlightDto {
   })
   @IsNumberString()
   @IsNotEmpty()
-  @MinLength(6)
+  @MinLength(1)
   @MaxLength(20)
   @IsOptional()
   base_price?: string;
@@ -85,7 +85,7 @@ export class UpdateFlightDto {
   })
   @IsNumberString()
   @IsNotEmpty()
-  @MinLength(6)
+  @MinLength(1)
   @MaxLength(20)
   @IsOptional()
   duration?: string;
@@ -96,7 +96,7 @@ export class UpdateFlightDto {
   })
   @IsNumberString()
   @IsNotEmpty()
-  @MinLength(6)
+  @MinLength(1)
   @MaxLength(20)
   @IsOptional()
   delay_duration?: string;

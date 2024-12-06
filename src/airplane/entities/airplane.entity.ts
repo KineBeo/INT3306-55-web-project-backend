@@ -1,14 +1,14 @@
 import { AirplaneStatus } from 'src/enum/airplane/airplane_status';
 import { Flight } from 'src/flight/entities/flight.entity';
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Airplane {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @OneToOne(() => Flight, (flight) => flight.airplane)
-  flight: Flight;
+  @OneToMany(() => Flight, (flight) => flight.airplane)
+  flights: Flight[];
 
   @Column()
   model_name: string;
