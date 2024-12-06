@@ -58,6 +58,18 @@ export class TicketService {
         );
       }
 
+      if (outbound_flight.departure_airport !== return_flight.arrival_airport) {
+        throw new BadRequestException(
+          'Outbound flight departure airport must be the same as return flight arrival airport',
+        )
+      }
+
+      if (outbound_flight.arrival_airport !== return_flight.departure_airport) {
+        throw new BadRequestException(
+          'Outbound flight arrival airport must be the same as return flight departure airport',
+        )
+      }
+
       // Calculate ticket prices
       const basePrice = parseFloat(base_price);
       const passengers = total_passengers || 1;
