@@ -82,17 +82,6 @@ export class UpdateTicketDto {
   booking_seat_code?: string;
 
   @ApiProperty({
-    description: 'Tax rate',
-    example: '10',
-  })
-  @IsOptional()
-  @IsNumberString()
-  @IsNotEmpty()
-  @MinLength(1)
-  @MaxLength(3)
-  tax_rate?: string;
-
-  @ApiProperty({
     description: 'Description',
     example: 'This is a ticket',
   })
@@ -114,49 +103,13 @@ export class UpdateTicketDto {
   total_passengers?: number;
 
   @ApiProperty({
-    description: 'Outbound ticket price',
+    description: 'Base price',
     example: '100',
   })
   @IsOptional()
   @IsNumberString()
   @IsNotEmpty()
-  outbound_ticket_price?: string;
-
-  @ApiProperty({
-    description: 'Return ticket price',
-    example: '100',
-  })
-  @IsOptional()
-  @IsNumberString()
-  @IsNotEmpty()
-  return_ticket_price?: string;
-
-  @ApiProperty({
-    description: 'Total original price',
-    example: '200',
-  })
-  @IsOptional()
-  @IsNumberString()
-  @IsNotEmpty()
-  total_original_price?: string;
-
-  @ApiProperty({
-    description: 'Total tax amount',
-    example: '20',
-  })
-  @IsOptional()
-  @IsNumberString()
-  @IsNotEmpty()
-  total_tax_amount?: string;
-
-  @ApiProperty({
-    description: 'Total price',
-    example: '220',
-  })
-  @IsOptional()
-  @IsNumberString()
-  @IsNotEmpty()
-  total_price?: string;
+  base_price?: string;
 
   @ApiProperty({
     enum: BookingStatus,

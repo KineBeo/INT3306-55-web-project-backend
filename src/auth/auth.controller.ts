@@ -1,6 +1,22 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Req, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { LoginDto } from './dto/login.dto';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
@@ -15,8 +31,8 @@ export class AuthController {
   @Public()
   @Post('register')
   @ApiOperation({ summary: 'Register new user' })
-  @ApiResponse({ 
-    status: 201, 
+  @ApiResponse({
+    status: 201,
     description: 'User successfully registered.',
   })
   @ApiBody({ type: CreateUserDto })
@@ -27,8 +43,8 @@ export class AuthController {
   @Public()
   @Post('login')
   @ApiOperation({ summary: 'Login user' })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiResponse({
+    status: 200,
     description: 'User successfully logged in.',
   })
   @ApiBody({ type: LoginDto })
@@ -39,8 +55,8 @@ export class AuthController {
   @Public()
   @Post('refresh')
   @ApiOperation({ summary: 'Refresh access token' })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiResponse({
+    status: 200,
     description: 'Token successfully refreshed.',
   })
   @ApiBody({ type: RefreshTokenDto })
@@ -52,8 +68,8 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth('JWT-auth') // Reference the bearer auth defined in main.ts
   @ApiOperation({ summary: 'Logout user' })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiResponse({
+    status: 200,
     description: 'User successfully logged out.',
   })
   async logout(@Req() req: Request) {
@@ -64,8 +80,8 @@ export class AuthController {
   @Get('me')
   @ApiBearerAuth('JWT-auth') // Reference the bearer auth defined in main.ts
   @ApiOperation({ summary: 'Get current user profile' })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiResponse({
+    status: 200,
     description: 'Returns the current user profile.',
   })
   getProfile(@Req() req: Request) {

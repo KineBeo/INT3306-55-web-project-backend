@@ -53,22 +53,12 @@ export class UpdateFlightDto {
   flight_number?: string;
 
   @ApiProperty({
-    description: 'Number of available seats',
-    example: 100,
-  })
-  @IsNumber()
-  @IsPositive()
-  @Max(1000)
-  @IsOptional()
-  available_seats?: number;
-
-  @ApiProperty({
     description: 'Base price',
     example: '1000000',
   })
   @IsNumberString()
   @IsNotEmpty()
-  @MinLength(6)
+  @MinLength(1)
   @MaxLength(20)
   @IsOptional()
   base_price?: string;
@@ -95,7 +85,7 @@ export class UpdateFlightDto {
   })
   @IsNumberString()
   @IsNotEmpty()
-  @MinLength(6)
+  @MinLength(1)
   @MaxLength(20)
   @IsOptional()
   duration?: string;
@@ -106,7 +96,7 @@ export class UpdateFlightDto {
   })
   @IsNumberString()
   @IsNotEmpty()
-  @MinLength(6)
+  @MinLength(1)
   @MaxLength(20)
   @IsOptional()
   delay_duration?: string;

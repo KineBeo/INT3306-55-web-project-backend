@@ -6,6 +6,7 @@ import {
   IsNotEmpty,
   IsNumber,
   IsNumberString,
+  IsOptional,
   IsPositive,
   IsString,
   MaxLength,
@@ -28,10 +29,11 @@ export class CreateTicketDto {
     description: 'Return flight ID',
     example: 1,
   })
+  @IsOptional()
   @IsNumber()
   @IsPositive()
   @Min(1)
-  return_flight_id: number;
+  return_flight_id?: number;
 
   @ApiProperty({
     description: 'User ID',
@@ -46,8 +48,9 @@ export class CreateTicketDto {
     description: 'Booking date',
     example: '2021-12-31T23:59:59Z',
   })
+  @IsOptional()
   @Type(() => Date)
-  booking_date: Date;
+  booking_date?: Date;
 
   @ApiProperty({
     enum: TicketType,
@@ -74,16 +77,6 @@ export class CreateTicketDto {
   booking_seat_code: string;
 
   @ApiProperty({
-    description: 'Tax rate',
-    example: '10',
-  })
-  @IsNumberString()
-  @IsNotEmpty()
-  @MinLength(1)
-  @MaxLength(3)
-  tax_rate: string;
-
-  @ApiProperty({
     description: 'Description',
     example: 'This is a ticket',
   })
@@ -97,50 +90,19 @@ export class CreateTicketDto {
     description: 'Total passengers',
     example: 1,
   })
+  @IsOptional()
   @IsNumber()
   @IsPositive()
   @Min(1)
-  total_passengers: number;
+  total_passengers?: number;
 
   @ApiProperty({
-    description: 'Outbound ticket price',
+    description: 'Base price',
     example: '100',
   })
   @IsNumberString()
   @IsNotEmpty()
-  outbound_ticket_price: string;
-
-  @ApiProperty({
-    description: 'Return ticket price',
-    example: '100',
-  })
-  @IsNumberString()
-  @IsNotEmpty()
-  return_ticket_price: string;
-
-  @ApiProperty({
-    description: 'Total original price',
-    example: '200',
-  })
-  @IsNumberString()
-  @IsNotEmpty()
-  total_original_price: string;
-
-  @ApiProperty({
-    description: 'Total tax amount',
-    example: '20',
-  })
-  @IsNumberString()
-  @IsNotEmpty()
-  total_tax_amount: string;
-
-  @ApiProperty({
-    description: 'Total price',
-    example: '220.00',
-  })
-  @IsNumberString()
-  @IsNotEmpty()
-  total_price: string;
+  base_price: string;
 
   @ApiProperty({
     enum: BookingStatus,

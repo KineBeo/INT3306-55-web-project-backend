@@ -1,41 +1,47 @@
-import { ArticleStatus } from "src/enum/article/article_status";
-import { User } from "src/user/entities/user.entity";
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { ArticleStatus } from 'src/enum/article/article_status';
+import { User } from 'src/user/entities/user.entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Article {
-    @PrimaryGeneratedColumn('increment')
-    id: number;
+  @PrimaryGeneratedColumn('increment')
+  id: number;
 
-    @ManyToOne(() => User, user => user.articles)
-    @JoinColumn({ name: 'author_id' })
-    user: User;    
-    
-    @Column()
-    title: string;
+  @ManyToOne(() => User, (user) => user.articles)
+  @JoinColumn({ name: 'author_id' })
+  user: User;
 
-    @Column()
-    description: string;    
+  @Column()
+  title: string;
 
-    @Column()
-    content: string;
+  @Column()
+  description: string;
 
-    @Column()
-    image_url: string;
+  @Column()
+  content: string;
 
-    @Column({
-        type: 'enum',
-        enum: ArticleStatus,
-        default: ArticleStatus.DRAFT,
-    })
-    status: ArticleStatus;
+  @Column()
+  image_url: string;
 
-    @Column()
-    created_at: Date;
+  @Column({
+    type: 'enum',
+    enum: ArticleStatus,
+    default: ArticleStatus.DRAFT,
+  })
+  status: ArticleStatus;
 
-    @Column()
-    updated_at: Date;
+  @Column()
+  created_at: Date;
 
-    @Column()
-    published_at: Date;
+  @Column()
+  updated_at: Date;
+
+  @Column()
+  published_at: Date;
 }

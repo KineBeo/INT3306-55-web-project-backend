@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { TicketPassengerService } from './ticket-passenger.service';
 import { CreateTicketPassengerDto } from './dto/create-ticket-passenger.dto';
 import { UpdateTicketPassengerDto } from './dto/update-ticket-passenger.dto';

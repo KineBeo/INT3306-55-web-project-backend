@@ -102,8 +102,8 @@ export class UserService {
 
   /**
    * ! ADMIN ONLY
-   * @param id 
-   * @param updateUserDto 
+   * @param id
+   * @param updateUserDto
    * @returns User
    */
   async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
@@ -118,8 +118,8 @@ export class UserService {
   }
 
   /**
-   * ! ADMIN ONLY 
-   * @param id 
+   * ! ADMIN ONLY
+   * @param id
    * @returns message
    */
   async remove(id: number): Promise<{ message: string }> {
@@ -140,11 +140,13 @@ export class UserService {
   }
 
   /**
-   * 
-   * @param phone_number 
+   *
+   * @param phone_number
    * @returns User
    */
-  async findByPhoneNumberWithPassword(phone_number: string) : Promise<User | undefined> {
+  async findByPhoneNumberWithPassword(
+    phone_number: string,
+  ): Promise<User | undefined> {
     try {
       const user = await this.userRepository.findOne({
         where: { phone_number },
@@ -163,8 +165,8 @@ export class UserService {
   }
 
   /**
-   * ! ADMIN ONLY 
-   * @param phone_number 
+   * ! ADMIN ONLY
+   * @param phone_number
    * @returns Omit<User, 'password_hash'>
    */
   async findByPhoneNumber(
@@ -192,5 +194,4 @@ export class UserService {
       );
     }
   }
-
 }

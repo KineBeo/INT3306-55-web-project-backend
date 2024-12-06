@@ -8,7 +8,6 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -37,7 +36,7 @@ export class Flight {
   @JoinColumn({ name: 'arrival_airport_id' })
   arrival_airport: Airport;
 
-  @OneToOne(() => Airplane, (airplane) => airplane.flight)
+  @ManyToOne(() => Airplane, (airplane) => airplane.flights)
   @JoinColumn({ name: 'airplane_id' })
   airplane: Airplane;
 
@@ -46,9 +45,6 @@ export class Flight {
    */
   @Column()
   flight_number: string;
-
-  @Column()
-  available_seats: number;
 
   @Column()
   base_price: string;

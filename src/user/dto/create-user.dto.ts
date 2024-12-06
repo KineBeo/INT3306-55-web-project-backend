@@ -76,7 +76,7 @@ export class CreateUserDto {
   role?: Role;
 
   @ApiProperty({
-    description: 'User\'s date of birth',
+    description: "User's date of birth",
     example: '1990-01-01',
     type: String,
     format: 'date',

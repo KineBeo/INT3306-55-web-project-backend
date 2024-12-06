@@ -1,5 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, MinLength, MaxLength, IsPositive, Min, Max, IsOptional } from 'class-validator';
+import {
+  IsString,
+  MinLength,
+  MaxLength,
+  IsPositive,
+  Min,
+  Max,
+  IsOptional,
+} from 'class-validator';
 import { AirplaneStatus } from 'src/enum/airplane/airplane_status';
 
 export class UpdateAirplaneDto {

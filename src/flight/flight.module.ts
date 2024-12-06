@@ -10,7 +10,12 @@ import { Airport } from 'src/airport/entities/airport.entity';
 import { Airplane } from 'src/airplane/entities/airplane.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Flight, Airport, Airplane]), UserModule, AirportModule, AirplaneModule],
+  imports: [
+    TypeOrmModule.forFeature([Flight, Airport, Airplane]),
+    UserModule,
+    AirportModule,
+    AirplaneModule,
+  ],
   controllers: [FlightController],
   providers: [FlightService],
   exports: [FlightService],
