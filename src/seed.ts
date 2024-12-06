@@ -53,7 +53,7 @@ const DATA = {
   ],
 
   flights: [
-    // Flight from JFK to LAX
+    // Outbound flight 1
     {
       departure_airport_id: -1,
       arrival_airport_id: -1,
@@ -66,15 +66,15 @@ const DATA = {
       delay_duration: '0',
     },
 
-    // Flight from LAX to JFK
+    // Return flight 1
     {
       departure_airport_id: -1,
       arrival_airport_id: -1,
       airplane_id: -1,
       flight_number: 'DL200',
       base_price: '350',
-      departure_time: new Date('2023-12-02T09:00:00Z'),
-      arrival_time: new Date('2023-12-02T12:30:00Z'),
+      departure_time: new Date('2023-12-03T09:00:00Z'),
+      arrival_time: new Date('2023-12-03T12:30:00Z'),
       duration: '12600', // in seconds (3.5 hours)
       delay_duration: '600', // in seconds (10 minutes)
     },
@@ -330,6 +330,9 @@ const createAirplaneData = async () => {
   }
 };
 
+/**
+ * DO NOT run without running createAirportData and createAirplaneData first.
+ */
 const createFlightData = async () => {
   // Update flight data with airport and airplane IDs
   const airportsResponse = await axios.get(BASE_AIRPORT_URL, {
@@ -378,6 +381,10 @@ const createFlightData = async () => {
   }
 };
 
+/**
+ * DO NOT run without running createFlightData first, as this requires the IDs
+ * of the flights, which that function provides.
+ */
 const createTicketData = async () => {
   // Update ticket data with flight IDs
   const flightsResponse = await axios.get(BASE_FLIGHT_URL, {
@@ -429,17 +436,25 @@ const createTicketData = async () => {
 };
 
 // ENTRY POINT
-const seed = async () => {
-  await registerAdmin();
-  await loginAdmin();
+const deleteData = async() => {
+  await deleteTicketData();
   await deleteFlightData();
   await deleteAirportData();
   await deleteAirplaneData();
-  await deleteTicketData();
+}
+
+const createData = async() => {
   await createAirportData();
   await createAirplaneData();
   await createFlightData();
   await createTicketData();
+}
+
+const seed = async () => {
+  await registerAdmin();
+  await loginAdmin();
+  await deleteData();
+  await createData();
 };
 
 seed();

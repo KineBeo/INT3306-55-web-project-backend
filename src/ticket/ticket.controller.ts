@@ -56,12 +56,12 @@ export class TicketController {
   })
   @ApiQuery({
     name: 'outbound_day',
-    example: '2023-10-02',
+    example: '2023-12-01',
     description: 'Departure date of the flight (day, month, and year)',
   })
   @ApiQuery({
     name: 'return_day',
-    example: '2023-10-10',
+    example: '2023-12-03',
     description: 'Return date of the flight (day, month, and year)',
     required: false,
   })
