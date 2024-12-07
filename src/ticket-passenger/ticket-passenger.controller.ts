@@ -22,7 +22,11 @@ export class TicketPassengerController {
     private readonly ticketPassengerService: TicketPassengerService,
   ) {}
 
-  @ProtectedEndpoint('Create a ticket-passenger', 201, 'The ticket-passenger has been successfully created.')
+  @ProtectedEndpoint(
+    'Create a ticket-passenger',
+    201,
+    'The ticket-passenger has been successfully created.',
+  )
   @Post()
   create(@Body() createTicketPassengerDto: CreateTicketPassengerDto) {
     return this.ticketPassengerService.create(createTicketPassengerDto);

@@ -105,12 +105,12 @@ export class TicketService {
 
   async search(searchTicketDto: SearchTicketDto): Promise<Ticket[]> {
     try {
-      const { 
-        ticket_type, 
-        departure_airport_code, 
-        arrival_airport_code, 
-        outbound_day, 
-        return_day 
+      const {
+        ticket_type,
+        departure_airport_code,
+        arrival_airport_code,
+        outbound_day,
+        return_day,
       } = searchTicketDto;
 
       const startOfOutboundDay = new Date(outbound_day);

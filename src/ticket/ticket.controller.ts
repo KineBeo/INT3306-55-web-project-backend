@@ -17,6 +17,8 @@ import { AdminEndpoint } from 'src/auth/decorator/admin.decorator';
 import { ProtectedEndpoint } from 'src/auth/decorator/authorization.decorator';
 import { BookTicketDto } from './dto/book-ticket.dto';
 import { SearchTicketDto } from './dto/search-ticket.dto';
+import { ForbiddenException } from '@nestjs/common';
+import { Request } from '@nestjs/common';
 
 @Controller('ticket')
 @ApiTags('ticket')
@@ -80,7 +82,10 @@ export class TicketController {
 
   @ProtectedEndpoint('Get all tickets belonging to a user')
   @Get('user/:userId')
-  findAllByUserId(@Param('userId') userId: string) {
+  findAllByUserId(@Param('userId') userId: string, @Request() req) {
+    if (Number(req.user.sub) !== Number(userId)) {
+      throw new ForbiddenException('You can only access your own tickets');
+    }
     return this.ticketService.findAllByUserId(+userId);
   }
 
