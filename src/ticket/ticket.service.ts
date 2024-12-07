@@ -255,4 +255,33 @@ export class TicketService {
         throw new BadRequestException(error.message);
       }
     }
+
+    async findAllByUserId(userId: number): Promise<Ticket[]> {
+      try {
+        const tickets = await this.ticketRepository.find({
+          where: { user: { id: userId } },
+          relations: [
+            'outboundFlight',
+            'returnFlight',
+            'user',
+            'ticketPassengers',
+            'outboundFlight.departure_airport',
+            'outboundFlight.arrival_airport',
+            'returnFlight.departure_airport',
+            'returnFlight.arrival_airport'
+          ],
+          order: {
+            created_at: 'DESC'
+          }
+        });
+
+        if (!tickets || tickets.length === 0) {
+          throw new BadRequestException(`No tickets found for user ${userId}`);
+        }
+
+        return tickets;
+      } catch (error) {
+        throw new BadRequestException(error.message);
+      }
+    }
 }

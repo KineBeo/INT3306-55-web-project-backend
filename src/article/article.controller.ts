@@ -27,13 +27,11 @@ export class ArticleController {
   }
 
   @Get()
-  @AdminEndpoint('Get all articles')
   findAll() {
     return this.articleService.findAll();
   }
 
-  @Get('id/getArticle/:id')
-  @AdminEndpoint('Get article by id')
+  @Get(':id')
   findOne(@Param('id') id: number) {
     return this.articleService.findOne(+id);
   }

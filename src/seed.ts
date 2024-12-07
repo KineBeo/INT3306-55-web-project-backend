@@ -8,6 +8,7 @@ const BASE_FLIGHT_URL = `${BASE_URL}/flight`;
 const BASE_TICKET_URL = `${BASE_URL}/ticket`;
 const BASE_AIRPLANE_URL = `${BASE_URL}/airplane`;
 const BASE_AUTH_URL = `${BASE_URL}/auth`;
+const BASE_ARTICLE_URL = `${BASE_URL}/article`;
 
 // SEED DATA
 const ADMIN = {
@@ -92,6 +93,21 @@ const DATA = {
       base_price: '700', // Changed to string to match DTO
       booking_status: 'CONFIRMED',
     },
+  ],
+
+  articles: [
+    {
+      title: 'Welcome to Our Airline',
+      description: 'Introduction to our airline services',
+      content: 'Welcome to our airline! We offer the best flights with competitive prices and excellent service.',
+      image_url: 'https://cdn.britannica.com/25/74225-050-7F97DCE4/second-jetliners-terrorists-al-Qaeda-smoke-billows-crash-Sept-11-2001.jpg?w=300',
+    },
+    {
+      title: 'Travel Safety Guidelines',
+      description: 'Important safety information for passengers',
+      content: 'Here are the essential safety guidelines you need to know before your flight.',
+      image_url: 'https://cdn.britannica.com/25/74225-050-7F97DCE4/second-jetliners-terrorists-al-Qaeda-smoke-billows-crash-Sept-11-2001.jpg?w=300',
+    }
   ],
 };
 
@@ -282,6 +298,37 @@ const deleteTicketData = async () => {
   }
 };
 
+const deleteArticleData = async () => {
+  try {
+    const response = await axios.get(BASE_ARTICLE_URL, {
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: '*/*',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    const articles = response.data;
+    console.log('Deleting articles:', articles);
+    const deletePromises = articles.map(async (article) => {
+      try {
+        await axios.delete(`${BASE_ARTICLE_URL}/${article.id}`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+      } catch (error) {
+        console.error('Error deleting article:', error.response.data);
+      }
+    });
+
+    await Promise.all(deletePromises);
+    console.log('All articles deleted successfully.');
+  } catch (error) {
+    console.error('Error fetching articles:', error.response.data);
+  }
+};
+
 const createAirportData = async () => {
   try {
     const createPromises = DATA.airports.map(async (airport) => {
@@ -442,19 +489,44 @@ const createTicketData = async () => {
   }
 };
 
+const createArticleData = async () => {
+  try {
+    const createPromises = DATA.articles.map(async (article) => {
+      try {
+        await axios.post(BASE_ARTICLE_URL, article, {
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: '*/*',
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+      } catch (error) {
+        console.error('Error creating article:', error.response.data);
+      }
+    });
+
+    await Promise.all(createPromises);
+    console.log('All articles created successfully.');
+  } catch (error) {
+    console.error('Error creating articles:', error.response.data);
+  }
+};
+
 // ENTRY POINT
 const deleteData = async() => {
-  await deleteTicketData();
-  await deleteFlightData();
-  await deleteAirportData();
-  await deleteAirplaneData();
+  // await deleteTicketData();
+  // await deleteFlightData();
+  // await deleteAirportData();
+  // await deleteAirplaneData();
+  await deleteArticleData();
 }
 
 const createData = async() => {
-  await createAirportData();
-  await createAirplaneData();
-  await createFlightData();
-  await createTicketData();
+  // await createAirportData();
+  // await createAirplaneData();
+  // await createFlightData();
+  // await createTicketData();
+  await createArticleData();
 }
 
 const seed = async () => {
