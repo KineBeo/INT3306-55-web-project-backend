@@ -7,6 +7,8 @@ import { Repository } from 'typeorm';
 import { User } from 'src/user/entities/user.entity';
 import { Flight } from 'src/flight/entities/flight.entity';
 import { TicketType } from 'src/enum/ticket/ticket_type';
+import { BookingStatus } from 'src/enum/ticket/booking_status';
+import { BookTicketDto } from './dto/book-ticket.dto';
 
 @Injectable()
 export class TicketService {
@@ -61,13 +63,13 @@ export class TicketService {
       if (outbound_flight.departure_airport !== return_flight.arrival_airport) {
         throw new BadRequestException(
           'Outbound flight departure airport must be the same as return flight arrival airport',
-        )
+        );
       }
 
       if (outbound_flight.arrival_airport !== return_flight.departure_airport) {
         throw new BadRequestException(
           'Outbound flight arrival airport must be the same as return flight departure airport',
-        )
+        );
       }
 
       // Calculate ticket prices
@@ -164,6 +166,32 @@ export class TicketService {
     }
   }
 
+  async searchByOutboundTime(date: string, before: boolean): Promise<Ticket[]> {
+    try {
+      const compareDate = new Date(date);
+      compareDate.setHours(0, 0, 0, 0);
+
+      const ticketsQuery = this.ticketRepository
+        .createQueryBuilder('ticket')
+        .leftJoinAndSelect('ticket.outboundFlight', 'outboundFlight')
+        .where(
+          before
+            ? 'outboundFlight.departure_time <= :compareDate'
+            : 'outboundFlight.departure_time >= :compareDate',
+          { compareDate },
+        );
+
+      const tickets = await ticketsQuery.getMany();
+      if (!tickets || tickets.length === 0) {
+        throw new BadRequestException('No tickets found');
+      }
+
+      return tickets;
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
+  }
+
   async findAll(): Promise<Ticket[]> {
     try {
       const tickets = await this.ticketRepository.find();
@@ -204,6 +232,51 @@ export class TicketService {
     }
   }
 
+  async cancel(id: number): Promise<Ticket> {
+    try {
+      const ticket = await this.ticketRepository.findOne({ where: { id } });
+      if (!ticket) {
+        throw new BadRequestException(`Ticket with id ${id} not found`);
+      }
+
+      ticket.booking_status = BookingStatus.CANCELLED;
+      ticket.updated_at = new Date();
+      return await this.ticketRepository.save(ticket);
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
+  }
+
+  async bookTicket(id: number, bookTicketDto: BookTicketDto): Promise<Ticket> {
+    try {
+      const ticket = await this.ticketRepository.findOne({ where: { id } });
+      if (!ticket) {
+        throw new BadRequestException(`Ticket with id ${id} not found`);
+      }
+
+      if (ticket.booking_status === BookingStatus.CONFIRMED) {
+        throw new BadRequestException('Ticket is already booked');
+      }
+
+      if (ticket.booking_status === BookingStatus.CANCELLED) {
+        throw new BadRequestException('Cannot book a cancelled ticket');
+      }
+
+      const updatedTicket = {
+        ...ticket,
+        booking_status: BookingStatus.CONFIRMED,
+        booking_date: new Date(),
+        booking_seat_code: bookTicketDto.booking_seat_code,
+        total_passengers: bookTicketDto.total_passengers,
+        updated_at: new Date(),
+      };
+
+      return await this.ticketRepository.save(updatedTicket);
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
+  }
+
   async remove(id: number): Promise<{ message: string }> {
     try {
       const ticket = await this.ticketRepository.findOne({ where: { id } });
@@ -212,6 +285,35 @@ export class TicketService {
       }
       await this.ticketRepository.remove(ticket);
       return { message: 'Ticket deleted successfully' };
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
+  }
+
+  async findAllByUserId(userId: number): Promise<Ticket[]> {
+    try {
+      const tickets = await this.ticketRepository.find({
+        where: { user: { id: userId } },
+        relations: [
+          'outboundFlight',
+          'returnFlight',
+          'user',
+          'ticketPassengers',
+          'outboundFlight.departure_airport',
+          'outboundFlight.arrival_airport',
+          'returnFlight.departure_airport',
+          'returnFlight.arrival_airport',
+        ],
+        order: {
+          created_at: 'DESC',
+        },
+      });
+
+      if (!tickets || tickets.length === 0) {
+        throw new BadRequestException(`No tickets found for user ${userId}`);
+      }
+
+      return tickets;
     } catch (error) {
       throw new BadRequestException(error.message);
     }

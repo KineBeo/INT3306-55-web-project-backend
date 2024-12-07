@@ -24,8 +24,11 @@ export class TicketPassengerService {
     const today = new Date();
     const age = today.getFullYear() - birthday.getFullYear();
     const monthDiff = today.getMonth() - birthday.getMonth();
-    
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthday.getDate())) {
+
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < birthday.getDate())
+    ) {
       return age - 1;
     }
     return age;
@@ -33,21 +36,27 @@ export class TicketPassengerService {
 
   private validatePassengerAge(passengerType: PassengerType, birthday: Date) {
     const age = this.calculateAge(birthday);
-    
+
     switch (passengerType) {
       case PassengerType.ADULT:
         if (age < 12) {
-          throw new BadRequestException('Adult passengers must be 12 years or older');
+          throw new BadRequestException(
+            'Adult passengers must be 12 years or older',
+          );
         }
         break;
       case PassengerType.CHILD:
         if (age < 2 || age >= 12) {
-          throw new BadRequestException('Child passengers must be between 2 and 11 years old');
+          throw new BadRequestException(
+            'Child passengers must be between 2 and 11 years old',
+          );
         }
         break;
       case PassengerType.INFANT:
         if (age >= 2) {
-          throw new BadRequestException('Infant passengers must be under 2 years old');
+          throw new BadRequestException(
+            'Infant passengers must be under 2 years old',
+          );
         }
         break;
       default:
@@ -59,7 +68,8 @@ export class TicketPassengerService {
     createTicketPassengerDto: CreateTicketPassengerDto,
   ): Promise<TicketPassenger> {
     try {
-      const { ticket_id, associated_adult_id, passenger_type, birthday } = createTicketPassengerDto;
+      const { ticket_id, associated_adult_id, passenger_type, birthday } =
+        createTicketPassengerDto;
 
       // Validate age based on passenger type
       this.validatePassengerAge(passenger_type, birthday);
@@ -67,13 +77,20 @@ export class TicketPassengerService {
       // Validate associated adult for non-adult passengers
       if (passenger_type === PassengerType.INFANT) {
         if (!associated_adult_id) {
-          throw new BadRequestException('Infant passengers must have an associated adult');
+          throw new BadRequestException(
+            'Infant passengers must have an associated adult',
+          );
         }
         const associatedAdult = await this.ticketPassengerRepository.findOne({
           where: { id: associated_adult_id },
         });
-        if (!associatedAdult || associatedAdult.passenger_type !== PassengerType.ADULT) {
-          throw new BadRequestException('Associated passenger must be an adult');
+        if (
+          !associatedAdult ||
+          associatedAdult.passenger_type !== PassengerType.ADULT
+        ) {
+          throw new BadRequestException(
+            'Associated passenger must be an adult',
+          );
         }
       }
 
