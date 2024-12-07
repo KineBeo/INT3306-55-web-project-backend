@@ -1,0 +1,2266 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/": {
+      "get": {
+        "operationId": "AppController_getHello",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/user": {
+      "post": {
+        "operationId": "UserController_create",
+        "summary": "ADMIN: Create a user",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The user has been successfully created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "user"
+        ],
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ]
+      },
+      "get": {
+        "operationId": "UserController_findAll",
+        "summary": "ADMIN: Get all users",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Return all users.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "user"
+        ],
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ]
+      }
+    },
+    "/user/id/{id}": {
+      "get": {
+        "operationId": "UserController_findOne",
+        "summary": "Find a user by id",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "user"
+        ],
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ]
+      },
+      "patch": {
+        "operationId": "UserController_update",
+        "summary": "Update a user by id",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "user"
+        ],
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "UserController_remove",
+        "summary": "ADMIN: Delete a user by id",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "user"
+        ],
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ]
+      }
+    },
+    "/user/phone": {
+      "get": {
+        "operationId": "UserController_findByPhone",
+        "summary": "ADMIN: Find a user by phone number",
+        "parameters": [
+          {
+            "name": "phone_number",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found."
+          }
+        },
+        "tags": [
+          "user"
+        ],
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ]
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "operationId": "AuthController_register",
+        "summary": "Register new user",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User successfully registered."
+          }
+        },
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "operationId": "AuthController_login",
+        "summary": "Login user",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User successfully logged in."
+          }
+        },
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "operationId": "AuthController_refreshToken",
+        "summary": "Refresh access token",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshTokenDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Token successfully refreshed."
+          }
+        },
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "operationId": "AuthController_logout",
+        "summary": "Logout user",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "User successfully logged out."
+          }
+        },
+        "tags": [
+          "auth"
+        ],
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ]
+      }
+    },
+    "/auth/me": {
+      "get": {
+        "operationId": "AuthController_getProfile",
+        "summary": "Get current user profile",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Returns the current user profile."
+          }
+        },
+        "tags": [
+          "auth"
+        ],
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ]
+      }
+    },
+    "/ticket": {
+      "post": {
+        "operationId": "TicketController_create",
+        "summary": "ADMIN: Create a ticket",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTicketDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Create a ticket operation completed successfully."
+          },
+          "201": {
+            "description": "The ticket has been successfully created."
+          }
+        },
+        "tags": [
+          "ticket"
+        ],
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ]
+      },
+      "get": {
+        "operationId": "TicketController_findAll",
+        "summary": "ADMIN: Get all tickets",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Get all tickets operation completed successfully."
+          }
+        },
+        "tags": [
+          "ticket"
+        ],
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ]
+      }
+    },
+    "/ticket/search": {
+      "get": {
+        "operationId": "TicketController_search",
+        "summary": "Search tickets",
+        "parameters": [
+          {
+            "name": "ticket_type",
+            "required": true,
+            "in": "query",
+            "description": "Type of the ticket",
+            "schema": {
+              "example": "ROUND_TRIP",
+              "type": "string"
+            }
+          },
+          {
+            "name": "departure_airport_code",
+            "required": true,
+            "in": "query",
+            "description": "Code of the departure airport",
+            "schema": {
+              "example": "JFK",
+              "type": "string"
+            }
+          },
+          {
+            "name": "arrival_airport_code",
+            "required": true,
+            "in": "query",
+            "description": "Code of the arrival airport",
+            "schema": {
+              "example": "LAX",
+              "type": "string"
+            }
+          },
+          {
+            "name": "outbound_day",
+            "required": true,
+            "in": "query",
+            "description": "Departure date of the flight (day, month, and year)",
+            "schema": {
+              "example": "2023-12-01",
+              "type": "string"
+            }
+          },
+          {
+            "name": "return_day",
+            "required": false,
+            "in": "query",
+            "description": "Return date of the flight (day, month, and year)",
+            "schema": {
+              "example": "2023-12-03",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The tickets have been successfully retrieved."
+          }
+        },
+        "tags": [
+          "ticket"
+        ]
+      }
+    },
+    "/ticket/search-by-outbound-time": {
+      "get": {
+        "operationId": "TicketController_searchByOutboundTime",
+        "summary": "Search tickets by outbound flight time",
+        "description": "Find tickets where outbound flight departs before or after a specified date",
+        "parameters": [
+          {
+            "name": "date",
+            "required": true,
+            "in": "query",
+            "description": "The reference date in YYYY-MM-DD format",
+            "schema": {
+              "example": "2023-12-25",
+              "type": "string"
+            }
+          },
+          {
+            "name": "before",
+            "required": true,
+            "in": "query",
+            "description": "If true, finds flights before the date. If false, finds flights after the date",
+            "schema": {
+              "example": true,
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns tickets matching the time criteria"
+          }
+        },
+        "tags": [
+          "ticket"
+        ]
+      }
+    },
+    "/ticket/user/{userId}": {
+      "get": {
+        "operationId": "TicketController_findAllByUserId",
+        "summary": "Get all tickets belonging to a user",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns all tickets belonging to the specified user."
+          },
+          "404": {
+            "description": "No tickets found for this user."
+          }
+        },
+        "tags": [
+          "ticket"
+        ]
+      }
+    },
+    "/ticket/{id}": {
+      "get": {
+        "operationId": "TicketController_findOne",
+        "summary": "ADMIN: Find a ticket by id",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Find a ticket by id operation completed successfully."
+          }
+        },
+        "tags": [
+          "ticket"
+        ],
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ]
+      },
+      "patch": {
+        "operationId": "TicketController_update",
+        "summary": "ADMIN: Update a ticket",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTicketDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Update a ticket operation completed successfully."
+          }
+        },
+        "tags": [
+          "ticket"
+        ],
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "TicketController_remove",
+        "summary": "ADMIN: Delete a ticket",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Delete a ticket operation completed successfully."
+          }
+        },
+        "tags": [
+          "ticket"
+        ],
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ]
+      }
+    },
+    "/ticket/cancel/{id}": {
+      "patch": {
+        "operationId": "TicketController_cancel",
+        "summary": "Cancel a ticket",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cancel a ticket operation completed successfully."
+          }
+        },
+        "tags": [
+          "ticket"
+        ],
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ]
+      }
+    },
+    "/ticket/book/{id}": {
+      "patch": {
+        "operationId": "TicketController_bookTicket",
+        "summary": "Book a ticket",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookTicketDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Book a ticket operation completed successfully."
+          },
+          "400": {
+            "description": "Invalid booking request or ticket already booked."
+          }
+        },
+        "tags": [
+          "ticket"
+        ],
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ]
+      }
+    },
+    "/ticket-passenger": {
+      "post": {
+        "operationId": "TicketPassengerController_create",
+        "summary": "Create a ticket-passenger",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTicketPassengerDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The ticket-passenger has been successfully created."
+          },
+          "400": {
+            "description": "Bad Request."
+          },
+          "401": {
+            "description": "Unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        },
+        "tags": [
+          "ticket-passenger"
+        ]
+      },
+      "get": {
+        "operationId": "TicketPassengerController_findAll",
+        "summary": "ADMIN: Get all ticket-passengers",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Get all ticket-passengers operation completed successfully."
+          }
+        },
+        "tags": [
+          "ticket-passenger"
+        ],
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ]
+      }
+    },
+    "/ticket-passenger/{id}": {
+      "get": {
+        "operationId": "TicketPassengerController_findOne",
+        "summary": "ADMIN: Find a ticket-passenger by id",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Find a ticket-passenger by id operation completed successfully."
+          }
+        },
+        "tags": [
+          "ticket-passenger"
+        ],
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ]
+      },
+      "patch": {
+        "operationId": "TicketPassengerController_update",
+        "summary": "ADMIN: Update a ticket-passenger",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTicketPassengerDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Update a ticket-passenger operation completed successfully."
+          }
+        },
+        "tags": [
+          "ticket-passenger"
+        ],
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "TicketPassengerController_remove",
+        "summary": "ADMIN: Delete a ticket-passenger",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Delete a ticket-passenger operation completed successfully."
+          }
+        },
+        "tags": [
+          "ticket-passenger"
+        ],
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ]
+      }
+    },
+    "/flight": {
+      "post": {
+        "operationId": "FlightController_create",
+        "summary": "ADMIN: Create a flight",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateFlightDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Create a flight operation completed successfully."
+          }
+        },
+        "tags": [
+          "flight"
+        ],
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ]
+      },
+      "get": {
+        "operationId": "FlightController_findAll",
+        "summary": "ADMIN: Get all flights",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Get all flights operation completed successfully."
+          }
+        },
+        "tags": [
+          "flight"
+        ],
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ]
+      }
+    },
+    "/flight/{id}": {
+      "get": {
+        "operationId": "FlightController_findOne",
+        "summary": "ADMIN: Find a flight by id",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Find a flight by id operation completed successfully."
+          }
+        },
+        "tags": [
+          "flight"
+        ],
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ]
+      },
+      "patch": {
+        "operationId": "FlightController_update",
+        "summary": "ADMIN: Update a flight",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFlightDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Update a flight operation completed successfully."
+          }
+        },
+        "tags": [
+          "flight"
+        ],
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "FlightController_remove",
+        "summary": "ADMIN: Delete a flight",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Delete a flight operation completed successfully."
+          }
+        },
+        "tags": [
+          "flight"
+        ],
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ]
+      }
+    },
+    "/airport": {
+      "post": {
+        "operationId": "AirportController_create",
+        "summary": "ADMIN: Create an airport",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAirportDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Create an airport operation completed successfully."
+          }
+        },
+        "tags": [
+          "airport"
+        ],
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ]
+      },
+      "get": {
+        "operationId": "AirportController_findAll",
+        "summary": "ADMIN: Get all airports",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Get all airports operation completed successfully."
+          }
+        },
+        "tags": [
+          "airport"
+        ],
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ]
+      }
+    },
+    "/airport/{id}": {
+      "get": {
+        "operationId": "AirportController_findOne",
+        "summary": "ADMIN: Find an airport by id",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Find an airport by id operation completed successfully."
+          }
+        },
+        "tags": [
+          "airport"
+        ],
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ]
+      },
+      "patch": {
+        "operationId": "AirportController_update",
+        "summary": "ADMIN: Update an airport",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAirportDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Update an airport operation completed successfully."
+          }
+        },
+        "tags": [
+          "airport"
+        ],
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "AirportController_remove",
+        "summary": "ADMIN: Delete an airport",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Delete an airport operation completed successfully."
+          }
+        },
+        "tags": [
+          "airport"
+        ],
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ]
+      }
+    },
+    "/airplane": {
+      "post": {
+        "operationId": "AirplaneController_create",
+        "summary": "ADMIN: Create an airplane",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAirplaneDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Create an airplane operation completed successfully."
+          }
+        },
+        "tags": [
+          "airplane"
+        ],
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ]
+      },
+      "get": {
+        "operationId": "AirplaneController_findAll",
+        "summary": "ADMIN: Get all airplanes",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Get all airplanes operation completed successfully."
+          }
+        },
+        "tags": [
+          "airplane"
+        ],
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ]
+      }
+    },
+    "/airplane/{id}": {
+      "get": {
+        "operationId": "AirplaneController_findOne",
+        "summary": "ADMIN: Find an airplane by id",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Find an airplane by id operation completed successfully."
+          }
+        },
+        "tags": [
+          "airplane"
+        ],
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ]
+      },
+      "patch": {
+        "operationId": "AirplaneController_update",
+        "summary": "ADMIN: Update an airplane",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAirplaneDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Update an airplane operation completed successfully."
+          }
+        },
+        "tags": [
+          "airplane"
+        ],
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "AirplaneController_remove",
+        "summary": "ADMIN: Delete an airplane",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Delete an airplane operation completed successfully."
+          }
+        },
+        "tags": [
+          "airplane"
+        ],
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ]
+      }
+    },
+    "/article": {
+      "post": {
+        "operationId": "ArticleController_create",
+        "summary": "ADMIN: Create an article",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateArticleDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Create an article operation completed successfully."
+          }
+        },
+        "tags": [
+          "article"
+        ],
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ]
+      },
+      "get": {
+        "operationId": "ArticleController_findAll",
+        "summary": "ADMIN: Returns all articles",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Returns all articles operation completed successfully."
+          }
+        },
+        "tags": [
+          "article"
+        ],
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ]
+      }
+    },
+    "/article/published": {
+      "get": {
+        "operationId": "ArticleController_findPublished",
+        "summary": "Get all published articles",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Returns all published articles",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Article"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        },
+        "tags": [
+          "article"
+        ]
+      }
+    },
+    "/article/{id}": {
+      "get": {
+        "operationId": "ArticleController_findOne",
+        "summary": "Get article by id",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a single article",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Article"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Article not found"
+          }
+        },
+        "tags": [
+          "article"
+        ]
+      },
+      "patch": {
+        "operationId": "ArticleController_update",
+        "summary": "ADMIN: Update article by id",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateArticleDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Update article by id operation completed successfully."
+          }
+        },
+        "tags": [
+          "article"
+        ],
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "ArticleController_remove",
+        "summary": "ADMIN: Delete article by id",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Delete article by id operation completed successfully."
+          }
+        },
+        "tags": [
+          "article"
+        ],
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "QAirline",
+    "description": "The QAirline API description",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [
+    {
+      "name": "QAirline",
+      "description": ""
+    }
+  ],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "JWT-auth": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http",
+        "name": "JWT",
+        "description": "Enter JWT token",
+        "in": "header"
+      }
+    },
+    "schemas": {
+      "CreateUserDto": {
+        "type": "object",
+        "properties": {
+          "fullname": {
+            "type": "string",
+            "description": "Full name of the user",
+            "example": "Nguyễn Văn A",
+            "minLength": 6,
+            "maxLength": 50
+          },
+          "phone_number": {
+            "type": "string",
+            "description": "Vietnam phone number",
+            "example": "0123456789",
+            "minLength": 10,
+            "maxLength": 10
+          },
+          "email": {
+            "type": "string",
+            "description": "Email address",
+            "example": "example@gmail.com"
+          },
+          "password_hash": {
+            "type": "string",
+            "description": "Password with specific requirements",
+            "example": "StrongP@ssw0rd!"
+          },
+          "role": {
+            "type": "string",
+            "description": "User role",
+            "enum": [
+              "ADMIN",
+              "USER"
+            ],
+            "default": "USER"
+          },
+          "birthday": {
+            "type": "string",
+            "description": "User's date of birth",
+            "example": "1990-01-01",
+            "format": "date"
+          },
+          "gender": {
+            "type": "string",
+            "description": "Gender of the user",
+            "enum": [
+              "MALE",
+              "FEMALE"
+            ]
+          }
+        },
+        "required": [
+          "fullname",
+          "phone_number",
+          "email",
+          "password_hash",
+          "birthday",
+          "gender"
+        ]
+      },
+      "User": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateUserDto": {
+        "type": "object",
+        "properties": {
+          "fullname": {
+            "type": "string",
+            "description": "Full name of the user",
+            "example": "Nguyễn Văn A",
+            "minLength": 6,
+            "maxLength": 50
+          },
+          "phone_number": {
+            "type": "string",
+            "description": "Vietnam phone number",
+            "example": "0123456789",
+            "minLength": 10,
+            "maxLength": 10
+          },
+          "email": {
+            "type": "string",
+            "description": "Email address",
+            "example": "example@gmail.com"
+          },
+          "password_hash": {
+            "type": "string",
+            "description": "Password with specific requirements",
+            "example": "StrongP@ssw0rd!"
+          },
+          "role": {
+            "type": "string",
+            "description": "User role",
+            "enum": [
+              "ADMIN",
+              "USER"
+            ],
+            "default": "USER"
+          },
+          "birthday": {
+            "type": "string",
+            "description": "User's date of birth",
+            "example": "1990-01-01",
+            "format": "date"
+          },
+          "gender": {
+            "type": "string",
+            "description": "Gender of the user",
+            "enum": [
+              "MALE",
+              "FEMALE"
+            ]
+          }
+        }
+      },
+      "LoginDto": {
+        "type": "object",
+        "properties": {
+          "phone_number": {
+            "type": "string",
+            "description": "phone number",
+            "example": "0123456789"
+          },
+          "password": {
+            "type": "string",
+            "description": "password",
+            "example": "StrongP@ssw0rd!"
+          }
+        },
+        "required": [
+          "phone_number",
+          "password"
+        ]
+      },
+      "RefreshTokenDto": {
+        "type": "object",
+        "properties": {
+          "refreshToken": {
+            "type": "string",
+            "description": "Refresh token",
+            "example": "eyJhbGci"
+          }
+        },
+        "required": [
+          "refreshToken"
+        ]
+      },
+      "CreateTicketDto": {
+        "type": "object",
+        "properties": {
+          "outbound_flight_id": {
+            "type": "number",
+            "description": "Outbound flight ID",
+            "example": 1
+          },
+          "return_flight_id": {
+            "type": "number",
+            "description": "Return flight ID",
+            "example": 1
+          },
+          "user_id": {
+            "type": "number",
+            "description": "User ID",
+            "example": 1
+          },
+          "booking_date": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Booking date",
+            "example": "2021-12-31T23:59:59Z"
+          },
+          "ticket_type": {
+            "type": "string",
+            "enum": [
+              "ONE_WAY",
+              "ROUND_TRIP"
+            ],
+            "description": "Ticket type",
+            "example": "ONE_WAY"
+          },
+          "booking_class": {
+            "type": "string",
+            "enum": [
+              "ECONOMY",
+              "BUSINESS",
+              "FIRST_CLASS"
+            ],
+            "description": "Booking class",
+            "example": "ECONOMY"
+          },
+          "booking_seat_code": {
+            "type": "string",
+            "description": "Booking seat code",
+            "example": "A1"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description",
+            "example": "This is a ticket"
+          },
+          "total_passengers": {
+            "type": "number",
+            "description": "Total passengers",
+            "example": 1
+          },
+          "base_price": {
+            "type": "string",
+            "description": "Base price",
+            "example": "100"
+          },
+          "booking_status": {
+            "type": "string",
+            "enum": [
+              "PENDING",
+              "CONFIRMED",
+              "CANCELLED"
+            ],
+            "description": "Booking status",
+            "example": "CONFIRMED"
+          }
+        },
+        "required": [
+          "outbound_flight_id",
+          "return_flight_id",
+          "user_id",
+          "booking_date",
+          "ticket_type",
+          "booking_class",
+          "booking_seat_code",
+          "description",
+          "total_passengers",
+          "base_price",
+          "booking_status"
+        ]
+      },
+      "BookTicketDto": {
+        "type": "object",
+        "properties": {
+          "booking_seat_code": {
+            "type": "string",
+            "description": "Seat code for the booking",
+            "example": "A12-B15"
+          },
+          "total_passengers": {
+            "type": "number",
+            "description": "Number of passengers",
+            "example": 2
+          }
+        },
+        "required": [
+          "booking_seat_code",
+          "total_passengers"
+        ]
+      },
+      "UpdateTicketDto": {
+        "type": "object",
+        "properties": {
+          "outbound_flight_id": {
+            "type": "number",
+            "description": "Outbound flight ID",
+            "example": 1
+          },
+          "return_flight_id": {
+            "type": "number",
+            "description": "Return flight ID",
+            "example": 1
+          },
+          "user_id": {
+            "type": "number",
+            "description": "User ID",
+            "example": 1
+          },
+          "booking_date": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Booking date",
+            "example": "2021-12-31T23:59:59Z"
+          },
+          "ticket_type": {
+            "type": "string",
+            "enum": [
+              "ONE_WAY",
+              "ROUND_TRIP"
+            ],
+            "description": "Ticket type",
+            "example": "ONE_WAY"
+          },
+          "booking_class": {
+            "type": "string",
+            "enum": [
+              "ECONOMY",
+              "BUSINESS",
+              "FIRST_CLASS"
+            ],
+            "description": "Booking class",
+            "example": "ECONOMY"
+          },
+          "booking_seat_code": {
+            "type": "string",
+            "description": "Booking seat code",
+            "example": "A1"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description",
+            "example": "This is a ticket"
+          },
+          "total_passengers": {
+            "type": "number",
+            "description": "Total passengers",
+            "example": 1
+          },
+          "base_price": {
+            "type": "string",
+            "description": "Base price",
+            "example": "100"
+          },
+          "booking_status": {
+            "type": "string",
+            "enum": [
+              "PENDING",
+              "CONFIRMED",
+              "CANCELLED"
+            ],
+            "description": "Booking status",
+            "example": "CONFIRMED"
+          }
+        },
+        "required": [
+          "outbound_flight_id",
+          "return_flight_id",
+          "user_id",
+          "booking_date",
+          "ticket_type",
+          "booking_class",
+          "booking_seat_code",
+          "description",
+          "total_passengers",
+          "base_price",
+          "booking_status"
+        ]
+      },
+      "CreateTicketPassengerDto": {
+        "type": "object",
+        "properties": {
+          "passenger_type": {
+            "type": "string",
+            "enum": [
+              "ADULT",
+              "CHILD",
+              "INFANT"
+            ],
+            "description": "Passenger type",
+            "example": "ADULT"
+          },
+          "associated_adult_id": {
+            "type": "number",
+            "description": "Associated adult ID",
+            "example": 1
+          },
+          "ticket_id": {
+            "type": "number",
+            "description": "Ticket ID",
+            "example": 1
+          },
+          "full_name": {
+            "type": "string",
+            "description": "Full name",
+            "example": "John Doe"
+          },
+          "birthday": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Birthday",
+            "example": "2021-12-31T23:59:59Z"
+          },
+          "cccd": {
+            "type": "string",
+            "description": "CCCD",
+            "example": "123456789"
+          },
+          "country_code": {
+            "type": "string",
+            "description": "Country code",
+            "example": "VN"
+          }
+        },
+        "required": [
+          "passenger_type",
+          "associated_adult_id",
+          "ticket_id",
+          "full_name",
+          "birthday",
+          "cccd",
+          "country_code"
+        ]
+      },
+      "UpdateTicketPassengerDto": {
+        "type": "object",
+        "properties": {
+          "passenger_type": {
+            "type": "string",
+            "enum": [
+              "ADULT",
+              "CHILD",
+              "INFANT"
+            ],
+            "description": "Passenger type",
+            "example": "ADULT"
+          },
+          "associated_adult_id": {
+            "type": "number",
+            "description": "Associated adult ID",
+            "example": 1
+          },
+          "ticket_id": {
+            "type": "number",
+            "description": "Ticket ID",
+            "example": 1
+          },
+          "full_name": {
+            "type": "string",
+            "description": "Full name",
+            "example": "John Doe"
+          },
+          "birthday": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Birthday",
+            "example": "2021-12-31T23:59:59Z"
+          },
+          "cccd": {
+            "type": "string",
+            "description": "CCCD",
+            "example": "123456789"
+          },
+          "country_code": {
+            "type": "string",
+            "description": "Country code",
+            "example": "VN"
+          }
+        },
+        "required": [
+          "passenger_type",
+          "associated_adult_id",
+          "ticket_id",
+          "full_name",
+          "birthday",
+          "cccd",
+          "country_code"
+        ]
+      },
+      "CreateFlightDto": {
+        "type": "object",
+        "properties": {
+          "departure_airport_id": {
+            "type": "number",
+            "description": "Departure airport ID",
+            "example": 1
+          },
+          "arrival_airport_id": {
+            "type": "number",
+            "description": "Arrival airport ID",
+            "example": 2
+          },
+          "airplane_id": {
+            "type": "number",
+            "description": "Airplane ID",
+            "example": 3
+          },
+          "flight_number": {
+            "type": "string",
+            "description": "Departure airport code",
+            "example": "HAN"
+          },
+          "base_price": {
+            "type": "string",
+            "description": "Base price",
+            "example": "1000000"
+          },
+          "departure_time": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Departure time",
+            "example": "2021-12-31T23:59:59Z"
+          },
+          "arrival_time": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Arrival time",
+            "example": "2021-12-31T23:59:59Z"
+          },
+          "duration": {
+            "type": "string",
+            "description": "Flight duration",
+            "example": "1000000"
+          },
+          "delay_duration": {
+            "type": "string",
+            "description": "Delay duration",
+            "example": "1000000"
+          }
+        },
+        "required": [
+          "departure_airport_id",
+          "arrival_airport_id",
+          "airplane_id",
+          "flight_number",
+          "base_price",
+          "departure_time",
+          "arrival_time",
+          "duration",
+          "delay_duration"
+        ]
+      },
+      "UpdateFlightDto": {
+        "type": "object",
+        "properties": {
+          "departure_airport_id": {
+            "type": "number",
+            "description": "Departure airport ID",
+            "example": 1
+          },
+          "arrival_airport_id": {
+            "type": "number",
+            "description": "Arrival airport ID",
+            "example": 2
+          },
+          "airline_id": {
+            "type": "number",
+            "description": "Airline ID",
+            "example": 3
+          },
+          "flight_number": {
+            "type": "string",
+            "description": "Departure airport code",
+            "example": "HAN"
+          },
+          "base_price": {
+            "type": "string",
+            "description": "Base price",
+            "example": "1000000"
+          },
+          "departure_time": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Departure time",
+            "example": "2021-12-31T23:59:59Z"
+          },
+          "arrival_time": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Arrival time",
+            "example": "2021-12-31T23:59:59Z"
+          },
+          "duration": {
+            "type": "string",
+            "description": "Flight duration",
+            "example": "1000000"
+          },
+          "delay_duration": {
+            "type": "string",
+            "description": "Delay duration",
+            "example": "1000000"
+          },
+          "status": {
+            "type": "string",
+            "description": "Flight status",
+            "example": "SCHEDULED"
+          }
+        },
+        "required": [
+          "departure_airport_id",
+          "arrival_airport_id",
+          "airline_id",
+          "flight_number",
+          "base_price",
+          "departure_time",
+          "arrival_time",
+          "duration",
+          "delay_duration",
+          "status"
+        ]
+      },
+      "CreateAirportDto": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The code of the airport",
+            "example": "JFK"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the airport",
+            "example": "John F. Kennedy International Airport"
+          },
+          "city": {
+            "type": "string",
+            "description": "The city where the airport is located",
+            "example": "New York"
+          },
+          "country": {
+            "type": "string",
+            "description": "The country where the airport is located",
+            "example": "United States"
+          }
+        },
+        "required": [
+          "code",
+          "name",
+          "city",
+          "country"
+        ]
+      },
+      "UpdateAirportDto": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The code of the airport",
+            "example": "JFK"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the airport",
+            "example": "John F. Kennedy International Airport"
+          },
+          "city": {
+            "type": "string",
+            "description": "The city where the airport is located",
+            "example": "New York"
+          },
+          "country": {
+            "type": "string",
+            "description": "The country where the airport is located",
+            "example": "United States"
+          }
+        }
+      },
+      "CreateAirplaneDto": {
+        "type": "object",
+        "properties": {
+          "model_name": {
+            "type": "string",
+            "description": "The name of the airplane model",
+            "example": "Boeing 747"
+          },
+          "manufacturer": {
+            "type": "string",
+            "description": "The name of the manufacturer",
+            "example": "Boeing"
+          },
+          "serial_number": {
+            "type": "string",
+            "description": "The serial number of the airplane",
+            "example": "12345"
+          },
+          "registration_number": {
+            "type": "string",
+            "description": "The registration number of the airplane",
+            "example": "N12345"
+          },
+          "capacity": {
+            "type": "number",
+            "description": "The capacity of the airplane",
+            "example": 300
+          },
+          "economy_seats": {
+            "type": "number",
+            "description": "The number of economy seats",
+            "example": 200
+          },
+          "business_seats": {
+            "type": "number",
+            "description": "The number of business seats",
+            "example": 100
+          },
+          "first_class_seats": {
+            "type": "number",
+            "description": "The number of first class seats",
+            "example": 50
+          }
+        },
+        "required": [
+          "model_name",
+          "manufacturer",
+          "serial_number",
+          "registration_number",
+          "capacity",
+          "economy_seats",
+          "business_seats",
+          "first_class_seats"
+        ]
+      },
+      "UpdateAirplaneDto": {
+        "type": "object",
+        "properties": {
+          "model_name": {
+            "type": "string",
+            "description": "The name of the airplane model",
+            "default": "Boeing 747"
+          },
+          "manufacturer": {
+            "type": "string",
+            "description": "The name of the manufacturer",
+            "default": "Boeing"
+          },
+          "serial_number": {
+            "type": "string",
+            "description": "The serial number of the airplane",
+            "default": "123456"
+          },
+          "registration_number": {
+            "type": "string",
+            "description": "The registration number of the airplane",
+            "default": "N12345"
+          },
+          "capacity": {
+            "type": "number",
+            "description": "The capacity of the airplane",
+            "default": 300
+          },
+          "economy_seats": {
+            "type": "number",
+            "description": "The number of economy seats",
+            "default": 200
+          },
+          "business_seats": {
+            "type": "number",
+            "description": "The number of business seats",
+            "default": 50
+          },
+          "first_class_seats": {
+            "type": "number",
+            "description": "The number of first class seats",
+            "default": 50
+          },
+          "status": {
+            "type": "string",
+            "description": "The status of the airplane",
+            "example": "ACTIVE"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "CreateArticleDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "The title of the article",
+            "example": "How to create a NestJS application"
+          },
+          "description": {
+            "type": "string",
+            "description": "The description of the article",
+            "example": "A step-by-step guide to create a NestJS application"
+          },
+          "content": {
+            "type": "string",
+            "description": "The content of the article",
+            "example": "This is the content of the article"
+          },
+          "image_url": {
+            "type": "string",
+            "description": "The image URL of the article",
+            "example": "https://example.com/image.jpg"
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "content",
+          "image_url"
+        ]
+      },
+      "Article": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateArticleDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "The title of the article",
+            "example": "How to create a NestJS application"
+          },
+          "description": {
+            "type": "string",
+            "description": "The description of the article",
+            "example": "A step-by-step guide to create a NestJS application"
+          },
+          "content": {
+            "type": "string",
+            "description": "The content of the article",
+            "example": "This is the content of the article"
+          },
+          "image_url": {
+            "type": "string",
+            "description": "The image URL of the article",
+            "example": "https://example.com/image.jpg"
+          },
+          "status": {
+            "type": "string",
+            "description": "The status of the article",
+            "example": "PUBLISHED"
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "content",
+          "image_url",
+          "status"
+        ]
+      }
+    }
+  }
+}

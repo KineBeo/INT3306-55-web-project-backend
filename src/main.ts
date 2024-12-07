@@ -27,6 +27,11 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, swaggerConfig);
+
+  // Generate swagger.json
+  const fs = require('fs');
+  fs.writeFileSync('./swagger.json', JSON.stringify(document, null, 2));
+
   SwaggerModule.setup('api', app, document, {
     swaggerOptions: {
       persistAuthorization: true,
