@@ -53,7 +53,6 @@ const DATA = {
   ],
 
   flights: [
-    // Outbound flight 1
     {
       departure_airport_id: -1,
       arrival_airport_id: -1,
@@ -66,7 +65,6 @@ const DATA = {
       delay_duration: '0',
     },
 
-    // Return flight 1
     {
       departure_airport_id: -1,
       arrival_airport_id: -1,
@@ -408,8 +406,17 @@ const createTicketData = async () => {
   );
 
   DATA.tickets.forEach((ticket, index) => {
-    ticket.outbound_flight_id = flightsData[index % flightsData.length].id;
-    ticket.return_flight_id = flightsData[(index + 1) % flightsData.length].id;
+    const outboundFlight = flightsData[index % flightsData.length];
+    const returnFlight = flightsData[(index + 1) % flightsData.length];
+
+    if (new Date(outboundFlight.arrival_time) > new Date(returnFlight.departure_time)) {
+      ticket.outbound_flight_id = returnFlight.id;
+      ticket.return_flight_id = outboundFlight.id;
+    } else {
+      ticket.outbound_flight_id = outboundFlight.id;
+      ticket.return_flight_id = returnFlight.id;
+    }
+
     ticket.user_id = adminData.id;
   });
 

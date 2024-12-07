@@ -81,6 +81,37 @@ export class TicketController {
     );
   }
 
+  @Public()
+  @Get('search-by-outbound-time')
+  @ApiOperation({
+    summary: 'Search tickets by outbound flight time',
+    description: 'Find tickets where outbound flight departs before or after a specified date'
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Returns tickets matching the time criteria',
+  })
+  @ApiQuery({
+    name: 'date',
+    required: true,
+    type: String,
+    example: '2023-12-25',
+    description: 'The reference date in YYYY-MM-DD format',
+  })
+  @ApiQuery({
+    name: 'before',
+    required: true,
+    type: Boolean,
+    example: true,
+    description: 'If true, finds flights before the date. If false, finds flights after the date',
+  })
+  searchByOutboundTime(
+    @Query('date') date: string,
+    @Query('before') before: boolean,
+  ) {
+    return this.ticketService.searchByOutboundTime(date, before);
+  }
+
   @Get()
   @AdminEndpoint('Get all tickets')
   findAll() {

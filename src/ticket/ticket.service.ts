@@ -164,6 +164,29 @@ export class TicketService {
     }
   }
 
+  async searchByOutboundTime(date: string, before: boolean): Promise<Ticket[]> {
+    try {
+      const compareDate = new Date(date);
+      compareDate.setHours(0, 0, 0, 0);
+
+      const ticketsQuery = this.ticketRepository
+        .createQueryBuilder('ticket')
+        .leftJoinAndSelect('ticket.outboundFlight', 'outboundFlight')
+        .where(before ? 'outboundFlight.departure_time <= :compareDate' : 
+                       'outboundFlight.departure_time >= :compareDate', 
+          { compareDate });
+
+      const tickets = await ticketsQuery.getMany();
+      if (!tickets || tickets.length === 0) {
+        throw new BadRequestException('No tickets found');
+      }
+
+      return tickets;
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
+  }
+
   async findAll(): Promise<Ticket[]> {
     try {
       const tickets = await this.ticketRepository.find();
