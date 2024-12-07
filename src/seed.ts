@@ -99,15 +99,19 @@ const DATA = {
     {
       title: 'Welcome to Our Airline',
       description: 'Introduction to our airline services',
-      content: 'Welcome to our airline! We offer the best flights with competitive prices and excellent service.',
-      image_url: 'https://cdn.britannica.com/25/74225-050-7F97DCE4/second-jetliners-terrorists-al-Qaeda-smoke-billows-crash-Sept-11-2001.jpg?w=300',
+      content:
+        'Welcome to our airline! We offer the best flights with competitive prices and excellent service.',
+      image_url:
+        'https://cdn.britannica.com/25/74225-050-7F97DCE4/second-jetliners-terrorists-al-Qaeda-smoke-billows-crash-Sept-11-2001.jpg?w=300',
     },
     {
       title: 'Travel Safety Guidelines',
       description: 'Important safety information for passengers',
-      content: 'Here are the essential safety guidelines you need to know before your flight.',
-      image_url: 'https://cdn.britannica.com/25/74225-050-7F97DCE4/second-jetliners-terrorists-al-Qaeda-smoke-billows-crash-Sept-11-2001.jpg?w=300',
-    }
+      content:
+        'Here are the essential safety guidelines you need to know before your flight.',
+      image_url:
+        'https://cdn.britannica.com/25/74225-050-7F97DCE4/second-jetliners-terrorists-al-Qaeda-smoke-billows-crash-Sept-11-2001.jpg?w=300',
+    },
   ],
 };
 
@@ -456,7 +460,10 @@ const createTicketData = async () => {
     const outboundFlight = flightsData[index % flightsData.length];
     const returnFlight = flightsData[(index + 1) % flightsData.length];
 
-    if (new Date(outboundFlight.arrival_time) > new Date(returnFlight.departure_time)) {
+    if (
+      new Date(outboundFlight.arrival_time) >
+      new Date(returnFlight.departure_time)
+    ) {
       ticket.outbound_flight_id = returnFlight.id;
       ticket.return_flight_id = outboundFlight.id;
     } else {
@@ -513,21 +520,21 @@ const createArticleData = async () => {
 };
 
 // ENTRY POINT
-const deleteData = async() => {
+const deleteData = async () => {
   // await deleteTicketData();
   // await deleteFlightData();
   // await deleteAirportData();
   // await deleteAirplaneData();
   await deleteArticleData();
-}
+};
 
-const createData = async() => {
+const createData = async () => {
   // await createAirportData();
   // await createAirplaneData();
   // await createFlightData();
   // await createTicketData();
   await createArticleData();
-}
+};
 
 const seed = async () => {
   await registerAdmin();
