@@ -384,6 +384,10 @@
             "description": "Type of the ticket",
             "schema": {
               "example": "ROUND_TRIP",
+              "enum": [
+                "ONE_WAY",
+                "ROUND_TRIP"
+              ],
               "type": "string"
             }
           },
@@ -411,7 +415,7 @@
             "name": "outbound_day",
             "required": true,
             "in": "query",
-            "description": "Departure date of the flight (day, month, and year)",
+            "description": "Departure date of the flight (YYYY-MM-DD)",
             "schema": {
               "example": "2023-12-01",
               "type": "string"
@@ -421,7 +425,7 @@
             "name": "return_day",
             "required": false,
             "in": "query",
-            "description": "Return date of the flight (day, month, and year)",
+            "description": "Return date of the flight (YYYY-MM-DD)",
             "schema": {
               "example": "2023-12-03",
               "type": "string"
