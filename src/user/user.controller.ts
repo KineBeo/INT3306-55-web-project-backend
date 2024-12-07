@@ -75,7 +75,10 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth('JWT-auth')
   @Get('id/:id')
-  @ApiOperation({ summary: 'Find a user by id' })
+  @ApiOperation({
+    summary:
+      'Find a user by id. The user can only access their own information.',
+  })
   findOne(@Param('id') id: number, @Request() req) {
     if (Number(req.user.sub) !== Number(id)) {
       throw new ForbiddenException('You can only access your own information');
@@ -93,7 +96,10 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth('JWT-auth')
   @Patch('id/:id')
-  @ApiOperation({ summary: 'Update a user by id' })
+  @ApiOperation({
+    summary:
+      'Update a user by id. The user can only update their own information.',
+  })
   update(
     @Param('id') id: number,
     @Body() updateUserDto: UpdateUserDto,

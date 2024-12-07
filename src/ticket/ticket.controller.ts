@@ -80,7 +80,9 @@ export class TicketController {
     return this.ticketService.searchByOutboundTime(date, before);
   }
 
-  @ProtectedEndpoint('Get all tickets belonging to a user')
+  @ProtectedEndpoint(
+    'Get all tickets belonging to a user. The user can only access their own tickets',
+  )
   @Get('user/:userId')
   findAllByUserId(@Param('userId') userId: string, @Request() req) {
     if (Number(req.user.sub) !== Number(userId)) {
