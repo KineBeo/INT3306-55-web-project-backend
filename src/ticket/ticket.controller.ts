@@ -117,21 +117,6 @@ export class TicketController {
   }
 
   @Public()
-  @Patch(':id/cancel')
-  @ApiOperation({ summary: 'Cancel a ticket' })
-  @ApiResponse({
-    status: 200,
-    description: 'The ticket has been successfully cancelled.',
-  })
-  @ApiResponse({
-    status: 404,
-    description: 'Ticket not found.',
-  })
-  cancel(@Param('id') id: string) {
-    return this.ticketService.cancel(+id);
-  }
-
-  @Public()
   @Get('user/:userId')
   @ApiOperation({ summary: 'Get all tickets belonging to a user' })
   @ApiResponse({
@@ -156,6 +141,12 @@ export class TicketController {
   @AdminEndpoint('Find a ticket by id')
   findOne(@Param('id') id: string) {
     return this.ticketService.findOne(+id);
+  }
+
+  @Patch('cancel/:id')
+  @ProtectedEndpoint('Cancel a ticket')
+  cancel(@Param('id') id: string) {
+    return this.ticketService.cancel(+id);
   }
 
   @Patch('book/:id')
