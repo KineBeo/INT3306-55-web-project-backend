@@ -112,6 +112,21 @@ export class TicketController {
     return this.ticketService.searchByOutboundTime(date, before);
   }
 
+  @Public()
+  @Patch(':id/cancel')
+  @ApiOperation({ summary: 'Cancel a ticket' })
+  @ApiResponse({
+    status: 200,
+    description: 'The ticket has been successfully cancelled.',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Ticket not found.',
+  })
+  cancel(@Param('id') id: string) {
+    return this.ticketService.cancel(+id);
+  }
+
   @Get()
   @AdminEndpoint('Get all tickets')
   findAll() {
