@@ -63,6 +63,19 @@ export class ArticleService {
     }
   }
 
+  async findPublished() {
+    try {
+      const articles = await this.articleRepository.find({
+        where: { status: ArticleStatus.PUBLISHED },
+      });
+      if (!articles) {
+        throw new NotFoundException('No published articles found');
+      }
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
+  }
+
   async findOne(id: number): Promise<Article> {
     try {
       const article = await this.articleRepository.findOne({

@@ -11,7 +11,6 @@ import { FlightService } from './flight.service';
 import { CreateFlightDto } from './dto/create-flight.dto';
 import { UpdateFlightDto } from './dto/update-flight.dto';
 import { ApiTags } from '@nestjs/swagger';
-import { ProtectedEndpoint } from 'src/auth/decorator/authorization.decorator';
 import { AdminEndpoint } from 'src/auth/decorator/admin.decorator';
 
 @Controller('flight')
@@ -20,7 +19,7 @@ export class FlightController {
   constructor(private readonly flightService: FlightService) {}
 
   @Post()
-  @ProtectedEndpoint('Create a flight')
+  @AdminEndpoint('Create a flight')
   create(@Body() createFlightDto: CreateFlightDto) {
     return this.flightService.create(createFlightDto);
   }
