@@ -13,6 +13,7 @@ import { UpdateTicketPassengerDto } from './dto/update-ticket-passenger.dto';
 import { Public } from 'src/auth/decorator/public.decorator';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AdminEndpoint } from 'src/auth/decorator/admin.decorator';
+import { ProtectedEndpoint } from 'src/auth/decorator/authorization.decorator';
 
 @Controller('ticket-passenger')
 @ApiTags('ticket-passenger')
@@ -21,17 +22,8 @@ export class TicketPassengerController {
     private readonly ticketPassengerService: TicketPassengerService,
   ) {}
 
-  @Public()
+  @ProtectedEndpoint('Create a ticket-passenger', 201, 'The ticket-passenger has been successfully created.')
   @Post()
-  @ApiOperation({ summary: 'Create a ticket-passenger' })
-  @ApiResponse({
-    status: 201,
-    description: 'The ticket-passenger has been successfully created.',
-  })
-  @ApiResponse({ status: 400, description: 'Bad Request.' })
-  @ApiResponse({ status: 401, description: 'Unauthorized.' })
-  @ApiResponse({ status: 403, description: 'Forbidden.' })
-  @ApiResponse({ status: 500, description: 'Internal Server Error.' })
   create(@Body() createTicketPassengerDto: CreateTicketPassengerDto) {
     return this.ticketPassengerService.create(createTicketPassengerDto);
   }

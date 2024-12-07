@@ -495,14 +495,16 @@
         ],
         "responses": {
           "200": {
-            "description": "Returns all tickets belonging to the specified user."
-          },
-          "404": {
-            "description": "No tickets found for this user."
+            "description": "Get all tickets belonging to a user operation completed successfully."
           }
         },
         "tags": [
           "ticket"
+        ],
+        "security": [
+          {
+            "JWT-auth": []
+          }
         ]
       }
     },
@@ -688,22 +690,15 @@
         "responses": {
           "201": {
             "description": "The ticket-passenger has been successfully created."
-          },
-          "400": {
-            "description": "Bad Request."
-          },
-          "401": {
-            "description": "Unauthorized."
-          },
-          "403": {
-            "description": "Forbidden."
-          },
-          "500": {
-            "description": "Internal Server Error."
           }
         },
         "tags": [
           "ticket-passenger"
+        ],
+        "security": [
+          {
+            "JWT-auth": []
+          }
         ]
       },
       "get": {

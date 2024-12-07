@@ -14,6 +14,7 @@ import { UpdateArticleDto } from './dto/update-article.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AdminEndpoint } from 'src/auth/decorator/admin.decorator';
 import { Article } from './entities/article.entity';
+import { Public } from 'src/auth/decorator/public.decorator';
 
 @Controller('article')
 @ApiTags('article')
@@ -33,6 +34,7 @@ export class ArticleController {
     return this.articleService.findAll();
   }
 
+  @Public()
   @Get('published')
   @ApiOperation({ summary: 'Get all published articles' })
   @ApiResponse({
@@ -45,6 +47,7 @@ export class ArticleController {
     return this.articleService.findPublished();
   }
 
+  @Public()
   @Get(':id')
   @ApiOperation({ summary: 'Get article by id' })
   @ApiResponse({

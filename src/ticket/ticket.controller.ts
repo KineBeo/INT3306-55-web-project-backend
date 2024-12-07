@@ -78,17 +78,8 @@ export class TicketController {
     return this.ticketService.searchByOutboundTime(date, before);
   }
 
-  @Public()
+  @ProtectedEndpoint('Get all tickets belonging to a user')
   @Get('user/:userId')
-  @ApiOperation({ summary: 'Get all tickets belonging to a user' })
-  @ApiResponse({
-    status: 200,
-    description: 'Returns all tickets belonging to the specified user.',
-  })
-  @ApiResponse({
-    status: 404,
-    description: 'No tickets found for this user.',
-  })
   findAllByUserId(@Param('userId') userId: string) {
     return this.ticketService.findAllByUserId(+userId);
   }
