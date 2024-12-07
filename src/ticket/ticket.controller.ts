@@ -14,9 +14,9 @@ import { UpdateTicketDto } from './dto/update-ticket.dto';
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Public } from 'src/auth/decorator/public.decorator';
 import { AdminEndpoint } from 'src/auth/decorator/admin.decorator';
-import { TicketType } from 'src/enum/ticket/ticket_type';
 import { ProtectedEndpoint } from 'src/auth/decorator/authorization.decorator';
 import { BookTicketDto } from './dto/book-ticket.dto';
+import { SearchTicketDto } from './dto/search-ticket.dto';
 
 @Controller('ticket')
 @ApiTags('ticket')
@@ -41,46 +41,8 @@ export class TicketController {
     status: 200,
     description: 'The tickets have been successfully retrieved.',
   })
-  @ApiQuery({
-    name: 'ticket_type',
-    example: 'ROUND_TRIP',
-    description: 'Type of the ticket',
-  })
-  @ApiQuery({
-    name: 'departure_airport_code',
-    example: 'JFK',
-    description: 'Code of the departure airport',
-  })
-  @ApiQuery({
-    name: 'arrival_airport_code',
-    example: 'LAX',
-    description: 'Code of the arrival airport',
-  })
-  @ApiQuery({
-    name: 'outbound_day',
-    example: '2023-12-01',
-    description: 'Departure date of the flight (day, month, and year)',
-  })
-  @ApiQuery({
-    name: 'return_day',
-    example: '2023-12-03',
-    description: 'Return date of the flight (day, month, and year)',
-    required: false,
-  })
-  search(
-    @Query('ticket_type') ticketType: TicketType,
-    @Query('departure_airport_code') departureAirportCode: string,
-    @Query('arrival_airport_code') arrivalAirportCode: string,
-    @Query('outbound_day') outboundDay: string,
-    @Query('return_day') returnDay?: string,
-  ) {
-    return this.ticketService.search(
-      ticketType,
-      departureAirportCode,
-      arrivalAirportCode,
-      outboundDay,
-      returnDay,
-    );
+  search(@Query() searchTicketDto: SearchTicketDto) {
+    return this.ticketService.search(searchTicketDto);
   }
 
   @Public()

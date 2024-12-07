@@ -9,6 +9,7 @@ import { Flight } from 'src/flight/entities/flight.entity';
 import { TicketType } from 'src/enum/ticket/ticket_type';
 import { BookingStatus } from 'src/enum/ticket/booking_status';
 import { BookTicketDto } from './dto/book-ticket.dto';
+import { SearchTicketDto } from './dto/search-ticket.dto';
 
 @Injectable()
 export class TicketService {
@@ -102,17 +103,19 @@ export class TicketService {
     }
   }
 
-  async search(
-    ticketType: TicketType,
-    departureAirportCode: string,
-    arrivalAirportCode: string,
-    outboundDay: string,
-    returnDay?: string,
-  ): Promise<Ticket[]> {
+  async search(searchTicketDto: SearchTicketDto): Promise<Ticket[]> {
     try {
-      const startOfOutboundDay = new Date(outboundDay);
+      const { 
+        ticket_type, 
+        departure_airport_code, 
+        arrival_airport_code, 
+        outbound_day, 
+        return_day 
+      } = searchTicketDto;
+
+      const startOfOutboundDay = new Date(outbound_day);
       startOfOutboundDay.setHours(0, 0, 0, 0);
-      const endOfOutboundDay = new Date(outboundDay);
+      const endOfOutboundDay = new Date(outbound_day);
       endOfOutboundDay.setHours(23, 59, 59, 999);
 
       let ticketsQuery = this.ticketRepository
@@ -135,22 +138,22 @@ export class TicketService {
           'returnFlight.arrival_airport',
           'returnArrivalAirport',
         )
-        .where('ticket.ticket_type = :ticketType', { ticketType })
-        .andWhere('outboundDepartureAirport.code = :departureAirportCode', {
-          departureAirportCode,
+        .where('ticket.ticket_type = :ticket_type', { ticket_type })
+        .andWhere('outboundDepartureAirport.code = :departure_airport_code', {
+          departure_airport_code,
         })
-        .andWhere('outboundArrivalAirport.code = :arrivalAirportCode', {
-          arrivalAirportCode,
+        .andWhere('outboundArrivalAirport.code = :arrival_airport_code', {
+          arrival_airport_code,
         })
         .andWhere(
           'outboundFlight.departure_time BETWEEN :startOfOutboundDay AND :endOfOutboundDay',
           { startOfOutboundDay, endOfOutboundDay },
         );
 
-      if (ticketType === TicketType.ROUND_TRIP && returnDay) {
-        const startOfReturnDay = new Date(returnDay);
+      if (ticket_type === TicketType.ROUND_TRIP && return_day) {
+        const startOfReturnDay = new Date(return_day);
         startOfReturnDay.setHours(0, 0, 0, 0);
-        const endOfReturnDay = new Date(returnDay);
+        const endOfReturnDay = new Date(return_day);
         endOfReturnDay.setHours(23, 59, 59, 999);
 
         ticketsQuery = ticketsQuery.andWhere(
