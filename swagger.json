@@ -77,7 +77,7 @@
     "/user/id/{id}": {
       "get": {
         "operationId": "UserController_findOne",
-        "summary": "Find a user by id",
+        "summary": "Find a user by id. The user can only access their own information.",
         "parameters": [
           {
             "name": "id",
@@ -104,7 +104,7 @@
       },
       "patch": {
         "operationId": "UserController_update",
-        "summary": "Update a user by id",
+        "summary": "Update a user by id. The user can only update their own information.",
         "parameters": [
           {
             "name": "id",
@@ -482,7 +482,7 @@
     "/ticket/user/{userId}": {
       "get": {
         "operationId": "TicketController_findAllByUserId",
-        "summary": "Get all tickets belonging to a user",
+        "summary": "Get all tickets belonging to a user. The user can only access their own tickets",
         "parameters": [
           {
             "name": "userId",
@@ -495,7 +495,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Get all tickets belonging to a user operation completed successfully."
+            "description": "Get all tickets belonging to a user. The user can only access their own tickets operation completed successfully."
           }
         },
         "tags": [

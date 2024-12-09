@@ -66,11 +66,21 @@ export class ArticleService {
   async findPublished() {
     try {
       const articles = await this.articleRepository.find({
+        relations: ['user'],
         where: { status: ArticleStatus.PUBLISHED },
       });
       if (!articles) {
         throw new NotFoundException('No published articles found');
       }
+
+      return articles.map((article) => {
+        const { user, ...rest } = article;
+        if (user) {
+          const { id, fullname } = user;
+          return { ...rest, user: { id, fullname } };
+        }
+        return rest;
+      });
     } catch (error) {
       throw new BadRequestException(error.message);
     }
