@@ -1,6 +1,6 @@
 ## Description
 QAirline backend.
-- Link: https://int3306-55-web-project-backend.onrender.com/api#/
+- Link: https://int3306-55-web-project-backend-vumt.onrender.com
 
 ## Project setup
 
