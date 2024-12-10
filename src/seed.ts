@@ -521,18 +521,18 @@ const createArticleData = async () => {
 
 // ENTRY POINT
 const deleteData = async () => {
-  // await deleteTicketData();
-  // await deleteFlightData();
-  // await deleteAirportData();
-  // await deleteAirplaneData();
+  await deleteTicketData();
+  await deleteFlightData();
+  await deleteAirportData();
+  await deleteAirplaneData();
   await deleteArticleData();
 };
 
 const createData = async () => {
-  // await createAirportData();
-  // await createAirplaneData();
-  // await createFlightData();
-  // await createTicketData();
+  await createAirportData();
+  await createAirplaneData();
+  await createFlightData();
+  await createTicketData();
   await createArticleData();
 };
 

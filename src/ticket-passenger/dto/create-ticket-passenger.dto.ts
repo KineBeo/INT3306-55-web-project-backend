@@ -18,7 +18,7 @@ export class CreateTicketPassengerDto {
   @ApiProperty({
     enum: PassengerType,
     description: 'Passenger type',
-    example: PassengerType.ADULT,
+    example: PassengerType.INFANT,
   })
   @IsEnum(PassengerType)
   @IsNotEmpty()
@@ -26,7 +26,7 @@ export class CreateTicketPassengerDto {
 
   @ApiProperty({
     description: 'Associated adult ID',
-    example: 1,
+    example: 2,
   })
   @IsOptional()
   @IsNumber()
@@ -35,7 +35,7 @@ export class CreateTicketPassengerDto {
 
   @ApiProperty({
     description: 'Ticket ID',
-    example: 1,
+    example: 9,
   })
   @IsNumber()
   @IsNotEmpty()
@@ -43,7 +43,7 @@ export class CreateTicketPassengerDto {
 
   @ApiProperty({
     description: 'Full name',
-    example: 'John Doe',
+    example: 'John Wicked',
   })
   @IsString()
   @IsNotEmpty()
@@ -53,7 +53,7 @@ export class CreateTicketPassengerDto {
 
   @ApiProperty({
     description: 'Birthday',
-    example: '2021-12-31',
+    example: '2023-01-31',
   })
   @Type(() => Date)
   @IsNotEmpty()
@@ -61,7 +61,7 @@ export class CreateTicketPassengerDto {
 
   @ApiProperty({
     description: 'CCCD',
-    example: '123456789',
+    example: '123456101',
   })
   @IsNumberString()
   @IsNotEmpty()
