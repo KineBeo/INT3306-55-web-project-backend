@@ -89,7 +89,9 @@ export class FlightService {
    */
   async findAll(): Promise<Flight[]> {
     try {
-      const flights = await this.flightRepository.find();
+      const flights = await this.flightRepository.find({
+        relations: ['departure_airport', 'arrival_airport', 'airplane'],
+      });
       if (!flights) {
         throw new NotFoundException('No flights found');
       }
@@ -107,7 +109,10 @@ export class FlightService {
    */
   async findOne(id: number): Promise<Flight> {
     try {
-      const flight = await this.flightRepository.findOne({ where: { id } });
+      const flight = await this.flightRepository.findOne({
+        where: { id },
+        relations: ['departure_airport', 'arrival_airport', 'airplane'],
+      });
       if (!flight) {
         throw new NotFoundException(`Flight with ID ${id} not found`);
       }
@@ -132,11 +137,17 @@ export class FlightService {
 
       let calculatedDuration = flight.duration;
       // Calculate new duration if arrival_time, departure_time, or delay_duration changed
-      if (updateFlightDto.arrival_time || updateFlightDto.departure_time || updateFlightDto.delay_duration) {
-        const departureTime = updateFlightDto.departure_time || flight.departure_time;
+      if (
+        updateFlightDto.arrival_time ||
+        updateFlightDto.departure_time ||
+        updateFlightDto.delay_duration
+      ) {
+        const departureTime =
+          updateFlightDto.departure_time || flight.departure_time;
         const arrivalTime = updateFlightDto.arrival_time || flight.arrival_time;
-        const delayDuration = updateFlightDto.delay_duration || flight.delay_duration;
-        
+        const delayDuration =
+          updateFlightDto.delay_duration || flight.delay_duration;
+
         calculatedDuration = (
           arrivalTime.getTime() -
           (departureTime.getTime() + parseInt(delayDuration))
