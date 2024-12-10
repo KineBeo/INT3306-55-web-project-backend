@@ -48,7 +48,7 @@ export class CreateFlightDto {
 
   @ApiProperty({
     description: 'Base price',
-    example: '1000000',
+    example: '2000000',
   })
   @IsNumberString()
   @IsNotEmpty()
@@ -58,7 +58,7 @@ export class CreateFlightDto {
 
   @ApiProperty({
     description: 'Departure time',
-    example: '2021-12-30T23:59:59Z',
+    example: '2023-12-30T23:59:59Z',
   })
   @Type(() => Date)
   @IsDate()
@@ -66,19 +66,19 @@ export class CreateFlightDto {
 
   @ApiProperty({
     description: 'Arrival time',
-    example: '2021-12-31T23:59:59Z',
+    example: '2023-12-31T23:59:59Z',
   })
   @Type(() => Date)
   @IsDate()
   arrival_time: Date;
 
   @ApiProperty({
-    description: 'Delay duration',
-    example: '1000000',
+    description: 'Delay duration in milliseconds',
+    example: '100',
   })
   @IsNumberString()
   @IsNotEmpty()
   @MinLength(1)
-  @MaxLength(20)
+  @MaxLength(1000)
   delay_duration: string;
 }

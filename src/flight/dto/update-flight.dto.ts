@@ -79,13 +79,13 @@ export class UpdateFlightDto {
   arrival_time?: Date;
 
   @ApiProperty({
-    description: 'Delay duration',
+    description: 'Delay duration in milliseconds',
     example: '1000000',
   })
   @IsNumberString()
   @IsNotEmpty()
   @MinLength(1)
-  @MaxLength(20)
+  @MaxLength(1000)
   @IsOptional()
   delay_duration?: string;
 
