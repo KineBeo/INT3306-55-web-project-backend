@@ -72,7 +72,7 @@ export class TicketPassengerService {
         createTicketPassengerDto;
 
       // Validate age based on passenger type
-      this.validatePassengerAge(passenger_type, birthday);
+      this.validatePassengerAge(passenger_type, new Date(birthday));
 
       // Validate associated adult for non-adult passengers
       if (passenger_type === PassengerType.INFANT) {

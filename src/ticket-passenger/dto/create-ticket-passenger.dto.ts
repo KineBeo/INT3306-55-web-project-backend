@@ -53,7 +53,7 @@ export class CreateTicketPassengerDto {
 
   @ApiProperty({
     description: 'Birthday',
-    example: '2021-12-31T23:59:59Z',
+    example: '2021-12-31',
   })
   @Type(() => Date)
   @IsNotEmpty()
