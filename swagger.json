@@ -1793,33 +1793,33 @@
               "INFANT"
             ],
             "description": "Passenger type",
-            "example": "ADULT"
+            "example": "INFANT"
           },
           "associated_adult_id": {
             "type": "number",
             "description": "Associated adult ID",
-            "example": 1
+            "example": 2
           },
           "ticket_id": {
             "type": "number",
             "description": "Ticket ID",
-            "example": 1
+            "example": 9
           },
           "full_name": {
             "type": "string",
             "description": "Full name",
-            "example": "John Doe"
+            "example": "John Wicked"
           },
           "birthday": {
             "format": "date-time",
             "type": "string",
             "description": "Birthday",
-            "example": "2021-12-31"
+            "example": "2023-01-31"
           },
           "cccd": {
             "type": "string",
             "description": "CCCD",
-            "example": "123456789"
+            "example": "123456101"
           },
           "country_code": {
             "type": "string",
@@ -1898,17 +1898,17 @@
           "departure_airport_id": {
             "type": "number",
             "description": "Departure airport ID",
-            "example": 1
+            "example": 25
           },
           "arrival_airport_id": {
             "type": "number",
             "description": "Arrival airport ID",
-            "example": 2
+            "example": 26
           },
           "airplane_id": {
             "type": "number",
             "description": "Airplane ID",
-            "example": 3
+            "example": 17
           },
           "flight_number": {
             "type": "string",
@@ -1924,18 +1924,13 @@
             "format": "date-time",
             "type": "string",
             "description": "Departure time",
-            "example": "2021-12-31T23:59:59Z"
+            "example": "2021-12-30T23:59:59Z"
           },
           "arrival_time": {
             "format": "date-time",
             "type": "string",
             "description": "Arrival time",
             "example": "2021-12-31T23:59:59Z"
-          },
-          "duration": {
-            "type": "string",
-            "description": "Flight duration",
-            "example": "1000000"
           },
           "delay_duration": {
             "type": "string",
@@ -1951,7 +1946,6 @@
           "base_price",
           "departure_time",
           "arrival_time",
-          "duration",
           "delay_duration"
         ]
       },
@@ -1961,17 +1955,17 @@
           "departure_airport_id": {
             "type": "number",
             "description": "Departure airport ID",
-            "example": 1
+            "example": 25
           },
           "arrival_airport_id": {
             "type": "number",
             "description": "Arrival airport ID",
-            "example": 2
+            "example": 26
           },
-          "airline_id": {
+          "airplane_id": {
             "type": "number",
-            "description": "Airline ID",
-            "example": 3
+            "description": "Airplae ID",
+            "example": 17
           },
           "flight_number": {
             "type": "string",
@@ -1987,18 +1981,13 @@
             "format": "date-time",
             "type": "string",
             "description": "Departure time",
-            "example": "2021-12-31T23:59:59Z"
+            "example": "2021-12-30T23:59:59Z"
           },
           "arrival_time": {
             "format": "date-time",
             "type": "string",
             "description": "Arrival time",
             "example": "2021-12-31T23:59:59Z"
-          },
-          "duration": {
-            "type": "string",
-            "description": "Flight duration",
-            "example": "1000000"
           },
           "delay_duration": {
             "type": "string",
@@ -2014,12 +2003,11 @@
         "required": [
           "departure_airport_id",
           "arrival_airport_id",
-          "airline_id",
+          "airplane_id",
           "flight_number",
           "base_price",
           "departure_time",
           "arrival_time",
-          "duration",
           "delay_duration",
           "status"
         ]

@@ -59,11 +59,19 @@ export class FlightService {
         throw new BadRequestException('Airplane not found');
       }
 
+      const arrivalTime = new Date(createFlightDto.arrival_time);
+      const departureTime = new Date(createFlightDto.departure_time);
+      const calculatedDuration = (
+        arrivalTime.getTime() -
+        (departureTime.getTime() + parseInt(createFlightDto.delay_duration))
+      ).toString();
+
       const newFlight = this.flightRepository.create({
         departure_airport: departure_airport,
         arrival_airport: arrival_airport,
         airplane: airplane,
         ...createFlightDto,
+        duration: calculatedDuration,
         status: FlightStatus.SCHEDULED,
         created_at: new Date(),
         updated_at: new Date(),
@@ -122,7 +130,21 @@ export class FlightService {
         throw new NotFoundException(`Flight with ID ${id} not found`);
       }
 
+      let calculatedDuration = flight.duration;
+      // Calculate new duration if arrival_time, departure_time, or delay_duration changed
+      if (updateFlightDto.arrival_time || updateFlightDto.departure_time || updateFlightDto.delay_duration) {
+        const departureTime = updateFlightDto.departure_time || flight.departure_time;
+        const arrivalTime = updateFlightDto.arrival_time || flight.arrival_time;
+        const delayDuration = updateFlightDto.delay_duration || flight.delay_duration;
+        
+        calculatedDuration = (
+          arrivalTime.getTime() -
+          (departureTime.getTime() + parseInt(delayDuration))
+        ).toString();
+      }
+
       const updatedFlight = Object.assign(flight, updateFlightDto, {
+        duration: calculatedDuration,
         updated_at: new Date(),
       });
 

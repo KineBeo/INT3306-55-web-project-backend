@@ -6,7 +6,6 @@ import {
   IsNumberString,
   IsPositive,
   IsString,
-  Max,
   MaxLength,
   MinLength,
 } from 'class-validator';
@@ -15,7 +14,7 @@ import { Type } from 'class-transformer';
 export class CreateFlightDto {
   @ApiProperty({
     description: 'Departure airport ID',
-    example: 1,
+    example: 25,
   })
   @IsNumber()
   @IsPositive()
@@ -23,7 +22,7 @@ export class CreateFlightDto {
 
   @ApiProperty({
     description: 'Arrival airport ID',
-    example: 2,
+    example: 26,
   })
   @IsNumber()
   @IsPositive()
@@ -31,7 +30,7 @@ export class CreateFlightDto {
 
   @ApiProperty({
     description: 'Airplane ID',
-    example: 3,
+    example: 17,
   })
   @IsNumber()
   @IsPositive()
@@ -59,9 +58,10 @@ export class CreateFlightDto {
 
   @ApiProperty({
     description: 'Departure time',
-    example: '2021-12-31T23:59:59Z',
+    example: '2021-12-30T23:59:59Z',
   })
   @Type(() => Date)
+  @IsDate()
   departure_time: Date;
 
   @ApiProperty({
@@ -69,17 +69,8 @@ export class CreateFlightDto {
     example: '2021-12-31T23:59:59Z',
   })
   @Type(() => Date)
+  @IsDate()
   arrival_time: Date;
-
-  @ApiProperty({
-    description: 'Flight duration',
-    example: '1000000',
-  })
-  @IsNumberString()
-  @IsNotEmpty()
-  @MinLength(1)
-  @MaxLength(20)
-  duration: string;
 
   @ApiProperty({
     description: 'Delay duration',

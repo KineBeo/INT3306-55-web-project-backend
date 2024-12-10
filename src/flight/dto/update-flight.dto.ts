@@ -6,7 +6,6 @@ import {
   IsNotEmpty,
   MinLength,
   MaxLength,
-  Max,
   IsNumberString,
   IsDate,
   IsOptional,
@@ -16,7 +15,7 @@ import { FlightStatus } from 'src/enum/flight/flight_status';
 export class UpdateFlightDto {
   @ApiProperty({
     description: 'Departure airport ID',
-    example: 1,
+    example: 25,
   })
   @IsNumber()
   @IsPositive()
@@ -25,7 +24,7 @@ export class UpdateFlightDto {
 
   @ApiProperty({
     description: 'Arrival airport ID',
-    example: 2,
+    example: 26,
   })
   @IsNumber()
   @IsPositive()
@@ -33,13 +32,13 @@ export class UpdateFlightDto {
   arrival_airport_id?: number;
 
   @ApiProperty({
-    description: 'Airline ID',
-    example: 3,
+    description: 'Airplae ID',
+    example: 17,
   })
   @IsNumber()
   @IsPositive()
   @IsOptional()
-  airline_id?: number;
+  airplane_id?: number;
 
   @ApiProperty({
     description: 'Departure airport code',
@@ -65,7 +64,7 @@ export class UpdateFlightDto {
 
   @ApiProperty({
     description: 'Departure time',
-    example: '2021-12-31T23:59:59Z',
+    example: '2021-12-30T23:59:59Z',
   })
   @IsDate()
   @IsOptional()
@@ -78,17 +77,6 @@ export class UpdateFlightDto {
   @IsDate()
   @IsOptional()
   arrival_time?: Date;
-
-  @ApiProperty({
-    description: 'Flight duration',
-    example: '1000000',
-  })
-  @IsNumberString()
-  @IsNotEmpty()
-  @MinLength(1)
-  @MaxLength(20)
-  @IsOptional()
-  duration?: string;
 
   @ApiProperty({
     description: 'Delay duration',
