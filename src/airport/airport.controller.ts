@@ -12,6 +12,7 @@ import { CreateAirportDto } from './dto/create-airport.dto';
 import { UpdateAirportDto } from './dto/update-airport.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { AdminEndpoint } from 'src/auth/decorator/admin.decorator';
+import { Public } from 'src/auth/decorator/public.decorator';
 
 @Controller('airport')
 @ApiTags('airport')
@@ -24,14 +25,14 @@ export class AirportController {
     return this.airportService.create(createAirportDto);
   }
 
+  @Public('Get all airports')
   @Get()
-  @AdminEndpoint('Get all airports')
   findAll() {
     return this.airportService.findAll();
   }
 
+  @Public('Find an airport by id')
   @Get(':id')
-  @AdminEndpoint('Find an airport by id')
   findOne(@Param('id') id: string) {
     return this.airportService.findOne(+id);
   }

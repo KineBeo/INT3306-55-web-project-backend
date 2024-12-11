@@ -985,27 +985,22 @@
       },
       "get": {
         "operationId": "AirportController_findAll",
-        "summary": "ADMIN: Get all airports",
+        "summary": "PUBLIC: Get all airports",
         "parameters": [],
         "responses": {
           "200": {
-            "description": "Get all airports operation completed successfully."
+            "description": ""
           }
         },
         "tags": [
           "airport"
-        ],
-        "security": [
-          {
-            "JWT-auth": []
-          }
         ]
       }
     },
     "/airport/{id}": {
       "get": {
         "operationId": "AirportController_findOne",
-        "summary": "ADMIN: Find an airport by id",
+        "summary": "PUBLIC: Find an airport by id",
         "parameters": [
           {
             "name": "id",
@@ -1018,16 +1013,11 @@
         ],
         "responses": {
           "200": {
-            "description": "Find an airport by id operation completed successfully."
+            "description": ""
           }
         },
         "tags": [
           "airport"
-        ],
-        "security": [
-          {
-            "JWT-auth": []
-          }
         ]
       },
       "patch": {
