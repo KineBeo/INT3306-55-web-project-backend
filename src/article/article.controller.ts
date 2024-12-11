@@ -34,12 +34,13 @@ export class ArticleController {
     return this.articleService.findAll();
   }
 
-  @Public()
-  @Get('published')
-  @ApiOperation({ summary: 'Get all published articles' })
-  @ApiResponse({
-    status: 200,
+  @Public({
+    summary: 'Get all published articles',
     description: 'Returns all published articles',
+    status: 200
+  })
+  @Get('published')
+  @ApiResponse({
     type: [Article],
   })
   @ApiResponse({ status: 400, description: 'Bad request' })
@@ -47,12 +48,13 @@ export class ArticleController {
     return this.articleService.findPublished();
   }
 
-  @Public()
-  @Get(':id')
-  @ApiOperation({ summary: 'Get article by id' })
-  @ApiResponse({
-    status: 200,
+  @Public({
+    summary: 'Get article by id',
     description: 'Returns a single article',
+    status: 200
+  })
+  @Get(':id')
+  @ApiResponse({
     type: Article,
   })
   @ApiResponse({ status: 404, description: 'Article not found' })

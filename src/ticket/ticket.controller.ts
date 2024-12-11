@@ -36,42 +36,33 @@ export class TicketController {
     return this.ticketService.create(createTicketDto);
   }
 
-  @Public()
-  @Get('search')
-  @ApiOperation({ summary: 'Search tickets' })
-  @ApiResponse({
-    status: 200,
+  @Public({
+    summary: 'Search tickets',
     description: 'The tickets have been successfully retrieved.',
+    status: 200
   })
+  @Get('search')
   search(@Query() searchTicketDto: SearchTicketDto) {
     return this.ticketService.search(searchTicketDto);
   }
 
-  @Public()
-  @Get('search-by-outbound-time')
-  @ApiOperation({
+  @Public({
     summary: 'Search tickets by outbound flight time',
-    description:
-      'Find tickets where outbound flight departs before or after a specified date',
+    description: 'Find tickets where outbound flight departs before or after a specified date',
+    status: 200
   })
-  @ApiResponse({
-    status: 200,
-    description: 'Returns tickets matching the time criteria',
-  })
+  @Get('search-by-outbound-time')
   @ApiQuery({
     name: 'date',
     required: true,
     type: String,
     example: '2023-12-25',
-    description: 'The reference date in YYYY-MM-DD format',
   })
   @ApiQuery({
     name: 'before',
     required: true,
     type: Boolean,
     example: true,
-    description:
-      'If true, finds flights before the date. If false, finds flights after the date',
   })
   searchByOutboundTime(
     @Query('date') date: string,

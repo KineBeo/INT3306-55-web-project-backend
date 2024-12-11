@@ -6,7 +6,7 @@ import { Public } from './auth/decorator/public.decorator';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Public()
+  @Public({ summary: 'Get Hello', description: 'Returns a greeting message', status: 200 })
   @Get()
   getHello(): string {
     return this.appService.getHello();

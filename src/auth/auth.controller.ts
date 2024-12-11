@@ -28,37 +28,22 @@ import { CreateUserDto } from 'src/user/dto/create-user.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Public()
+  @Public({ summary: 'Register new user', status: 201, description: 'User successfully registered.' })
   @Post('register')
-  @ApiOperation({ summary: 'Register new user' })
-  @ApiResponse({
-    status: 201,
-    description: 'User successfully registered.',
-  })
   @ApiBody({ type: CreateUserDto })
   async register(@Body() createUserDto: CreateUserDto) {
     return this.authService.register(createUserDto);
   }
 
-  @Public()
+  @Public({ summary: 'Login user', status: 200, description: 'User successfully logged in.' })
   @Post('login')
-  @ApiOperation({ summary: 'Login user' })
-  @ApiResponse({
-    status: 200,
-    description: 'User successfully logged in.',
-  })
   @ApiBody({ type: LoginDto })
   async login(@Body() loginDto: LoginDto) {
     return this.authService.login(loginDto.phone_number, loginDto.password);
   }
 
-  @Public()
+  @Public({ summary: 'Refresh access token', status: 200, description: 'Token successfully refreshed.' })
   @Post('refresh')
-  @ApiOperation({ summary: 'Refresh access token' })
-  @ApiResponse({
-    status: 200,
-    description: 'Token successfully refreshed.',
-  })
   @ApiBody({ type: RefreshTokenDto })
   async refreshToken(@Body() refreshTokenDto: RefreshTokenDto) {
     return this.authService.refreshAccessToken(refreshTokenDto.refreshToken);

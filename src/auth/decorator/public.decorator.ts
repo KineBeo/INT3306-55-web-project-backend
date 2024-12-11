@@ -1,13 +1,28 @@
 import { SetMetadata, applyDecorators } from '@nestjs/common';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 export const IS_PUBLIC_KEY = 'isPublic';
-export const Public = (summary?: string) => {
-  if (summary) {
-    return applyDecorators(
-      SetMetadata(IS_PUBLIC_KEY, true),
-      ApiOperation({ summary: `PUBLIC: ${summary}` })
+export interface PublicOptions {
+  summary: string;
+  description?: string;
+  status?: number;
+}
+
+export const Public = (options: PublicOptions | string) => {
+  const opts = typeof options === 'string' ? { summary: options } : options;
+  const decorators = [
+    SetMetadata(IS_PUBLIC_KEY, true),
+    ApiOperation({ summary: `PUBLIC: ${opts.summary}` }),
+  ];
+
+  if (opts.description || opts.status) {
+    decorators.push(
+      ApiResponse({
+        status: opts.status || 200,
+        description: opts.description,
+      })
     );
   }
-  return SetMetadata(IS_PUBLIC_KEY, true);
+
+  return applyDecorators(...decorators);
 };

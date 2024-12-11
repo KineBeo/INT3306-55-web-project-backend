@@ -4,10 +4,11 @@
     "/": {
       "get": {
         "operationId": "AppController_getHello",
+        "summary": "PUBLIC: Get Hello",
         "parameters": [],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Returns a greeting message"
           }
         }
       }
@@ -209,7 +210,7 @@
     "/auth/register": {
       "post": {
         "operationId": "AuthController_register",
-        "summary": "Register new user",
+        "summary": "PUBLIC: Register new user",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -234,7 +235,7 @@
     "/auth/login": {
       "post": {
         "operationId": "AuthController_login",
-        "summary": "Login user",
+        "summary": "PUBLIC: Login user",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -259,7 +260,7 @@
     "/auth/refresh": {
       "post": {
         "operationId": "AuthController_refreshToken",
-        "summary": "Refresh access token",
+        "summary": "PUBLIC: Refresh access token",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -375,7 +376,7 @@
     "/ticket/search": {
       "get": {
         "operationId": "TicketController_search",
-        "summary": "Search tickets",
+        "summary": "PUBLIC: Search tickets",
         "parameters": [
           {
             "name": "ticket_type",
@@ -445,14 +446,12 @@
     "/ticket/search-by-outbound-time": {
       "get": {
         "operationId": "TicketController_searchByOutboundTime",
-        "summary": "Search tickets by outbound flight time",
-        "description": "Find tickets where outbound flight departs before or after a specified date",
+        "summary": "PUBLIC: Search tickets by outbound flight time",
         "parameters": [
           {
             "name": "date",
             "required": true,
             "in": "query",
-            "description": "The reference date in YYYY-MM-DD format",
             "schema": {
               "example": "2023-12-25",
               "type": "string"
@@ -462,7 +461,6 @@
             "name": "before",
             "required": true,
             "in": "query",
-            "description": "If true, finds flights before the date. If false, finds flights after the date",
             "schema": {
               "example": true,
               "type": "boolean"
@@ -471,7 +469,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Returns tickets matching the time criteria"
+            "description": "Find tickets where outbound flight departs before or after a specified date"
           }
         },
         "tags": [
@@ -989,7 +987,7 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Returns a list of all airports"
           }
         },
         "tags": [
@@ -1013,7 +1011,7 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Returns a single airport by its ID"
           }
         },
         "tags": [
@@ -1277,11 +1275,17 @@
     "/article/published": {
       "get": {
         "operationId": "ArticleController_findPublished",
-        "summary": "Get all published articles",
+        "summary": "PUBLIC: Get all published articles",
         "parameters": [],
         "responses": {
           "200": {
-            "description": "Returns all published articles",
+            "description": "Returns all published articles"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "default": {
+            "description": "",
             "content": {
               "application/json": {
                 "schema": {
@@ -1292,9 +1296,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "Bad request"
           }
         },
         "tags": [
@@ -1305,7 +1306,7 @@
     "/article/{id}": {
       "get": {
         "operationId": "ArticleController_findOne",
-        "summary": "Get article by id",
+        "summary": "PUBLIC: Get article by id",
         "parameters": [
           {
             "name": "id",
@@ -1318,7 +1319,16 @@
         ],
         "responses": {
           "200": {
-            "description": "Returns a single article",
+            "description": "Returns a single article"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Article not found"
+          },
+          "default": {
+            "description": "",
             "content": {
               "application/json": {
                 "schema": {
@@ -1326,12 +1336,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "Bad request"
-          },
-          "404": {
-            "description": "Article not found"
           }
         },
         "tags": [

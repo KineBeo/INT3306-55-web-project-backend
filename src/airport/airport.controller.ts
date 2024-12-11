@@ -25,13 +25,21 @@ export class AirportController {
     return this.airportService.create(createAirportDto);
   }
 
-  @Public('Get all airports')
+  @Public({
+    summary: 'Get all airports',
+    description: 'Returns a list of all airports',
+    status: 200
+  })
   @Get()
   findAll() {
     return this.airportService.findAll();
   }
 
-  @Public('Find an airport by id')
+  @Public({
+    summary: 'Find an airport by id',
+    description: 'Returns a single airport by its ID',
+    status: 200
+  })
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.airportService.findOne(+id);
