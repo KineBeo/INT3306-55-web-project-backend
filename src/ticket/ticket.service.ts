@@ -30,13 +30,17 @@ export class TicketService {
         base_price,
         total_passengers,
       } = createTicketDto;
-      console.log('user_id', user_id);
-      const user = await this.userRepository.findOne({
-        where: { id: user_id },
-      });
-      if (!user) {
-        throw new BadRequestException('User does not exist');
+
+      let user = null;
+      if (user_id) {
+        user = await this.userRepository.findOne({
+          where: { id: user_id },
+        });
+        if (!user) {
+          throw new BadRequestException('User does not exist');
+        }
       }
+      
       const outbound_flight = await this.flightRepository.findOne({
         where: { id: outbound_flight_id },
       });
@@ -45,31 +49,34 @@ export class TicketService {
         throw new BadRequestException('Outbound flight does not exist');
       }
 
-      const return_flight = await this.flightRepository.findOne({
-        where: { id: return_flight_id },
-      });
+      let return_flight = null;
+      if (return_flight_id) {
+        return_flight = await this.flightRepository.findOne({
+          where: { id: return_flight_id },
+        });
 
-      if (!return_flight) {
-        throw new BadRequestException('Return flight does not exist');
-      }
+        if (!return_flight) {
+          throw new BadRequestException('Return flight does not exist');
+        }
 
-      // Check if outbound flight's arrival date is before return flight's departure date
-      if (outbound_flight.arrival_time >= return_flight.departure_time) {
-        throw new BadRequestException(
-          'Outbound flight arrival time must be before return flight departure time',
-        );
-      }
+        // Check if outbound flight's arrival date is before return flight's departure date
+        if (outbound_flight.arrival_time >= return_flight.departure_time) {
+          throw new BadRequestException(
+            'Outbound flight arrival time must be before return flight departure time',
+          );
+        }
 
-      if (outbound_flight.departure_airport !== return_flight.arrival_airport) {
-        throw new BadRequestException(
-          'Outbound flight departure airport must be the same as return flight arrival airport',
-        );
-      }
+        if (outbound_flight.departure_airport !== return_flight.arrival_airport) {
+          throw new BadRequestException(
+            'Outbound flight departure airport must be the same as return flight arrival airport',
+          );
+        }
 
-      if (outbound_flight.arrival_airport !== return_flight.departure_airport) {
-        throw new BadRequestException(
-          'Outbound flight arrival airport must be the same as return flight departure airport',
-        );
+        if (outbound_flight.arrival_airport !== return_flight.departure_airport) {
+          throw new BadRequestException(
+            'Outbound flight arrival airport must be the same as return flight departure airport',
+          );
+        }
       }
 
       // Calculate ticket prices
@@ -248,6 +255,27 @@ export class TicketService {
       if (!ticket) {
         throw new BadRequestException(`Ticket with id ${id} not found`);
       }
+
+      if (updateTicketDto.outbound_flight_id) {
+        const outbound_flight = await this.flightRepository.findOne({
+          where: { id: updateTicketDto.outbound_flight_id },
+        });
+        if (!outbound_flight) {
+          throw new BadRequestException('Outbound flight does not exist');
+        }
+        ticket.outboundFlight = outbound_flight;
+      }
+
+      if (updateTicketDto.return_flight_id) {
+        const return_flight = await this.flightRepository.findOne({
+          where: { id: updateTicketDto.return_flight_id },
+        });
+        if (!return_flight) {
+          throw new BadRequestException('Return flight does not exist');
+        }
+        ticket.returnFlight = return_flight;
+      }
+
       const updatedTicket = Object.assign(ticket, updateTicketDto, {
         updated_at: new Date(),
       });

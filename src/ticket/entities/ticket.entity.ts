@@ -28,7 +28,7 @@ export class Ticket {
   @JoinColumn({ name: 'outbound_flight_id' })
   outboundFlight: Flight;
 
-  @ManyToOne(() => Flight)
+  @ManyToOne(() => Flight, {nullable: true})
   @JoinColumn({ name: 'return_flight_id' })
   returnFlight: Flight;
 
@@ -80,7 +80,7 @@ export class Ticket {
   /**
    * return_ticket_price = base_price * total_passengers
    */
-  @Column()
+  @Column({ nullable: true })
   return_ticket_price: string;
 
   /**

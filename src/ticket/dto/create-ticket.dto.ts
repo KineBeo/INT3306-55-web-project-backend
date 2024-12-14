@@ -42,7 +42,7 @@ export class CreateTicketDto {
   @IsNumber()
   @IsPositive()
   @IsOptional()
-  user_id: number;
+  user_id?: number;
 
   @ApiProperty({
     description: 'Booking date',
