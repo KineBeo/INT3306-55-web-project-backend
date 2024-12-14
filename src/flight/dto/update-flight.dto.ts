@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 import {
   IsNumber,
   IsPositive,
@@ -66,6 +67,7 @@ export class UpdateFlightDto {
     description: 'Departure time',
     example: '2021-12-30T23:59:59Z',
   })
+  @Type(() => Date)
   @IsDate()
   @IsOptional()
   departure_time?: Date;
@@ -74,6 +76,7 @@ export class UpdateFlightDto {
     description: 'Arrival time',
     example: '2021-12-31T23:59:59Z',
   })
+  @Type(() => Date)
   @IsDate()
   @IsOptional()
   arrival_time?: Date;

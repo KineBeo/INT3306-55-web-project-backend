@@ -39,7 +39,7 @@ export class TicketController {
   @Public({
     summary: 'Search tickets',
     description: 'The tickets have been successfully retrieved.',
-    status: 200
+    status: 200,
   })
   @Get('search')
   search(@Query() searchTicketDto: SearchTicketDto) {
@@ -48,8 +48,9 @@ export class TicketController {
 
   @Public({
     summary: 'Search tickets by outbound flight time',
-    description: 'Find tickets where outbound flight departs before or after a specified date',
-    status: 200
+    description:
+      'Find tickets where outbound flight departs before or after a specified date',
+    status: 200,
   })
   @Get('search-by-outbound-time')
   @ApiQuery({

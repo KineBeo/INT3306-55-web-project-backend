@@ -20,7 +20,7 @@ export const Public = (options: PublicOptions | string) => {
       ApiResponse({
         status: opts.status || 200,
         description: opts.description,
-      })
+      }),
     );
   }
 

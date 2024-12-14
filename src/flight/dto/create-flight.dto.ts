@@ -37,8 +37,8 @@ export class CreateFlightDto {
   airplane_id: number;
 
   @ApiProperty({
-    description: 'Departure airport code',
-    example: 'HAN',
+    description: 'So hieu chuyen bay',
+    example: 'VN245',
   })
   @IsString()
   @IsNotEmpty()

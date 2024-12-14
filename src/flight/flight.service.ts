@@ -142,9 +142,12 @@ export class FlightService {
         updateFlightDto.departure_time ||
         updateFlightDto.delay_duration
       ) {
-        const departureTime =
-          updateFlightDto.departure_time || flight.departure_time;
-        const arrivalTime = updateFlightDto.arrival_time || flight.arrival_time;
+        const departureTime = new Date(
+          updateFlightDto.departure_time || flight.departure_time,
+        );
+        const arrivalTime = new Date(
+          updateFlightDto.arrival_time || flight.arrival_time,
+        );
         const delayDuration =
           updateFlightDto.delay_duration || flight.delay_duration;
 

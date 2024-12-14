@@ -1906,8 +1906,8 @@
           },
           "flight_number": {
             "type": "string",
-            "description": "Departure airport code",
-            "example": "HAN"
+            "description": "So hieu chuyen bay",
+            "example": "VN245"
           },
           "base_price": {
             "type": "string",

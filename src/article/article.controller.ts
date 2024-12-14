@@ -37,7 +37,7 @@ export class ArticleController {
   @Public({
     summary: 'Get all published articles',
     description: 'Returns all published articles',
-    status: 200
+    status: 200,
   })
   @Get('published')
   @ApiResponse({
@@ -51,7 +51,7 @@ export class ArticleController {
   @Public({
     summary: 'Get article by id',
     description: 'Returns a single article',
-    status: 200
+    status: 200,
   })
   @Get(':id')
   @ApiResponse({
