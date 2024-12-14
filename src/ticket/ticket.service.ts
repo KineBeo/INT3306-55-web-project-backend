@@ -8,7 +8,6 @@ import { User } from 'src/user/entities/user.entity';
 import { Flight } from 'src/flight/entities/flight.entity';
 import { TicketType } from 'src/enum/ticket/ticket_type';
 import { BookingStatus } from 'src/enum/ticket/booking_status';
-import { BookTicketDto } from './dto/book-ticket.dto';
 import { SearchTicketDto } from './dto/search-ticket.dto';
 
 @Injectable()
@@ -273,7 +272,7 @@ export class TicketService {
     }
   }
 
-  async bookTicket(id: number, bookTicketDto: BookTicketDto): Promise<Ticket> {
+  async bookTicket(id: number, req: any): Promise<Ticket> {
     try {
       const ticket = await this.ticketRepository.findOne({ where: { id } });
       if (!ticket) {
@@ -290,7 +289,8 @@ export class TicketService {
 
       const updatedTicket = {
         ...ticket,
-        ...bookTicketDto,
+        user_id: Number(req.user.sub),
+        total_passengers: ticket.ticketPassengers.length,
         booking_status: BookingStatus.CONFIRMED,
         booking_date: new Date(),
         updated_at: new Date(),

@@ -642,16 +642,6 @@
             }
           }
         ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BookTicketDto"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "Book a ticket operation completed successfully."
@@ -1661,25 +1651,6 @@
           "total_passengers",
           "base_price",
           "booking_status"
-        ]
-      },
-      "BookTicketDto": {
-        "type": "object",
-        "properties": {
-          "user_id": {
-            "type": "number",
-            "description": "User ID",
-            "example": 1
-          },
-          "total_passengers": {
-            "type": "number",
-            "description": "Number of passengers",
-            "example": 2
-          }
-        },
-        "required": [
-          "user_id",
-          "total_passengers"
         ]
       },
       "UpdateTicketDto": {

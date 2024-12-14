@@ -15,7 +15,6 @@ import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Public } from 'src/auth/decorator/public.decorator';
 import { AdminEndpoint } from 'src/auth/decorator/admin.decorator';
 import { ProtectedEndpoint } from 'src/auth/decorator/authorization.decorator';
-import { BookTicketDto } from './dto/book-ticket.dto';
 import { SearchTicketDto } from './dto/search-ticket.dto';
 import { ForbiddenException } from '@nestjs/common';
 import { Request } from '@nestjs/common';
@@ -111,8 +110,8 @@ export class TicketController {
     status: 400,
     description: 'Invalid booking request or ticket already booked.',
   })
-  bookTicket(@Param('id') id: string, @Body() bookTicketDto: BookTicketDto) {
-    return this.ticketService.bookTicket(+id, bookTicketDto);
+  bookTicket(@Param('id') id: string, @Request() req) {
+    return this.ticketService.bookTicket(+id, req);
   }
 
   @Patch(':id')
