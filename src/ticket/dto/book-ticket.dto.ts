@@ -1,14 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsString, MinLength } from 'class-validator';
+import { IsNumber, IsPositive, IsString, MinLength } from 'class-validator';
 
 export class BookTicketDto {
   @ApiProperty({
-    description: 'Seat code for the booking',
-    example: 'A12-B15',
+    description: 'User ID',
+    example: 1,
   })
-  @IsString()
-  @MinLength(2)
-  booking_seat_code: string;
+  @IsNumber()
+  @IsPositive()
+  user_id: number;
 
   @ApiProperty({
     description: 'Number of passengers',

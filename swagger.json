@@ -1624,11 +1624,6 @@
             "description": "Booking class",
             "example": "ECONOMY"
           },
-          "booking_seat_code": {
-            "type": "string",
-            "description": "Booking seat code",
-            "example": "A1"
-          },
           "description": {
             "type": "string",
             "description": "Description",
@@ -1662,7 +1657,6 @@
           "booking_date",
           "ticket_type",
           "booking_class",
-          "booking_seat_code",
           "description",
           "total_passengers",
           "base_price",
@@ -1672,10 +1666,10 @@
       "BookTicketDto": {
         "type": "object",
         "properties": {
-          "booking_seat_code": {
-            "type": "string",
-            "description": "Seat code for the booking",
-            "example": "A12-B15"
+          "user_id": {
+            "type": "number",
+            "description": "User ID",
+            "example": 1
           },
           "total_passengers": {
             "type": "number",
@@ -1684,7 +1678,7 @@
           }
         },
         "required": [
-          "booking_seat_code",
+          "user_id",
           "total_passengers"
         ]
       },
@@ -1731,11 +1725,6 @@
             "description": "Booking class",
             "example": "ECONOMY"
           },
-          "booking_seat_code": {
-            "type": "string",
-            "description": "Booking seat code",
-            "example": "A1"
-          },
           "description": {
             "type": "string",
             "description": "Description",
@@ -1769,7 +1758,6 @@
           "booking_date",
           "ticket_type",
           "booking_class",
-          "booking_seat_code",
           "description",
           "total_passengers",
           "base_price",

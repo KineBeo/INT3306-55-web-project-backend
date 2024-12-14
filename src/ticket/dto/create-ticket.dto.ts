@@ -41,7 +41,7 @@ export class CreateTicketDto {
   })
   @IsNumber()
   @IsPositive()
-  @Min(1)
+  @IsOptional()
   user_id: number;
 
   @ApiProperty({
@@ -65,16 +65,6 @@ export class CreateTicketDto {
     example: BookingClass.ECONOMY,
   })
   booking_class: BookingClass;
-
-  @ApiProperty({
-    description: 'Booking seat code',
-    example: 'A1',
-  })
-  @IsString()
-  @IsNotEmpty()
-  @MinLength(5)
-  @MaxLength(30)
-  booking_seat_code: string;
 
   @ApiProperty({
     description: 'Description',

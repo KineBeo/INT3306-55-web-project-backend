@@ -35,7 +35,7 @@ export class Ticket {
   /**
    * ! checked
    */
-  @ManyToOne(() => User, (user) => user.tickets)
+  @ManyToOne(() => User, (user) => user.tickets, { nullable: true })
   @JoinColumn({ name: 'user_id' })
   user: User;
 
@@ -58,9 +58,6 @@ export class Ticket {
     default: BookingClass.ECONOMY,
   })
   booking_class: BookingClass;
-
-  @Column()
-  booking_seat_code: string;
 
   @Column()
   description: string;

@@ -197,7 +197,18 @@ export class TicketService {
 
   async findAll(): Promise<Ticket[]> {
     try {
-      const tickets = await this.ticketRepository.find();
+      const tickets = await this.ticketRepository.find({
+        relations: [
+          'outboundFlight',
+          'returnFlight',
+          'user',
+          'ticketPassengers',
+          'outboundFlight.departure_airport',
+          'outboundFlight.arrival_airport',
+          'returnFlight.departure_airport',
+          'returnFlight.arrival_airport',
+        ],
+      });
       if (!tickets || tickets.length === 0) {
         throw new BadRequestException('No ticket found');
       }
@@ -210,7 +221,19 @@ export class TicketService {
 
   async findOne(id: number): Promise<Ticket> {
     try {
-      const ticket = await this.ticketRepository.findOne({ where: { id } });
+      const ticket = await this.ticketRepository.findOne({
+        where: { id },
+        relations: [
+          'outboundFlight',
+          'returnFlight',
+          'user',
+          'ticketPassengers',
+          'outboundFlight.departure_airport',
+          'outboundFlight.arrival_airport',
+          'returnFlight.departure_airport',
+          'returnFlight.arrival_airport',
+        ],
+      });
       if (!ticket) {
         throw new BadRequestException(`Ticket with id ${id} not found`);
       }
@@ -267,10 +290,9 @@ export class TicketService {
 
       const updatedTicket = {
         ...ticket,
+        ...bookTicketDto,
         booking_status: BookingStatus.CONFIRMED,
         booking_date: new Date(),
-        booking_seat_code: bookTicketDto.booking_seat_code,
-        total_passengers: bookTicketDto.total_passengers,
         updated_at: new Date(),
       };
 
