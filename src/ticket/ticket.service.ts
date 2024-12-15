@@ -302,6 +302,10 @@ export class TicketService {
         throw new BadRequestException('Cannot book a cancelled ticket');
       }
 
+      if (!ticket.ticketPassengers) {
+        throw new BadRequestException('Cannot book a ticket without passengers');
+      }
+
       const updatedTicket = {
         ...ticket,
         user_id: Number(req.user.sub),
