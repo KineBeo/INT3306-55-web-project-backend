@@ -596,7 +596,7 @@
     },
     "/ticket/book/{id}": {
       "patch": {
-        "operationId": "TicketController_bookTicket",
+        "operationId": "TicketController_book",
         "summary": "Book a ticket",
         "parameters": [
           {
@@ -614,6 +614,38 @@
           },
           "400": {
             "description": "Invalid booking request or ticket already booked."
+          }
+        },
+        "tags": [
+          "ticket"
+        ],
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ]
+      }
+    },
+    "/ticket/check-in/{id}": {
+      "patch": {
+        "operationId": "TicketController_checkIn",
+        "summary": "Check-in a ticket",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Check-in a ticket operation completed successfully."
+          },
+          "400": {
+            "description": "Invalid check-in request or ticket already checked in."
           }
         },
         "tags": [

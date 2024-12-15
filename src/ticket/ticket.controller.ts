@@ -84,8 +84,23 @@ export class TicketController {
     status: 400,
     description: 'Invalid booking request or ticket already booked.',
   })
-  bookTicket(@Param('id') id: string, @Request() req) {
-    return this.ticketService.bookTicket(+id, req);
+  book(@Param('id') id: string, @Request() req) {
+    return this.ticketService.book(+id, req);
+  }
+
+  @Patch('check-in/:id')
+  @ProtectedEndpoint('Check-in a ticket')
+  @ApiOperation({ summary: 'Check-in a ticket' })
+  @ApiResponse({
+    status: 200,
+    description: 'The ticket has been successfully checked in.',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Invalid check-in request or ticket already checked in.',
+  })
+  checkIn(@Param('id') id: string) {
+    return this.ticketService.checkIn(+id);
   }
 
   @Patch(':id')

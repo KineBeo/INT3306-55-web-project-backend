@@ -287,7 +287,7 @@ export class TicketService {
     }
   }
 
-  async bookTicket(id: number, req: any): Promise<Ticket> {
+  async book(id: number, req: any): Promise<Ticket> {
     try {
       const ticket = await this.ticketRepository.findOne({ where: { id } });
       if (!ticket) {
@@ -310,12 +310,30 @@ export class TicketService {
         ...ticket,
         user_id: Number(req.user.sub),
         total_passengers: ticket.ticketPassengers.length,
-        booking_status: BookingStatus.CONFIRMED,
         booking_date: new Date(),
         updated_at: new Date(),
       };
 
       return await this.ticketRepository.save(updatedTicket);
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
+  }
+
+  async checkIn(id: number): Promise<Ticket> {
+    try {
+      const ticket = await this.ticketRepository.findOne({ where: { id } });
+      if (!ticket) {
+        throw new BadRequestException(`Ticket with id ${id} not found`);
+      }
+
+      if (ticket.booking_status === BookingStatus.CONFIRMED) {
+        throw new BadRequestException('Ticket is already checked in');
+      }
+
+      ticket.booking_status = BookingStatus.CONFIRMED;
+      ticket.updated_at = new Date();
+      return await this.ticketRepository.save(ticket);
     } catch (error) {
       throw new BadRequestException(error.message);
     }
