@@ -443,40 +443,6 @@
         ]
       }
     },
-    "/ticket/search-by-outbound-time": {
-      "get": {
-        "operationId": "TicketController_searchByOutboundTime",
-        "summary": "PUBLIC: Search tickets by outbound flight time",
-        "parameters": [
-          {
-            "name": "date",
-            "required": true,
-            "in": "query",
-            "schema": {
-              "example": "2023-12-25",
-              "type": "string"
-            }
-          },
-          {
-            "name": "before",
-            "required": true,
-            "in": "query",
-            "schema": {
-              "example": true,
-              "type": "boolean"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Find tickets where outbound flight departs before or after a specified date"
-          }
-        },
-        "tags": [
-          "ticket"
-        ]
-      }
-    },
     "/ticket/user/{userId}": {
       "get": {
         "operationId": "TicketController_findAllByUserId",

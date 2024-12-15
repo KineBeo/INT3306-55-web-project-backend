@@ -45,31 +45,31 @@ export class TicketController {
     return this.ticketService.search(searchTicketDto);
   }
 
-  @Public({
-    summary: 'Search tickets by outbound flight time',
-    description:
-      'Find tickets where outbound flight departs before or after a specified date',
-    status: 200,
-  })
-  @Get('search-by-outbound-time')
-  @ApiQuery({
-    name: 'date',
-    required: true,
-    type: String,
-    example: '2023-12-25',
-  })
-  @ApiQuery({
-    name: 'before',
-    required: true,
-    type: Boolean,
-    example: true,
-  })
-  searchByOutboundTime(
-    @Query('date') date: string,
-    @Query('before') before: boolean,
-  ) {
-    return this.ticketService.searchByOutboundTime(date, before);
-  }
+  // @Public({
+  //   summary: 'Search tickets by outbound flight time',
+  //   description:
+  //     'Find tickets where outbound flight departs before or after a specified date',
+  //   status: 200,
+  // })
+  // @Get('search-by-outbound-time')
+  // @ApiQuery({
+  //   name: 'date',
+  //   required: true,
+  //   type: String,
+  //   example: '2023-12-25',
+  // })
+  // @ApiQuery({
+  //   name: 'before',
+  //   required: true,
+  //   type: Boolean,
+  //   example: true,
+  // })
+  // searchByOutboundTime(
+  //   @Query('date') date: string,
+  //   @Query('before') before: boolean,
+  // ) {
+  //   return this.ticketService.searchByOutboundTime(date, before);
+  // }
 
   @ProtectedEndpoint(
     'Get all tickets belonging to a user. The user can only access their own tickets',

@@ -140,7 +140,9 @@ export class TicketService {
         .andWhere(
           'outboundFlight.departure_time BETWEEN :startOfOutboundDay AND :endOfOutboundDay',
           { startOfOutboundDay, endOfOutboundDay },
-        );
+        )
+        .andWhere('ticket.user IS NULL')
+        .andWhere('ticket.booking_date IS NULL');
 
       if (ticket_type === TicketType.ROUND_TRIP && return_day) {
         const startOfReturnDay = new Date(return_day);
@@ -161,31 +163,31 @@ export class TicketService {
     }
   }
 
-  async searchByOutboundTime(date: string, before: boolean): Promise<Ticket[]> {
-    try {
-      const compareDate = new Date(date);
-      compareDate.setHours(0, 0, 0, 0);
+  // async searchByOutboundTime(date: string, before: boolean): Promise<Ticket[]> {
+  //   try {
+  //     const compareDate = new Date(date);
+  //     compareDate.setHours(0, 0, 0, 0);
 
-      const ticketsQuery = this.ticketRepository
-        .createQueryBuilder('ticket')
-        .leftJoinAndSelect('ticket.outboundFlight', 'outboundFlight')
-        .where(
-          before
-            ? 'outboundFlight.departure_time <= :compareDate'
-            : 'outboundFlight.departure_time >= :compareDate',
-          { compareDate },
-        );
+  //     const ticketsQuery = this.ticketRepository
+  //       .createQueryBuilder('ticket')
+  //       .leftJoinAndSelect('ticket.outboundFlight', 'outboundFlight')
+  //       .where(
+  //         before
+  //           ? 'outboundFlight.departure_time <= :compareDate'
+  //           : 'outboundFlight.departure_time >= :compareDate',
+  //         { compareDate },
+  //       );
 
-      const tickets = await ticketsQuery.getMany();
-      if (!tickets || tickets.length === 0) {
-        throw new BadRequestException('No tickets found');
-      }
+  //     const tickets = await ticketsQuery.getMany();
+  //     if (!tickets || tickets.length === 0) {
+  //       throw new BadRequestException('No tickets found');
+  //     }
 
-      return tickets;
-    } catch (error) {
-      throw new BadRequestException(error.message);
-    }
-  }
+  //     return tickets;
+  //   } catch (error) {
+  //     throw new BadRequestException(error.message);
+  //   }
+  // }
 
   async findAll(): Promise<Ticket[]> {
     try {
