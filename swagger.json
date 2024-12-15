@@ -1602,7 +1602,7 @@
               "ROUND_TRIP"
             ],
             "description": "Ticket type",
-            "example": "ONE_WAY"
+            "example": "ROUND_TRIP"
           },
           "booking_class": {
             "type": "string",

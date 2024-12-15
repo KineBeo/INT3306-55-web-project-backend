@@ -28,7 +28,7 @@ export class Ticket {
   @JoinColumn({ name: 'outbound_flight_id' })
   outboundFlight: Flight;
 
-  @ManyToOne(() => Flight, {nullable: true})
+  @ManyToOne(() => Flight, { nullable: true })
   @JoinColumn({ name: 'return_flight_id' })
   returnFlight: Flight;
 

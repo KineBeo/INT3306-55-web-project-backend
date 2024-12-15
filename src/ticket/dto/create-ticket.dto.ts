@@ -55,7 +55,7 @@ export class CreateTicketDto {
   @ApiProperty({
     enum: TicketType,
     description: 'Ticket type',
-    example: TicketType.ONE_WAY,
+    example: TicketType.ROUND_TRIP,
   })
   ticket_type: TicketType;
 

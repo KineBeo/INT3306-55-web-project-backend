@@ -29,6 +29,7 @@ export class TicketService {
         return_flight_id,
         base_price,
         total_passengers,
+        ticket_type,
       } = createTicketDto;
 
       let user = null;
@@ -40,7 +41,7 @@ export class TicketService {
           throw new BadRequestException('User does not exist');
         }
       }
-      
+
       const outbound_flight = await this.flightRepository.findOne({
         where: { id: outbound_flight_id },
       });
@@ -50,7 +51,13 @@ export class TicketService {
       }
 
       let return_flight = null;
-      if (return_flight_id) {
+      if (ticket_type === TicketType.ROUND_TRIP) {
+        if (!return_flight_id) {
+          throw new BadRequestException(
+            'Return flight ID is required for round trip tickets',
+          );
+        }
+
         return_flight = await this.flightRepository.findOne({
           where: { id: return_flight_id },
         });
@@ -59,24 +66,7 @@ export class TicketService {
           throw new BadRequestException('Return flight does not exist');
         }
 
-        // Check if outbound flight's arrival date is before return flight's departure date
-        if (outbound_flight.arrival_time >= return_flight.departure_time) {
-          throw new BadRequestException(
-            'Outbound flight arrival time must be before return flight departure time',
-          );
-        }
-
-        if (outbound_flight.departure_airport !== return_flight.arrival_airport) {
-          throw new BadRequestException(
-            'Outbound flight departure airport must be the same as return flight arrival airport',
-          );
-        }
-
-        if (outbound_flight.arrival_airport !== return_flight.departure_airport) {
-          throw new BadRequestException(
-            'Outbound flight arrival airport must be the same as return flight departure airport',
-          );
-        }
+        this.validateReturnFlight(outbound_flight, return_flight);
       }
 
       // Calculate ticket prices
@@ -84,7 +74,7 @@ export class TicketService {
       const passengers = total_passengers || 1;
 
       const outbound_ticket_price = (basePrice * passengers).toString();
-      const return_ticket_price = return_flight_id
+      const return_ticket_price = return_flight
         ? (basePrice * passengers).toString()
         : '0';
       const total_price = (
@@ -99,6 +89,7 @@ export class TicketService {
         outbound_ticket_price,
         return_ticket_price,
         total_price,
+        booking_status: createTicketDto.booking_status || BookingStatus.PENDING,
         created_at: new Date(),
         updated_at: new Date(),
       });
@@ -266,13 +257,24 @@ export class TicketService {
         ticket.outboundFlight = outbound_flight;
       }
 
+      if (updateTicketDto.ticket_type) {
+        ticket.ticket_type = updateTicketDto.ticket_type;
+      }
+
       if (updateTicketDto.return_flight_id) {
+        if (ticket.ticket_type !== TicketType.ROUND_TRIP) {
+          throw new BadRequestException(
+            'Return flight can only be updated for round trip tickets',
+          );
+        }
         const return_flight = await this.flightRepository.findOne({
           where: { id: updateTicketDto.return_flight_id },
         });
         if (!return_flight) {
           throw new BadRequestException('Return flight does not exist');
         }
+
+        this.validateReturnFlight(ticket.outboundFlight, return_flight);
         ticket.returnFlight = return_flight;
       }
 
@@ -369,6 +371,29 @@ export class TicketService {
       return tickets;
     } catch (error) {
       throw new BadRequestException(error.message);
+    }
+  }
+
+  private async validateReturnFlight(outbound_flight, return_flight) {
+    // Check if outbound flight's arrival date is before return flight's departure date
+    if (outbound_flight.arrival_time >= return_flight.departure_time) {
+      throw new BadRequestException(
+        'Outbound flight arrival time must be before return flight departure time',
+      );
+    }
+
+    // Check if outbound flight's departure airport is the same as return flight's arrival airport
+    if (outbound_flight.departure_airport !== return_flight.arrival_airport) {
+      throw new BadRequestException(
+        'Outbound flight departure airport must be the same as return flight arrival airport',
+      );
+    }
+
+    // Check if outbound flight's arrival airport is the same as return flight's departure airport
+    if (outbound_flight.arrival_airport !== return_flight.departure_airport) {
+      throw new BadRequestException(
+        'Outbound flight arrival airport must be the same as return flight departure airport',
+      );
     }
   }
 }
