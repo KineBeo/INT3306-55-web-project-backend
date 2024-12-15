@@ -87,14 +87,6 @@ export class CreateTicketDto {
   total_passengers?: number;
 
   @ApiProperty({
-    description: 'Base price',
-    example: '100',
-  })
-  @IsNumberString()
-  @IsNotEmpty()
-  base_price: string;
-
-  @ApiProperty({
     enum: BookingStatus,
     description: 'Booking status',
     example: BookingStatus.CONFIRMED,

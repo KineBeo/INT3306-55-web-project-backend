@@ -68,9 +68,6 @@ export class Ticket {
   @Column({ nullable: true })
   total_passengers: number;
 
-  @Column()
-  base_price: string;
-
   /**
    * outbound_ticket_price = base_price * total_passengers
    */

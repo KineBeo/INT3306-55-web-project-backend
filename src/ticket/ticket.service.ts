@@ -27,11 +27,11 @@ export class TicketService {
         user_id,
         outbound_flight_id,
         return_flight_id,
-        base_price,
         total_passengers,
         ticket_type,
       } = createTicketDto;
 
+      // Validate owner (optional)
       let user = null;
       if (user_id) {
         user = await this.userRepository.findOne({
@@ -42,14 +42,13 @@ export class TicketService {
         }
       }
 
-      const outbound_flight = await this.flightRepository.findOne({
-        where: { id: outbound_flight_id },
-      });
+      // Validate outbound flight
+      const outbound_flight = await this.validateFlight(
+        outbound_flight_id,
+        'Outbound flight does not exist',
+      );
 
-      if (!outbound_flight) {
-        throw new BadRequestException('Outbound flight does not exist');
-      }
-
+      // Validate return flight (optional)
       let return_flight = null;
       if (ticket_type === TicketType.ROUND_TRIP) {
         if (!return_flight_id) {
@@ -58,28 +57,25 @@ export class TicketService {
           );
         }
 
-        return_flight = await this.flightRepository.findOne({
-          where: { id: return_flight_id },
-        });
+        return_flight = await this.validateFlight(
+          return_flight_id,
+          'Return flight does not exist',
+        );
 
-        if (!return_flight) {
-          throw new BadRequestException('Return flight does not exist');
-        }
-
-        this.validateReturnFlight(outbound_flight, return_flight);
+        await this.validateRelationship(outbound_flight, return_flight);
       }
 
       // Calculate ticket prices
-      const basePrice = parseFloat(base_price);
-      const passengers = total_passengers || 1;
+      const numPassengers = total_passengers || 1;
+      const outboundBasePrice = outbound_flight.base_price;
+      const returnBasePrice = return_flight ? return_flight.base_price : null;
 
-      const outbound_ticket_price = (basePrice * passengers).toString();
-      const return_ticket_price = return_flight
-        ? (basePrice * passengers).toString()
-        : '0';
-      const total_price = (
-        parseFloat(outbound_ticket_price) + parseFloat(return_ticket_price)
-      ).toString();
+      const { outbound_ticket_price, return_ticket_price, total_price } =
+        await this.calculateTicketPrices(
+          outboundBasePrice,
+          returnBasePrice,
+          numPassengers,
+        );
 
       const ticket = this.ticketRepository.create({
         ...createTicketDto,
@@ -248,13 +244,10 @@ export class TicketService {
       }
 
       if (updateTicketDto.outbound_flight_id) {
-        const outbound_flight = await this.flightRepository.findOne({
-          where: { id: updateTicketDto.outbound_flight_id },
-        });
-        if (!outbound_flight) {
-          throw new BadRequestException('Outbound flight does not exist');
-        }
-        ticket.outboundFlight = outbound_flight;
+        ticket.outboundFlight = await this.validateFlight(
+          updateTicketDto.outbound_flight_id,
+          'Outbound flight does not exist',
+        );
       }
 
       if (updateTicketDto.ticket_type) {
@@ -267,20 +260,37 @@ export class TicketService {
             'Return flight can only be updated for round trip tickets',
           );
         }
-        const return_flight = await this.flightRepository.findOne({
-          where: { id: updateTicketDto.return_flight_id },
-        });
-        if (!return_flight) {
-          throw new BadRequestException('Return flight does not exist');
-        }
 
-        this.validateReturnFlight(ticket.outboundFlight, return_flight);
-        ticket.returnFlight = return_flight;
+        ticket.returnFlight = await this.validateFlight(
+          updateTicketDto.return_flight_id,
+          'Return flight does not exist',
+        );
+
+        await this.validateRelationship(
+          ticket.outboundFlight,
+          ticket.returnFlight,
+        );
       }
+
+      if (updateTicketDto.total_passengers) {
+        ticket.total_passengers = updateTicketDto.total_passengers;
+      }
+
+      const { outbound_ticket_price, return_ticket_price, total_price } =
+        await this.calculateTicketPrices(
+          ticket.outboundFlight.base_price,
+          ticket.returnFlight ? ticket.returnFlight.base_price : null,
+          ticket.total_passengers,
+        );
+
+      ticket.outbound_ticket_price = outbound_ticket_price;
+      ticket.return_ticket_price = return_ticket_price;
+      ticket.total_price = total_price;
 
       const updatedTicket = Object.assign(ticket, updateTicketDto, {
         updated_at: new Date(),
       });
+      
       return await this.ticketRepository.save(updatedTicket);
     } catch (error) {
       throw new BadRequestException(error.message);
@@ -374,7 +384,24 @@ export class TicketService {
     }
   }
 
-  private async validateReturnFlight(outbound_flight, return_flight) {
+  private async validateFlight(
+    flightId: number,
+    errorMessage: string,
+  ): Promise<Flight> {
+    const flight = await this.flightRepository.findOne({
+      where: { id: flightId },
+    });
+    if (!flight) {
+      throw new BadRequestException(errorMessage);
+    }
+
+    return flight;
+  }
+
+  private async validateRelationship(
+    outbound_flight: Flight,
+    return_flight: Flight,
+  ): Promise<void> {
     // Check if outbound flight's arrival date is before return flight's departure date
     if (outbound_flight.arrival_time >= return_flight.departure_time) {
       throw new BadRequestException(
@@ -395,5 +422,36 @@ export class TicketService {
         'Outbound flight arrival airport must be the same as return flight departure airport',
       );
     }
+  }
+
+  private async calculateTicketPrices(
+    outboundBasePrice: string,
+    returnBasePrice: string = null,
+    totalPassengers: number,
+  ): Promise<{
+    outbound_ticket_price: string;
+    return_ticket_price?: string;
+    total_price: string;
+  }> {
+    const outboundTicketPrice = (
+      parseFloat(outboundBasePrice) * totalPassengers
+    ).toString();
+    let totalPrice = parseFloat(outboundTicketPrice).toString();
+    let returnTicketPrice: string | undefined;
+
+    if (returnBasePrice) {
+      returnTicketPrice = (
+        parseFloat(returnBasePrice) * totalPassengers
+      ).toString();
+      totalPrice = (
+        parseFloat(totalPrice) + parseFloat(returnTicketPrice)
+      ).toString();
+    }
+
+    return {
+      outbound_ticket_price: outboundTicketPrice,
+      return_ticket_price: returnTicketPrice,
+      total_price: totalPrice,
+    };
   }
 }

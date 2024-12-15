@@ -8,7 +8,6 @@ import {
   IsNotEmpty,
   MinLength,
   MaxLength,
-  IsNumberString,
   IsOptional,
 } from 'class-validator';
 import { BookingClass } from 'src/enum/ticket/booking_class';
@@ -89,15 +88,6 @@ export class UpdateTicketDto {
   @IsPositive()
   @Min(1)
   total_passengers?: number;
-
-  @ApiProperty({
-    description: 'Base price',
-    example: '100',
-  })
-  @IsOptional()
-  @IsNumberString()
-  @IsNotEmpty()
-  base_price?: string;
 
   @ApiProperty({
     enum: BookingStatus,
