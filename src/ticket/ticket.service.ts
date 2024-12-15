@@ -85,7 +85,6 @@ export class TicketService {
         outbound_ticket_price,
         return_ticket_price,
         total_price,
-        booking_status: createTicketDto.booking_status || BookingStatus.PENDING,
         created_at: new Date(),
         updated_at: new Date(),
       });
@@ -290,7 +289,7 @@ export class TicketService {
       const updatedTicket = Object.assign(ticket, updateTicketDto, {
         updated_at: new Date(),
       });
-      
+
       return await this.ticketRepository.save(updatedTicket);
     } catch (error) {
       throw new BadRequestException(error.message);

@@ -1589,12 +1589,6 @@
             "description": "User ID",
             "example": 1
           },
-          "booking_date": {
-            "format": "date-time",
-            "type": "string",
-            "description": "Booking date",
-            "example": "2021-12-31T23:59:59Z"
-          },
           "ticket_type": {
             "type": "string",
             "enum": [
@@ -1623,28 +1617,16 @@
             "type": "number",
             "description": "Total passengers",
             "example": 1
-          },
-          "booking_status": {
-            "type": "string",
-            "enum": [
-              "PENDING",
-              "CONFIRMED",
-              "CANCELLED"
-            ],
-            "description": "Booking status",
-            "example": "CONFIRMED"
           }
         },
         "required": [
           "outbound_flight_id",
           "return_flight_id",
           "user_id",
-          "booking_date",
           "ticket_type",
           "booking_class",
           "description",
-          "total_passengers",
-          "booking_status"
+          "total_passengers"
         ]
       },
       "UpdateTicketDto": {

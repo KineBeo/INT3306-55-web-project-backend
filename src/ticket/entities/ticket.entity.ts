@@ -1,3 +1,4 @@
+import { IsOptional } from 'class-validator';
 import { BookingClass } from 'src/enum/ticket/booking_class';
 import { BookingStatus } from 'src/enum/ticket/booking_status';
 import { TicketType } from 'src/enum/ticket/ticket_type';
@@ -43,6 +44,7 @@ export class Ticket {
    * Assigned value when a user books the ticket
    */
   @Column({ nullable: true })
+  @IsOptional()
   booking_date: Date;
 
   @Column({

@@ -45,14 +45,6 @@ export class CreateTicketDto {
   user_id?: number;
 
   @ApiProperty({
-    description: 'Booking date',
-    example: '2021-12-31T23:59:59Z',
-  })
-  @IsOptional()
-  @Type(() => Date)
-  booking_date?: Date;
-
-  @ApiProperty({
     enum: TicketType,
     description: 'Ticket type',
     example: TicketType.ROUND_TRIP,
@@ -85,11 +77,4 @@ export class CreateTicketDto {
   @IsPositive()
   @Min(1)
   total_passengers?: number;
-
-  @ApiProperty({
-    enum: BookingStatus,
-    description: 'Booking status',
-    example: BookingStatus.CONFIRMED,
-  })
-  booking_status: BookingStatus;
 }
