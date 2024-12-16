@@ -306,7 +306,7 @@ export class TicketService {
         throw new BadRequestException('Cannot book a ticket without passengers');
       }
 
-      const updatedTicket = {
+      const bookedTicket = {
         ...ticket,
         user_id: Number(req.user.sub),
         total_passengers: ticket.ticketPassengers.length,
@@ -314,7 +314,7 @@ export class TicketService {
         updated_at: new Date(),
       };
 
-      return await this.ticketRepository.save(updatedTicket);
+      return await this.ticketRepository.save(bookedTicket);
     } catch (error) {
       throw new BadRequestException(error.message);
     }
