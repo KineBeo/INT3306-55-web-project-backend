@@ -302,7 +302,7 @@ export class TicketService {
         throw new BadRequestException('Cannot book a cancelled ticket');
       }
 
-      if (!ticket.ticketPassengers) {
+      if (ticket.ticketPassengers.length <= 0) {
         throw new BadRequestException('Cannot book a ticket without passengers');
       }
 
