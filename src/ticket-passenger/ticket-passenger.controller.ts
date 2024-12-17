@@ -10,7 +10,6 @@ import {
 import { TicketPassengerService } from './ticket-passenger.service';
 import { CreateTicketPassengerDto } from './dto/create-ticket-passenger.dto';
 import { UpdateTicketPassengerDto } from './dto/update-ticket-passenger.dto';
-import { Public } from 'src/auth/decorator/public.decorator';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AdminEndpoint } from 'src/auth/decorator/admin.decorator';
 import { ProtectedEndpoint } from 'src/auth/decorator/authorization.decorator';

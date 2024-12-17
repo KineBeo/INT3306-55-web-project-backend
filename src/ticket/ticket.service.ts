@@ -24,23 +24,12 @@ export class TicketService {
   async create(createTicketDto: CreateTicketDto): Promise<Ticket> {
     try {
       const {
-        user_id,
         outbound_flight_id,
         return_flight_id,
-        total_passengers,
         ticket_type,
+        booking_class,
+        description,
       } = createTicketDto;
-
-      // Validate owner (optional)
-      let user = null;
-      if (user_id) {
-        user = await this.userRepository.findOne({
-          where: { id: user_id },
-        });
-        if (!user) {
-          throw new BadRequestException('User does not exist');
-        }
-      }
 
       // Validate outbound flight
       const outbound_flight = await this.validateFlight(
@@ -56,35 +45,24 @@ export class TicketService {
             'Return flight ID is required for round trip tickets',
           );
         }
-
+      
         return_flight = await this.validateFlight(
           return_flight_id,
           'Return flight does not exist',
         );
-
+      
         await this.validateRelationship(outbound_flight, return_flight);
-      }
-
-      // Calculate ticket prices
-      const numPassengers = total_passengers || 1;
-      const outboundBasePrice = outbound_flight.base_price;
-      const returnBasePrice = return_flight ? return_flight.base_price : null;
-
-      const { outbound_ticket_price, return_ticket_price, total_price } =
-        await this.calculateTicketPrices(
-          outboundBasePrice,
-          returnBasePrice,
-          numPassengers,
+      } else if (return_flight_id) {
+        throw new BadRequestException(
+          'Return flight ID should not be provided for one way tickets',
         );
+      }
 
       const ticket = this.ticketRepository.create({
         ...createTicketDto,
-        user: user,
         outboundFlight: outbound_flight,
         returnFlight: return_flight,
-        outbound_ticket_price,
-        return_ticket_price,
-        total_price,
+        booking_status: BookingStatus.PENDING,
         created_at: new Date(),
         updated_at: new Date(),
       });

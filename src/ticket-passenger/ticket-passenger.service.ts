@@ -104,6 +104,11 @@ export class TicketPassengerService {
       const associated_adult = await this.ticketPassengerRepository.findOne({
         where: { id: associated_adult_id },
       });
+      if (!associated_adult) {
+        throw new BadRequestException(
+          `Associated adult passenger with ID ${associated_adult_id} not found`,
+        );
+      }
 
       const ticketPassenger = this.ticketPassengerRepository.create({
         ...createTicketPassengerDto,

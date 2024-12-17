@@ -4,7 +4,7 @@ import { IsEmail, IsPhoneNumber, IsString, MinLength } from 'class-validator';
 export class LoginDto {
   @ApiProperty({
     description: 'phone number',
-    example: '0123456789',
+    example: '0988668938',
   })
   @IsPhoneNumber('VN')
   phone_number: string;

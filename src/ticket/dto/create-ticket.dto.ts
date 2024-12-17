@@ -18,7 +18,7 @@ import { Type } from 'class-transformer';
 export class CreateTicketDto {
   @ApiProperty({
     description: 'Outbound flight ID',
-    example: 1,
+    example: 31,
   })
   @IsNumber()
   @IsPositive()
@@ -36,18 +36,9 @@ export class CreateTicketDto {
   return_flight_id?: number;
 
   @ApiProperty({
-    description: 'User ID',
-    example: 1,
-  })
-  @IsNumber()
-  @IsPositive()
-  @IsOptional()
-  user_id?: number;
-
-  @ApiProperty({
     enum: TicketType,
     description: 'Ticket type',
-    example: TicketType.ROUND_TRIP,
+    example: TicketType.ONE_WAY,
   })
   ticket_type: TicketType;
 
@@ -67,14 +58,4 @@ export class CreateTicketDto {
   @MinLength(10)
   @MaxLength(255)
   description: string;
-
-  @ApiProperty({
-    description: 'Total passengers',
-    example: 1,
-  })
-  @IsOptional()
-  @IsNumber()
-  @IsPositive()
-  @Min(1)
-  total_passengers?: number;
 }

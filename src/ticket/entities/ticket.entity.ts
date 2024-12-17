@@ -73,7 +73,7 @@ export class Ticket {
   /**
    * outbound_ticket_price = base_price * total_passengers
    */
-  @Column()
+  @Column({ nullable: true })
   outbound_ticket_price: string;
 
   /**
@@ -85,7 +85,7 @@ export class Ticket {
   /**
    * total_price = outbound_ticket_price + return_ticket_price
    */
-  @Column()
+  @Column({ nullable: true })
   total_price: string;
 
   @Column({
