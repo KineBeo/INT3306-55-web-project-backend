@@ -45,12 +45,12 @@ export class TicketService {
             'Return flight ID is required for round trip tickets',
           );
         }
-      
+
         return_flight = await this.validateFlight(
           return_flight_id,
           'Return flight does not exist',
         );
-      
+
         await this.validateRelationship(outbound_flight, return_flight);
       } else if (return_flight_id) {
         throw new BadRequestException(
@@ -267,7 +267,15 @@ export class TicketService {
 
   async book(id: number, req: any): Promise<Ticket> {
     try {
-      const ticket = await this.ticketRepository.findOne({ where: { id } });
+      const ticket = await this.ticketRepository.findOne({
+        where: { id },
+        relations: [
+          'ticketPassengers',
+          'outboundFlight',
+          'returnFlight',
+          'user',
+        ],
+      });
       if (!ticket) {
         throw new BadRequestException(`Ticket with id ${id} not found`);
       }
@@ -280,16 +288,32 @@ export class TicketService {
         throw new BadRequestException('Cannot book a cancelled ticket');
       }
 
-      if (ticket.ticketPassengers.length <= 0) {
-        throw new BadRequestException('Cannot book a ticket without passengers');
+      if (!ticket.ticketPassengers || ticket.ticketPassengers.length <= 0) {
+        throw new BadRequestException(
+          'Cannot book a ticket without passengers',
+        );
       }
+
+      const { outbound_ticket_price, return_ticket_price, total_price } =
+        await this.calculateTicketPrices(
+          ticket.outboundFlight.base_price,
+          ticket.returnFlight ? ticket.returnFlight.base_price : null,
+          ticket.ticketPassengers.length,
+        );
+
+      const user = await this.userRepository.findOne({
+        where: { id: Number(req.user.sub) },
+      });
 
       const bookedTicket = {
         ...ticket,
-        user_id: Number(req.user.sub),
+        user,
         total_passengers: ticket.ticketPassengers.length,
         booking_date: new Date(),
         updated_at: new Date(),
+        outbound_ticket_price,
+        return_ticket_price,
+        total_price,
       };
 
       return await this.ticketRepository.save(bookedTicket);

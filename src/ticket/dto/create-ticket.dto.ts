@@ -27,7 +27,7 @@ export class CreateTicketDto {
 
   @ApiProperty({
     description: 'Return flight ID',
-    example: 1,
+    example: null,
   })
   @IsOptional()
   @IsNumber()

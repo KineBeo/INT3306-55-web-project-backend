@@ -1580,7 +1580,7 @@
           "return_flight_id": {
             "type": "number",
             "description": "Return flight ID",
-            "example": 1
+            "example": null
           },
           "ticket_type": {
             "type": "string",
@@ -1702,17 +1702,17 @@
               "INFANT"
             ],
             "description": "Passenger type",
-            "example": "INFANT"
+            "example": "ADULT"
           },
           "associated_adult_id": {
             "type": "number",
             "description": "Associated adult ID",
-            "example": 2
+            "example": null
           },
           "ticket_id": {
             "type": "number",
             "description": "Ticket ID",
-            "example": 9
+            "example": 32
           },
           "full_name": {
             "type": "string",
@@ -1723,12 +1723,12 @@
             "format": "date-time",
             "type": "string",
             "description": "Birthday",
-            "example": "2023-01-31"
+            "example": "2010-01-31"
           },
           "cccd": {
             "type": "string",
             "description": "CCCD",
-            "example": "123456101"
+            "example": "123456109"
           },
           "country_code": {
             "type": "string",

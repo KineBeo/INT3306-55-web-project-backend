@@ -24,8 +24,8 @@ export class TicketPassenger {
   @IsOptional()
   @ManyToOne(() => TicketPassenger, { nullable: true })
   @JoinColumn({ name: 'associated_adult_id' })
-  associated_adult_id: TicketPassenger;
-  
+  associated_adult: TicketPassenger;
+
   @ManyToOne(() => Ticket, (ticket) => ticket.ticketPassengers)
   @JoinColumn({ name: 'ticket_id' })
   ticket: Ticket;

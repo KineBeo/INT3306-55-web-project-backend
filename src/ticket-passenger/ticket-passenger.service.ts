@@ -75,13 +75,14 @@ export class TicketPassengerService {
       this.validatePassengerAge(passenger_type, new Date(birthday));
 
       // Validate associated adult for non-adult passengers
+      let associatedAdult = null;
       if (passenger_type === PassengerType.INFANT) {
         if (!associated_adult_id) {
           throw new BadRequestException(
             'Infant passengers must have an associated adult',
           );
         }
-        const associatedAdult = await this.ticketPassengerRepository.findOne({
+        associatedAdult = await this.ticketPassengerRepository.findOne({
           where: { id: associated_adult_id },
         });
         if (
@@ -92,28 +93,26 @@ export class TicketPassengerService {
             'Associated passenger must be an adult',
           );
         }
+      } else {
+        if (associated_adult_id) {
+          throw new BadRequestException(
+            'Only infant passengers can have an associated adult',
+          );
+        }
       }
 
       const ticket = await this.ticketRepository.findOne({
         where: { id: ticket_id },
       });
+
       if (!ticket) {
         throw new BadRequestException(`Ticket with ID ${ticket_id} not found`);
-      }
-
-      const associated_adult = await this.ticketPassengerRepository.findOne({
-        where: { id: associated_adult_id },
-      });
-      if (!associated_adult) {
-        throw new BadRequestException(
-          `Associated adult passenger with ID ${associated_adult_id} not found`,
-        );
       }
 
       const ticketPassenger = this.ticketPassengerRepository.create({
         ...createTicketPassengerDto,
         ticket: ticket,
-        associated_adult_id: associated_adult || null,
+        associated_adult: associatedAdult,
         created_at: new Date(),
         updated_at: new Date(),
       });
