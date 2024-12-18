@@ -27,8 +27,6 @@ export class TicketService {
         outbound_flight_id,
         return_flight_id,
         ticket_type,
-        booking_class,
-        description,
       } = createTicketDto;
 
       // Validate outbound flight
@@ -63,6 +61,9 @@ export class TicketService {
         outboundFlight: outbound_flight,
         returnFlight: return_flight,
         booking_status: BookingStatus.PENDING,
+        outbound_ticket_price: outbound_flight.base_price,
+        return_ticket_price: return_flight ? return_flight.base_price : null,
+        total_price: return_flight,
         created_at: new Date(),
         updated_at: new Date(),
       });
