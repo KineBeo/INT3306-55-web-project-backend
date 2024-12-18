@@ -9,6 +9,7 @@ import { Flight } from 'src/flight/entities/flight.entity';
 import { TicketType } from 'src/enum/ticket/ticket_type';
 import { BookingStatus } from 'src/enum/ticket/booking_status';
 import { SearchTicketDto } from './dto/search-ticket.dto';
+import { parse } from 'path';
 
 @Injectable()
 export class TicketService {
@@ -56,6 +57,8 @@ export class TicketService {
         );
       }
 
+      const total_price = parseFloat(outbound_flight.base_price) + (return_flight ? parseFloat(return_flight.base_price) : 0);
+
       const ticket = this.ticketRepository.create({
         ...createTicketDto,
         outboundFlight: outbound_flight,
@@ -63,7 +66,7 @@ export class TicketService {
         booking_status: BookingStatus.PENDING,
         outbound_ticket_price: outbound_flight.base_price,
         return_ticket_price: return_flight ? return_flight.base_price : null,
-        total_price: return_flight,
+        total_price: total_price.toString(),
         created_at: new Date(),
         updated_at: new Date(),
       });
