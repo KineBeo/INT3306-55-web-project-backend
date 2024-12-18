@@ -112,7 +112,7 @@ export class TicketPassengerService {
       const ticketPassenger = this.ticketPassengerRepository.create({
         ...createTicketPassengerDto,
         ticket: ticket,
-        associated_adult: associatedAdult,
+        associated_adult_id: associatedAdult,
         created_at: new Date(),
         updated_at: new Date(),
       });
